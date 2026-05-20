@@ -1,0 +1,122 @@
+<!-- 
+  MUK Loader Component Template
+  Angular 17+ control flow syntax (@if / @switch)
+  
+  - Default: primary color, dots type, md size
+  - Page loader: [fullScreen]="true"
+  - Component loader: [overlay]="true" inside relatively positioned parent
+  - Inline (button, small section): [inline]="true"
+  - Service-driven page loader: bind visible to (loaderService.isLoading$ | async)
+-->
+
+@if (visible) {
+  <div
+    [ngClass]="containerClasses"
+    role="status"
+    [attr.aria-live]="fullScreen || overlay ? 'assertive' : 'polite'"
+    [attr.aria-label]="message"
+  >
+    <div class="muk-loader-wrapper" [ngClass]="[sizeClass, colorClass]">
+      @switch (type) {
+        @case ('dots') {
+          <div class="muk-loader-dots">
+            <span class="muk-dot"></span>
+            <span class="muk-dot"></span>
+            <span class="muk-dot"></span>
+            <span class="muk-dot"></span>
+          </div>
+        }
+
+        @case ('spinner') {
+          <div class="muk-loader-spinner">
+            <svg class="muk-spinner-svg" viewBox="0 0 50 50">
+              <defs>
+                <linearGradient [attr.id]="gradientId" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" class="muk-gradient-start" />
+                  <stop offset="100%" class="muk-gradient-end" />
+                </linearGradient>
+              </defs>
+              <circle
+                class="muk-spinner-circle"
+                cx="25"
+                cy="25"
+                r="20"
+                fill="none"
+                [attr.stroke]="'url(#' + gradientId + ')'"
+                stroke-width="4"
+              ></circle>
+            </svg>
+          </div>
+        }
+
+        @case ('pulse') {
+          <div class="muk-loader-pulse">
+            <div class="muk-pulse-ring"></div>
+            <div class="muk-pulse-ring"></div>
+            <div class="muk-pulse-ring"></div>
+            <div class="muk-pulse-core"></div>
+          </div>
+        }
+
+        @case ('wave') {
+          <div class="muk-loader-wave">
+            <div class="muk-wave-bar"></div>
+            <div class="muk-wave-bar"></div>
+            <div class="muk-wave-bar"></div>
+            <div class="muk-wave-bar"></div>
+            <div class="muk-wave-bar"></div>
+          </div>
+        }
+
+        @case ('bars') {
+          <div class="muk-loader-bars">
+            <div class="muk-bar"></div>
+            <div class="muk-bar"></div>
+            <div class="muk-bar"></div>
+          </div>
+        }
+
+        @case ('circle') {
+          <div class="muk-loader-circle">
+            <svg class="muk-circle-svg" viewBox="0 0 100 100">
+              <defs>
+                <linearGradient [attr.id]="gradientId" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" class="muk-gradient-start" />
+                  <stop offset="100%" class="muk-gradient-end" />
+                </linearGradient>
+              </defs>
+              <circle
+                class="muk-circle-bg"
+                cx="50"
+                cy="50"
+                r="45"
+                fill="none"
+                stroke-width="8"
+              ></circle>
+              <circle
+                class="muk-circle-progress"
+                cx="50"
+                cy="50"
+                r="45"
+                fill="none"
+                [attr.stroke]="'url(#' + gradientId + ')'"
+                stroke-width="8"
+              ></circle>
+            </svg>
+          </div>
+        }
+      }
+
+      @if (showMessage && !inline) {
+        <div class="muk-loader-message">
+          <p class="muk-message-text">{{ message }}</p>
+          <div class="muk-message-dots">
+            <span class="muk-message-dot"></span>
+            <span class="muk-message-dot"></span>
+            <span class="muk-message-dot"></span>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+}

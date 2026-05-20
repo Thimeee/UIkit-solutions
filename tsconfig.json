@@ -7,6 +7,11 @@
     "noImplicitOverride": true,
     "noPropertyAccessFromIndexSignature": true,
     "noImplicitReturns": true,
+    "paths": {
+      "multi-ui-kit": [
+        "./dist/multi-ui-kit"
+      ]
+    },
     "noFallthroughCasesInSwitch": true,
     "skipLibCheck": true,
     "isolatedModules": true,
@@ -21,5 +26,19 @@
     "strictInputAccessModifiers": true,
     "strictTemplates": true
   },
-  "files": []
+  "files": [],
+  "references": [
+    {
+      "path": "./projects/multi-ui-kit/tsconfig.lib.json"
+    },
+    {
+      "path": "./projects/multi-ui-kit/tsconfig.spec.json"
+    },
+    {
+      "path": "./projects/kit-preview-app/tsconfig.app.json"
+    },
+    {
+      "path": "./projects/kit-preview-app/tsconfig.spec.json"
+    }
+  ]
 }

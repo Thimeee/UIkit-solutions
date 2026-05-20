@@ -1,0 +1,63 @@
+<!--
+  MUK Button Template
+
+  CRITICAL: Each <ng-content> with the same selector can only appear ONCE
+  in the template. Angular content projection is compile-time, not runtime,
+  so duplicating <ng-content></ng-content> in @if/@else branches breaks
+  text projection.
+
+  Strategy:
+  - Each slot ng-content appears exactly once in the DOM.
+  - Icon wrappers always exist, but get .is-empty class when slot has no
+    projected content - CSS hides empty wrappers.
+  - iconOnly is handled via a body class - CSS hides the label wrapper.
+-->
+<button
+  [type]="type"
+  [ngClass]="hostClasses"
+  [disabled]="disabled || loading"
+  [attr.aria-label]="ariaLabel"
+  [attr.aria-busy]="loading ? 'true' : null"
+  [attr.aria-pressed]="active ? 'true' : null"
+  (click)="handleClick($event)"
+>
+  <!-- Loading spinner overlay -->
+  @if (loading) {
+    <span class="muk-btn-spinner" aria-hidden="true">
+      <svg viewBox="0 0 50 50" class="muk-btn-spinner-svg">
+        <circle
+          cx="25"
+          cy="25"
+          r="20"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="5"
+          stroke-linecap="round"
+          class="muk-btn-spinner-path"
+        ></circle>
+      </svg>
+    </span>
+  }
+
+  <span class="muk-btn-content" [class.is-loading-content]="loading">
+    <!-- Left icon slot - always in DOM, hidden when empty -->
+    <span class="muk-btn-icon muk-btn-icon-left" [class.is-empty]="!hasIconLeft">
+      <ng-content select="[slot=icon-left]"></ng-content>
+    </span>
+
+    <!-- Label - holds the default projected content (always in DOM).
+         In iconOnly mode, CSS treats this as the icon container. -->
+    <span class="muk-btn-label" [class.is-icon-center]="iconOnly">
+      @if (loading && loadingText) {
+        {{ loadingText }}
+      } @else {
+        <ng-content></ng-content>
+      }
+    </span>
+
+    <!-- Right icon slot - always in DOM, hidden when empty -->
+    <span class="muk-btn-icon muk-btn-icon-right" [class.is-empty]="!hasIconRight">
+      <ng-content select="[slot=icon-right]"></ng-content>
+    </span>
+  </span>
+</button>

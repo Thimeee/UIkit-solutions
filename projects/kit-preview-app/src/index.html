@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>KitPreviewApp</title>
+    <base href="/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/x-icon" href="favicon.ico" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    />
+    <script>
+      (function () {
+        try {
+          var pref = localStorage.getItem('muk-theme') || 'auto';
+          var isDark =
+            pref === 'dark' ||
+            (pref === 'auto' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+          document.documentElement.classList.add(isDark ? 'muk-theme-dark' : 'muk-theme-light');
+        } catch (e) {}
+      })();
+    </script>
+  </head>
+  <body class="muk-theme-base">
+    <app-root></app-root>
+  </body>
+</html>

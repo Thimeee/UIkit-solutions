@@ -1,0 +1,372 @@
+// ============================================================
+// MUK UI Library - Global Color System + Theme Tokens
+// ============================================================
+// USER OVERRIDABLE:
+//   - --muk-primary-user
+//   - --muk-secondary-user
+// 
+// DARK MODE - HYBRID:
+//   1. System preference (prefers-color-scheme: dark) - automatic
+//   2. .muk-theme-dark class - manual force dark
+//   3. .muk-theme-light class - force light (overrides system)
+// ============================================================
+
+
+// ============================================================
+// DARK THEME TOKEN MIXIN
+// ============================================================
+// Single source of truth for dark mode values.
+// MUST be declared before use.
+// ============================================================
+@mixin muk-dark-theme-tokens {
+  // Surfaces
+  --muk-bg:              #0f172a;  // slate-900
+  --muk-bg-subtle:       #1e293b;  // slate-800
+  --muk-bg-muted:        #1e293b;  // slate-800
+  --muk-bg-elevated:     #1e293b;  // slate-800 (cards/modals)
+  --muk-bg-inverse:      #f1f5f9;
+  --muk-bg-overlay:      rgba(15, 23, 42, 0.95);
+  --muk-bg-backdrop:     rgba(0, 0, 0, 0.65);
+
+  // Text
+  --muk-text:            #f1f5f9;  // slate-100
+  --muk-text-muted:      #94a3b8;  // slate-400
+  --muk-text-subtle:     #64748b;  // slate-500
+  --muk-text-inverse:    #0f172a;
+  --muk-text-link:       var(--muk-primary-light);
+
+  // Borders
+  --muk-border:          #334155;  // slate-700
+  --muk-border-strong:   #475569;  // slate-600
+  --muk-border-subtle:   #1e293b;  // slate-800
+
+  // Form controls
+  --muk-input-bg:        #1e293b;
+  --muk-input-bg-disabled: #0f172a;
+  --muk-input-border:    #334155;
+  --muk-input-border-hover: #475569;
+
+  // Hover / pressed surfaces
+  --muk-surface-hover:   rgba(255, 255, 255, 0.06);
+  --muk-surface-active:  rgba(255, 255, 255, 0.10);
+  --muk-surface-selected: rgba(61, 139, 253, 0.18);
+
+  // Shadows (more diffused on dark bg)
+  --muk-shadow-sm:       0 1px 2px rgba(0, 0, 0, 0.30);
+  --muk-shadow-md:       0 4px 6px -1px rgba(0, 0, 0, 0.40), 0 2px 4px -2px rgba(0, 0, 0, 0.30);
+  --muk-shadow-lg:       0 10px 15px -3px rgba(0, 0, 0, 0.45), 0 4px 6px -4px rgba(0, 0, 0, 0.35);
+  --muk-shadow-xl:       0 20px 25px -5px rgba(0, 0, 0, 0.55), 0 8px 10px -6px rgba(0, 0, 0, 0.40);
+
+  // Scrollbar
+  --muk-scrollbar-track: #1e293b;
+  --muk-scrollbar-thumb: #475569;
+  --muk-scrollbar-thumb-hover: #64748b;
+
+  // Status "lighter" tints adjusted for dark backgrounds
+  --muk-success-lighter: rgba(16, 185, 129, 0.15);
+  --muk-warning-lighter: rgba(245, 158, 11, 0.15);
+  --muk-danger-lighter:  rgba(239, 68, 68, 0.15);
+  --muk-info-lighter:    rgba(14, 165, 233, 0.15);
+  --muk-primary-lighter: rgba(13, 110, 253, 0.18);
+  --muk-secondary-lighter: rgba(108, 117, 125, 0.18);
+
+  // Browser UI hint (scrollbars, form controls render dark)
+  color-scheme: dark;
+}
+
+
+// ============================================================
+// ROOT - LIGHT MODE TOKENS (DEFAULT)
+// ============================================================
+:root {
+  // ── USER OVERRIDABLE (theme color) ──
+  --muk-primary-user: #0d6efd;
+  --muk-primary-dark: #0a58ca;
+  --muk-primary-darker: #084298;
+  --muk-primary-light: #3d8bfd;
+  --muk-primary-lighter: #cfe2ff;
+  --muk-primary-hover: #0d6efd8c;
+  --muk-primary-shadow: #0d6efd4d;
+  --muk-primary-shadow-hover: #0d6efd81;
+  --muk-primary-contrast: #ffffff;
+
+  --muk-secondary-user: #6c757d;
+  --muk-secondary-dark: #5a6268;
+  --muk-secondary-darker: #495057;
+  --muk-secondary-light: #adb5bd;
+  --muk-secondary-lighter: #e2e3e5;
+  --muk-secondary-hover: #6c757d8c;
+  --muk-secondary-shadow: #6c757d4d;
+  --muk-secondary-shadow-hover: #6c757d81;
+  --muk-secondary-contrast: #ffffff;
+
+  // ── SEMANTIC THEME TOKENS - LIGHT ──
+  // Components meka use karanna - automatically theme aware
+  // background: var(--muk-bg)  -- not white
+  // color: var(--muk-text)     -- not $dark
+  // border: var(--muk-border)
+
+  // Surfaces (backgrounds)
+  --muk-bg:              #ffffff;
+  --muk-bg-subtle:       #f9fafb;
+  --muk-bg-muted:        #f3f4f6;
+  --muk-bg-elevated:     #ffffff;
+  --muk-bg-inverse:      #1f2937;
+  --muk-bg-overlay:      rgba(255, 255, 255, 0.95);
+  --muk-bg-backdrop:     rgba(15, 23, 42, 0.45);
+
+  // Text
+  --muk-text:            #1f2937;
+  --muk-text-muted:      #6c757d;
+  --muk-text-subtle:     #9ca3af;
+  --muk-text-inverse:    #ffffff;
+  --muk-text-link:       var(--muk-primary-user);
+
+  // Borders
+  --muk-border:          #e5e7eb;
+  --muk-border-strong:   #d1d5db;
+  --muk-border-subtle:   #f3f4f6;
+
+  // Form controls
+  --muk-input-bg:        #ffffff;
+  --muk-input-bg-disabled: #f3f4f6;
+  --muk-input-border:    #e5e7eb;
+  --muk-input-border-hover: #d1d5db;
+
+  // Hover / pressed surfaces
+  --muk-surface-hover:   rgba(0, 0, 0, 0.04);
+  --muk-surface-active:  rgba(0, 0, 0, 0.08);
+  --muk-surface-selected: rgba(13, 110, 253, 0.08);
+
+  // Shadows
+  --muk-shadow-sm:       0 1px 2px rgba(0, 0, 0, 0.05);
+  --muk-shadow-md:       0 4px 6px -1px rgba(0, 0, 0, 0.08), 0 2px 4px -2px rgba(0, 0, 0, 0.04);
+  --muk-shadow-lg:       0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.05);
+  --muk-shadow-xl:       0 20px 25px -5px rgba(0, 0, 0, 0.10), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
+
+  // Scrollbar
+  --muk-scrollbar-track: #f3f4f6;
+  --muk-scrollbar-thumb: #d1d5db;
+  --muk-scrollbar-thumb-hover: #9ca3af;
+
+  // Browser UI hint
+  color-scheme: light;
+}
+
+
+// ============================================================
+// DARK MODE - SYSTEM PREFERENCE (auto)
+// User explicit class na nm system setting follow karanwa
+// ============================================================
+@media (prefers-color-scheme: dark) {
+  :root:not(.muk-theme-light) {
+    @include muk-dark-theme-tokens;
+  }
+}
+
+
+// ============================================================
+// DARK MODE - MANUAL OVERRIDE
+// .muk-theme-dark anywhere (html, body, or any wrapper) = dark
+// ============================================================
+.muk-theme-dark {
+  @include muk-dark-theme-tokens;
+}
+
+
+// ============================================================
+// FORCE LIGHT - .muk-theme-light overrides system dark
+// (No tokens needed - :root already has light values;
+//  this class just blocks the @media query above.)
+// ============================================================
+.muk-theme-light {
+  color-scheme: light;
+}
+
+
+// ============================================================
+// SCSS VARIABLE WRAPPERS
+// ============================================================
+// Components import meka and use as SCSS variables.
+// All theme tokens are CSS vars, so they auto-adapt.
+// ============================================================
+
+// ── PRIMARY (user themeable) ──
+$primary:              var(--muk-primary-user);
+$primary-dark:         var(--muk-primary-dark);
+$primary-darker:       var(--muk-primary-darker);
+$primary-light:        var(--muk-primary-light);
+$primary-lighter:      var(--muk-primary-lighter);
+$primary-hover:        var(--muk-primary-hover);
+$primary-shadow:       var(--muk-primary-shadow);
+$primary-shadow-hover: var(--muk-primary-shadow-hover);
+$primary-contrast:     var(--muk-primary-contrast);
+
+// ── SECONDARY (user themeable) ──
+$secondary:              var(--muk-secondary-user);
+$secondary-dark:         var(--muk-secondary-dark);
+$secondary-darker:       var(--muk-secondary-darker);
+$secondary-light:        var(--muk-secondary-light);
+$secondary-lighter:      var(--muk-secondary-lighter);
+$secondary-hover:        var(--muk-secondary-hover);
+$secondary-shadow:       var(--muk-secondary-shadow);
+$secondary-shadow-hover: var(--muk-secondary-shadow-hover);
+$secondary-contrast:     var(--muk-secondary-contrast);
+
+// ── SEMANTIC THEME TOKENS (theme-aware!) ──
+$bg:              var(--muk-bg);
+$bg-subtle:       var(--muk-bg-subtle);
+$bg-muted:        var(--muk-bg-muted);
+$bg-elevated:     var(--muk-bg-elevated);
+$bg-inverse:      var(--muk-bg-inverse);
+$bg-overlay:      var(--muk-bg-overlay);
+$bg-backdrop:     var(--muk-bg-backdrop);
+
+$text:            var(--muk-text);
+$text-muted:      var(--muk-text-muted);
+$text-subtle:     var(--muk-text-subtle);
+$text-inverse:    var(--muk-text-inverse);
+$text-link:       var(--muk-text-link);
+
+$border:          var(--muk-border);
+$border-strong:   var(--muk-border-strong);
+$border-subtle:   var(--muk-border-subtle);
+
+$input-bg:           var(--muk-input-bg);
+$input-bg-disabled:  var(--muk-input-bg-disabled);
+$input-border:       var(--muk-input-border);
+$input-border-hover: var(--muk-input-border-hover);
+
+$surface-hover:    var(--muk-surface-hover);
+$surface-active:   var(--muk-surface-active);
+$surface-selected: var(--muk-surface-selected);
+
+$shadow-sm: var(--muk-shadow-sm);
+$shadow-md: var(--muk-shadow-md);
+$shadow-lg: var(--muk-shadow-lg);
+$shadow-xl: var(--muk-shadow-xl);
+
+
+// ============================================================
+// STATUS COLORS (Solid values - work on both themes)
+// ============================================================
+
+// SUCCESS
+$success:          #10b981;
+$success-dark:     #059669;
+$success-darker:   #047857;
+$success-light:    #6ee7b7;
+$success-lighter:  var(--muk-success-lighter, #d1fae5);
+$success-hover:    #10b9818c;
+$success-shadow:   #10b9814d;
+$success-contrast: #ffffff;
+
+// WARNING
+$warning:          #f59e0b;
+$warning-dark:     #d97706;
+$warning-darker:   #b45309;
+$warning-light:    #fcd34d;
+$warning-lighter:  var(--muk-warning-lighter, #fef3c7);
+$warning-hover:    #f59e0b8c;
+$warning-shadow:   #f59e0b4d;
+$warning-contrast: #ffffff;
+
+// DANGER
+$danger:          #ef4444;
+$danger-dark:     #dc2626;
+$danger-darker:   #b91c1c;
+$danger-light:    #fca5a5;
+$danger-lighter:  var(--muk-danger-lighter, #fee2e2);
+$danger-hover:    #ef44448c;
+$danger-shadow:   #ef44444d;
+$danger-contrast: #ffffff;
+
+// INFO
+$info:          #0ea5e9;
+$info-dark:     #0284c7;
+$info-darker:   #0369a1;
+$info-light:    #7dd3fc;
+$info-lighter:  var(--muk-info-lighter, #e0f2fe);
+$info-hover:    #0ea5e98c;
+$info-shadow:   #0ea5e94d;
+$info-contrast: #ffffff;
+
+
+// ============================================================
+// NEUTRALS (kept for backward compat)
+// For NEW components prefer theme tokens above ($bg, $text, $border)
+// ============================================================
+
+$light:          #f3f4f6;
+$light-dark:     #e5e7eb;
+$light-darker:   #d1d5db;
+$light-hover:    #e5e7eb8c;
+$light-shadow:   #d1d5db66;
+$light-contrast: #1f2937;
+
+$dark:          #1f2937;
+$dark-dark:     #111827;
+$dark-darker:   #030712;
+$dark-light:    #374151;
+$dark-hover:    #1f29378c;
+$dark-shadow:   #1f29374d;
+$dark-contrast: #ffffff;
+
+$gray:          #6c757d;
+$gray-dark:     #5a6268;
+$gray-darker:   #495057;
+$gray-light:    #adb5bd;
+$gray-lighter:  #dee2e6;
+$gray-hover:    #6c757d8c;
+$gray-shadow:   #6c757d4d;
+$gray-contrast: #ffffff;
+
+// Accent colors
+$teal:   #14b8a6; $teal-dark:   #0d9488;
+$cyan:   #06b6d4; $cyan-dark:   #0891b2;
+$violet: #8b5cf6; $violet-dark: #7c3aed;
+$purple: #a855f7; $purple-dark: #9333ea;
+$pink:   #ec4899; $pink-dark:   #db2777;
+$orange: #f97316; $orange-dark: #ea580c;
+$rose:   #f43f5e; $rose-dark:   #e11d48;
+$lime:   #84cc16; $lime-dark:   #65a30d;
+$indigo: #6366f1; $indigo-dark: #4f46e5;
+$slate:  #64748b; $slate-dark:  #475569;
+$zinc:   #71717a; $zinc-dark:   #52525b;
+
+$white: #ffffff;
+$black: #000000;
+
+
+// ============================================================
+// OPTIONAL BASE STYLES
+// ============================================================
+// Apply this class to <body> or app wrapper to get themed
+// background + text color automatically.
+// ============================================================
+.muk-theme-base {
+  background: $bg;
+  color: $text;
+  min-height: 100vh;
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+
+// ============================================================
+// OPTIONAL SMOOTH TRANSITIONS
+// ============================================================
+// Add .muk-theme-transitions class to <html> or body for smooth
+// color animation when theme switches.
+// ============================================================
+.muk-theme-transitions,
+.muk-theme-transitions *,
+.muk-theme-transitions *::before,
+.muk-theme-transitions *::after {
+  transition:
+    background-color 0.25s ease,
+    border-color 0.25s ease,
+    color 0.25s ease,
+    fill 0.25s ease,
+    stroke 0.25s ease,
+    box-shadow 0.25s ease !important;
+}
