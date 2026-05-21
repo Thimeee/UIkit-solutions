@@ -1,0 +1,175 @@
+<!--
+  MUK Input Template
+  - Wrapper renders the field. Label, help text, error all inside.
+  - Icon-left, prefix, suffix slots via content projection (icon agnostic).
+  - Single <ng-content> per selector (Angular compile-time projection rule).
+-->
+<div class="muk-input-wrapper">
+
+  <!-- Top label (when labelStyle='top') -->
+  @if (labelStyle === 'top' && label) {
+    <label class="muk-input-label muk-input-label-top" [attr.for]="inputId">
+      {{ label }}
+      @if (required) {
+        <span class="muk-input-required" aria-hidden="true">*</span>
+      }
+    </label>
+  }
+
+  <!-- Input field container -->
+  <div class="muk-input-field" (click)="inputEl?.nativeElement?.focus()">
+
+    <!-- Left icon slot -->
+    <span class="muk-input-icon muk-input-icon-left" [class.is-empty]="!hasIconLeft">
+      <ng-content select="[slot=icon-left]"></ng-content>
+    </span>
+
+    <!-- Prefix slot (text before input, e.g. "$") -->
+    <span class="muk-input-affix muk-input-prefix" [class.is-empty]="!hasPrefix">
+      <ng-content select="[slot=prefix]"></ng-content>
+    </span>
+
+    <!-- Input / Textarea -->
+    @if (!isTextarea) {
+      <input
+        #inputEl
+        [id]="inputId"
+        class="muk-input-control"
+        [type]="actualType"
+        [formControl]="control"
+        [placeholder]="labelStyle === 'floating' ? ' ' : placeholder"
+        [readonly]="readonly"
+        [autocomplete]="autocomplete"
+        [attr.autofocus]="autofocus ? '' : null"
+        [attr.min]="min ?? null"
+        [attr.max]="max ?? null"
+        [attr.step]="step ?? null"
+        [attr.maxlength]="maxLength ?? null"
+        [attr.aria-label]="labelStyle === 'none' ? label : null"
+        [attr.aria-invalid]="hasError"
+        [attr.aria-describedby]="hasError ? errorId : (helperText ? helperId : null)"
+        (focus)="onFocus($event)"
+        (blur)="onBlur($event)"
+        (keydown)="onKeydown($event)"
+      />
+    } @else {
+      <textarea
+        #textareaEl
+        [id]="inputId"
+        class="muk-input-control muk-input-textarea"
+        [class.is-resizable]="resizable"
+        [formControl]="control"
+        [placeholder]="labelStyle === 'floating' ? ' ' : placeholder"
+        [readonly]="readonly"
+        [rows]="rows"
+        [attr.maxlength]="maxLength ?? null"
+        [attr.autofocus]="autofocus ? '' : null"
+        [attr.aria-label]="labelStyle === 'none' ? label : null"
+        [attr.aria-invalid]="hasError"
+        [attr.aria-describedby]="hasError ? errorId : (helperText ? helperId : null)"
+        (focus)="onFocus($event)"
+        (blur)="onBlur($event)"
+      ></textarea>
+    }
+
+    <!-- Floating label (when labelStyle='floating') -->
+    @if (labelStyle === 'floating' && label) {
+      <label class="muk-input-label muk-input-label-floating" [attr.for]="inputId">
+        {{ label }}
+        @if (required) {
+          <span class="muk-input-required" aria-hidden="true">*</span>
+        }
+      </label>
+    }
+
+    <!-- Suffix slot (text after input, e.g. ".com") -->
+    <span class="muk-input-affix muk-input-suffix" [class.is-empty]="!hasSuffix">
+      <ng-content select="[slot=suffix]"></ng-content>
+    </span>
+
+    <!-- Right side: loading / clear / password toggle -->
+    <span class="muk-input-actions">
+
+      <!-- Loading indicator (async validation) -->
+      @if (loading) {
+        <span class="muk-input-loading" aria-hidden="true">
+          <svg viewBox="0 0 50 50" class="muk-input-loading-svg">
+            <circle
+              cx="25"
+              cy="25"
+              r="20"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="5"
+              stroke-linecap="round"
+              class="muk-input-loading-path"
+            ></circle>
+          </svg>
+        </span>
+      }
+
+      <!-- Clear button -->
+      @if (showClearButton) {
+        <button
+          type="button"
+          class="muk-input-action-btn"
+          (click)="clearValue(); $event.stopPropagation()"
+          aria-label="Clear input"
+          tabindex="-1"
+        >
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      }
+
+      <!-- Password reveal toggle -->
+      @if (showPasswordButton) {
+        <button
+          type="button"
+          class="muk-input-action-btn"
+          (click)="togglePassword(); $event.stopPropagation()"
+          [attr.aria-label]="showPassword ? 'Hide password' : 'Show password'"
+          tabindex="-1"
+        >
+          @if (showPassword) {
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+              <line x1="1" y1="1" x2="23" y2="23"></line>
+            </svg>
+          } @else {
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+              <circle cx="12" cy="12" r="3"></circle>
+            </svg>
+          }
+        </button>
+      }
+
+    </span>
+
+  </div>
+
+  <!-- Helper row: error / helper text / counter -->
+  <div class="muk-input-meta">
+    <div class="muk-input-meta-text">
+      @if (hasError && resolvedErrorMessage) {
+        <p [id]="errorId" class="muk-input-error-text" role="alert">
+          {{ resolvedErrorMessage }}
+        </p>
+      } @else if (helperText) {
+        <p [id]="helperId" class="muk-input-helper-text">
+          {{ helperText }}
+        </p>
+      }
+    </div>
+
+    @if (showCounter && maxLength) {
+      <span class="muk-input-counter" [class.is-over-limit]="charCount > maxLength">
+        {{ charCount }}/{{ maxLength }}
+      </span>
+    }
+  </div>
+
+</div>

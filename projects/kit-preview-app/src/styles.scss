@@ -1,5 +1,189 @@
-/* You can add global styles to this file, and also import other style files */
+/* ============================================================
+   App Global Styles
+   ============================================================
+   Theme variables and dark-mode rules are inlined here directly
+   to guarantee they exist in the global CSS scope.
+   
+   The library components reference these CSS variables - so as
+   long as they're defined globally (here in styles.scss), every
+   component automatically becomes theme-aware.
+   ============================================================ */
 
+
+/* ============================================================
+   LIGHT THEME (default)
+   ============================================================ */
+:root {
+  /* User-overridable: primary + secondary */
+  --muk-primary-user: #0d6efd;
+  --muk-primary-dark: #0a58ca;
+  --muk-primary-darker: #084298;
+  --muk-primary-light: #3d8bfd;
+  --muk-primary-lighter: #cfe2ff;
+  --muk-primary-hover: #0d6efd8c;
+  --muk-primary-shadow: #0d6efd4d;
+  --muk-primary-shadow-hover: #0d6efd81;
+  --muk-primary-contrast: #ffffff;
+
+  --muk-secondary-user: #6c757d;
+  --muk-secondary-dark: #5a6268;
+  --muk-secondary-darker: #495057;
+  --muk-secondary-light: #adb5bd;
+  --muk-secondary-lighter: #e2e3e5;
+  --muk-secondary-hover: #6c757d8c;
+  --muk-secondary-shadow: #6c757d4d;
+  --muk-secondary-shadow-hover: #6c757d81;
+  --muk-secondary-contrast: #ffffff;
+
+  /* Semantic theme tokens - LIGHT */
+  --muk-surface:           #ffffff;
+  --muk-surface-elevated:  #ffffff;
+  --muk-surface-sunken:    #f9fafb;
+  --muk-surface-muted:     #f3f4f6;
+  --muk-surface-hover:     #f9fafb;
+
+  --muk-text:              #1f2937;
+  --muk-text-muted:        #4b5563;
+  --muk-text-subtle:       #6b7280;
+  --muk-text-disabled:     #9ca3af;
+  --muk-text-inverse:      #ffffff;
+
+  --muk-border:            #e5e7eb;
+  --muk-border-strong:     #d1d5db;
+  --muk-border-subtle:     #f3f4f6;
+
+  --muk-overlay:           rgba(0, 0, 0, 0.5);
+  --muk-overlay-light:     rgba(255, 255, 255, 0.85);
+
+  --muk-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --muk-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.08), 0 2px 4px -1px rgba(0, 0, 0, 0.04);
+  --muk-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.04);
+  --muk-shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+
+  --muk-success-tint: #d1fae5;
+  --muk-warning-tint: #fef3c7;
+  --muk-danger-tint:  #fee2e2;
+  --muk-info-tint:    #e0f2fe;
+}
+
+
+/* ============================================================
+   DARK THEME (explicit opt-in via class on <html>)
+   ============================================================ */
+.muk-theme-dark,
+:root[data-theme="dark"],
+:root.muk-theme-dark {
+  /* Primary - brighter for dark bg */
+  --muk-primary-dark: #3d8bfd;
+  --muk-primary-darker: #0d6efd;
+  --muk-primary-light: #6ea8fe;
+  --muk-primary-lighter: #1a3a6e;
+  --muk-primary-hover: #3d8bfd8c;
+  --muk-primary-shadow: #3d8bfd4d;
+  --muk-primary-shadow-hover: #3d8bfd81;
+
+  --muk-secondary-dark: #adb5bd;
+  --muk-secondary-darker: #6c757d;
+  --muk-secondary-light: #ced4da;
+  --muk-secondary-lighter: #2c3034;
+  --muk-secondary-hover: #adb5bd8c;
+  --muk-secondary-shadow: #adb5bd4d;
+  --muk-secondary-shadow-hover: #adb5bd81;
+
+  /* Surfaces */
+  --muk-surface:           #1e293b;
+  --muk-surface-elevated:  #273449;
+  --muk-surface-sunken:    #0f172a;
+  --muk-surface-muted:     #334155;
+  --muk-surface-hover:     #273449;
+
+  /* Text */
+  --muk-text:              #f1f5f9;
+  --muk-text-muted:        #cbd5e1;
+  --muk-text-subtle:       #94a3b8;
+  --muk-text-disabled:     #64748b;
+  --muk-text-inverse:      #1f2937;
+
+  /* Borders */
+  --muk-border:            #334155;
+  --muk-border-strong:     #475569;
+  --muk-border-subtle:     #1e293b;
+
+  /* Overlay */
+  --muk-overlay:           rgba(0, 0, 0, 0.7);
+  --muk-overlay-light:     rgba(15, 23, 42, 0.85);
+
+  /* Shadows */
+  --muk-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --muk-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+  --muk-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
+  --muk-shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 10px 10px -5px rgba(0, 0, 0, 0.3);
+
+  /* Status tints */
+  --muk-success-tint: #064e3b;
+  --muk-warning-tint: #78350f;
+  --muk-danger-tint:  #7f1d1d;
+  --muk-info-tint:    #0c4a6e;
+}
+
+
+/* ============================================================
+   SYSTEM PREFERENCE (auto dark)
+   Auto-applies dark UNLESS user has chosen light explicitly.
+   ============================================================ */
+@media (prefers-color-scheme: dark) {
+  :root:not(.muk-theme-light):not([data-theme="light"]) {
+    --muk-primary-dark: #3d8bfd;
+    --muk-primary-darker: #0d6efd;
+    --muk-primary-light: #6ea8fe;
+    --muk-primary-lighter: #1a3a6e;
+    --muk-primary-hover: #3d8bfd8c;
+    --muk-primary-shadow: #3d8bfd4d;
+    --muk-primary-shadow-hover: #3d8bfd81;
+
+    --muk-secondary-dark: #adb5bd;
+    --muk-secondary-darker: #6c757d;
+    --muk-secondary-light: #ced4da;
+    --muk-secondary-lighter: #2c3034;
+    --muk-secondary-hover: #adb5bd8c;
+    --muk-secondary-shadow: #adb5bd4d;
+    --muk-secondary-shadow-hover: #adb5bd81;
+
+    --muk-surface:           #1e293b;
+    --muk-surface-elevated:  #273449;
+    --muk-surface-sunken:    #0f172a;
+    --muk-surface-muted:     #334155;
+    --muk-surface-hover:     #273449;
+
+    --muk-text:              #f1f5f9;
+    --muk-text-muted:        #cbd5e1;
+    --muk-text-subtle:       #94a3b8;
+    --muk-text-disabled:     #64748b;
+    --muk-text-inverse:      #1f2937;
+
+    --muk-border:            #334155;
+    --muk-border-strong:     #475569;
+    --muk-border-subtle:     #1e293b;
+
+    --muk-overlay:       rgba(0, 0, 0, 0.7);
+    --muk-overlay-light: rgba(15, 23, 42, 0.85);
+
+    --muk-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+    --muk-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+    --muk-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
+    --muk-shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 10px 10px -5px rgba(0, 0, 0, 0.3);
+
+    --muk-success-tint: #064e3b;
+    --muk-warning-tint: #78350f;
+    --muk-danger-tint:  #7f1d1d;
+    --muk-info-tint:    #0c4a6e;
+  }
+}
+
+
+/* ============================================================
+   TAILWIND
+   ============================================================ */
 @import 'tailwindcss';
 
 @source "../../multi-ui-kit/src/**/*.{html,ts}";
@@ -7,4 +191,30 @@
 @theme {
   --color-primary: var(--muk-primary-user);
   --color-secondary: var(--muk-secondary-user);
+}
+
+
+/* ============================================================
+   THEME-AWARE PAGE STYLES
+   Body uses theme tokens so the whole page flips with theme.
+   ============================================================ */
+html,
+body {
+  background-color: var(--muk-surface-sunken);
+  color: var(--muk-text);
+  transition:
+    background-color 0.25s ease,
+    color 0.25s ease;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+}
+
+h1, h2, h3, h4, h5, h6,
+p, span, div, label {
+  color: inherit;
+}
+
+strong, b {
+  color: var(--muk-text);
 }

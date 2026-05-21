@@ -1,85 +1,21 @@
 // ============================================================
-// MUK UI Library - Global Color System + Theme Tokens
+// MUK UI Library - Global Color System
 // ============================================================
-// USER OVERRIDABLE:
-//   - --muk-primary-user
-//   - --muk-secondary-user
-// 
-// DARK MODE - HYBRID:
-//   1. System preference (prefers-color-scheme: dark) - automatic
-//   2. .muk-theme-dark class - manual force dark
-//   3. .muk-theme-light class - force light (overrides system)
+// User override karanna denne --muk-primary-user saha
+// --muk-secondary-user witharai.
+//
+// DARK MODE (Hybrid):
+//   - System preference auto-applies dark (prefers-color-scheme: dark)
+//   - User can override with .muk-theme-dark / .muk-theme-light on <html>
+//   - Toggle via ThemeService.setTheme('light' | 'dark' | 'auto')
 // ============================================================
-
-
-// ============================================================
-// DARK THEME TOKEN MIXIN
-// ============================================================
-// Single source of truth for dark mode values.
-// MUST be declared before use.
-// ============================================================
-@mixin muk-dark-theme-tokens {
-  // Surfaces
-  --muk-bg:              #0f172a;  // slate-900
-  --muk-bg-subtle:       #1e293b;  // slate-800
-  --muk-bg-muted:        #1e293b;  // slate-800
-  --muk-bg-elevated:     #1e293b;  // slate-800 (cards/modals)
-  --muk-bg-inverse:      #f1f5f9;
-  --muk-bg-overlay:      rgba(15, 23, 42, 0.95);
-  --muk-bg-backdrop:     rgba(0, 0, 0, 0.65);
-
-  // Text
-  --muk-text:            #f1f5f9;  // slate-100
-  --muk-text-muted:      #94a3b8;  // slate-400
-  --muk-text-subtle:     #64748b;  // slate-500
-  --muk-text-inverse:    #0f172a;
-  --muk-text-link:       var(--muk-primary-light);
-
-  // Borders
-  --muk-border:          #334155;  // slate-700
-  --muk-border-strong:   #475569;  // slate-600
-  --muk-border-subtle:   #1e293b;  // slate-800
-
-  // Form controls
-  --muk-input-bg:        #1e293b;
-  --muk-input-bg-disabled: #0f172a;
-  --muk-input-border:    #334155;
-  --muk-input-border-hover: #475569;
-
-  // Hover / pressed surfaces
-  --muk-surface-hover:   rgba(255, 255, 255, 0.06);
-  --muk-surface-active:  rgba(255, 255, 255, 0.10);
-  --muk-surface-selected: rgba(61, 139, 253, 0.18);
-
-  // Shadows (more diffused on dark bg)
-  --muk-shadow-sm:       0 1px 2px rgba(0, 0, 0, 0.30);
-  --muk-shadow-md:       0 4px 6px -1px rgba(0, 0, 0, 0.40), 0 2px 4px -2px rgba(0, 0, 0, 0.30);
-  --muk-shadow-lg:       0 10px 15px -3px rgba(0, 0, 0, 0.45), 0 4px 6px -4px rgba(0, 0, 0, 0.35);
-  --muk-shadow-xl:       0 20px 25px -5px rgba(0, 0, 0, 0.55), 0 8px 10px -6px rgba(0, 0, 0, 0.40);
-
-  // Scrollbar
-  --muk-scrollbar-track: #1e293b;
-  --muk-scrollbar-thumb: #475569;
-  --muk-scrollbar-thumb-hover: #64748b;
-
-  // Status "lighter" tints adjusted for dark backgrounds
-  --muk-success-lighter: rgba(16, 185, 129, 0.15);
-  --muk-warning-lighter: rgba(245, 158, 11, 0.15);
-  --muk-danger-lighter:  rgba(239, 68, 68, 0.15);
-  --muk-info-lighter:    rgba(14, 165, 233, 0.15);
-  --muk-primary-lighter: rgba(13, 110, 253, 0.18);
-  --muk-secondary-lighter: rgba(108, 117, 125, 0.18);
-
-  // Browser UI hint (scrollbars, form controls render dark)
-  color-scheme: dark;
-}
 
 
 // ============================================================
-// ROOT - LIGHT MODE TOKENS (DEFAULT)
+// LIGHT THEME (default)
 // ============================================================
 :root {
-  // ── USER OVERRIDABLE (theme color) ──
+  // ── PRIMARY (Bootstrap Blue) ──
   --muk-primary-user: #0d6efd;
   --muk-primary-dark: #0a58ca;
   --muk-primary-darker: #084298;
@@ -90,6 +26,7 @@
   --muk-primary-shadow-hover: #0d6efd81;
   --muk-primary-contrast: #ffffff;
 
+  // ── SECONDARY ──
   --muk-secondary-user: #6c757d;
   --muk-secondary-dark: #5a6268;
   --muk-secondary-darker: #495057;
@@ -100,98 +37,159 @@
   --muk-secondary-shadow-hover: #6c757d81;
   --muk-secondary-contrast: #ffffff;
 
-  // ── SEMANTIC THEME TOKENS - LIGHT ──
-  // Components meka use karanna - automatically theme aware
-  // background: var(--muk-bg)  -- not white
-  // color: var(--muk-text)     -- not $dark
-  // border: var(--muk-border)
+  // ── SEMANTIC THEME TOKENS (LIGHT) ──
+  // Use these for theme-aware backgrounds, text, borders.
+  --muk-surface:           #ffffff;        // cards, inputs, modals
+  --muk-surface-elevated:  #ffffff;        // popovers, tooltips
+  --muk-surface-sunken:    #f9fafb;        // page bg, code blocks
+  --muk-surface-muted:     #f3f4f6;        // disabled/readonly fields
+  --muk-surface-hover:     #f9fafb;        // hover overlays
 
-  // Surfaces (backgrounds)
-  --muk-bg:              #ffffff;
-  --muk-bg-subtle:       #f9fafb;
-  --muk-bg-muted:        #f3f4f6;
-  --muk-bg-elevated:     #ffffff;
-  --muk-bg-inverse:      #1f2937;
-  --muk-bg-overlay:      rgba(255, 255, 255, 0.95);
-  --muk-bg-backdrop:     rgba(15, 23, 42, 0.45);
+  --muk-text:              #1f2937;        // primary text
+  --muk-text-muted:        #4b5563;        // secondary text
+  --muk-text-subtle:       #6b7280;        // placeholders
+  --muk-text-disabled:     #9ca3af;        // disabled text
+  --muk-text-inverse:      #ffffff;        // on dark bg
 
-  // Text
-  --muk-text:            #1f2937;
-  --muk-text-muted:      #6c757d;
-  --muk-text-subtle:     #9ca3af;
-  --muk-text-inverse:    #ffffff;
-  --muk-text-link:       var(--muk-primary-user);
+  --muk-border:            #e5e7eb;        // default
+  --muk-border-strong:     #d1d5db;        // hover
+  --muk-border-subtle:     #f3f4f6;        // dividers
 
-  // Borders
-  --muk-border:          #e5e7eb;
-  --muk-border-strong:   #d1d5db;
-  --muk-border-subtle:   #f3f4f6;
+  --muk-overlay:           rgba(0, 0, 0, 0.5);
+  --muk-overlay-light:     rgba(255, 255, 255, 0.85);
 
-  // Form controls
-  --muk-input-bg:        #ffffff;
-  --muk-input-bg-disabled: #f3f4f6;
-  --muk-input-border:    #e5e7eb;
-  --muk-input-border-hover: #d1d5db;
+  --muk-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --muk-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.08), 0 2px 4px -1px rgba(0, 0, 0, 0.04);
+  --muk-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.04);
+  --muk-shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
 
-  // Hover / pressed surfaces
-  --muk-surface-hover:   rgba(0, 0, 0, 0.04);
-  --muk-surface-active:  rgba(0, 0, 0, 0.08);
-  --muk-surface-selected: rgba(13, 110, 253, 0.08);
-
-  // Shadows
-  --muk-shadow-sm:       0 1px 2px rgba(0, 0, 0, 0.05);
-  --muk-shadow-md:       0 4px 6px -1px rgba(0, 0, 0, 0.08), 0 2px 4px -2px rgba(0, 0, 0, 0.04);
-  --muk-shadow-lg:       0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.05);
-  --muk-shadow-xl:       0 20px 25px -5px rgba(0, 0, 0, 0.10), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
-
-  // Scrollbar
-  --muk-scrollbar-track: #f3f4f6;
-  --muk-scrollbar-thumb: #d1d5db;
-  --muk-scrollbar-thumb-hover: #9ca3af;
-
-  // Browser UI hint
-  color-scheme: light;
+  --muk-success-tint: #d1fae5;
+  --muk-warning-tint: #fef3c7;
+  --muk-danger-tint:  #fee2e2;
+  --muk-info-tint:    #e0f2fe;
 }
 
 
 // ============================================================
-// DARK MODE - SYSTEM PREFERENCE (auto)
-// User explicit class na nm system setting follow karanwa
+// DARK THEME (explicit opt-in)
 // ============================================================
+.muk-theme-dark,
+:root[data-theme="dark"],
+:root.muk-theme-dark {
+  // Primary - brighter for dark bg
+  --muk-primary-dark: #3d8bfd;
+  --muk-primary-darker: #0d6efd;
+  --muk-primary-light: #6ea8fe;
+  --muk-primary-lighter: #1a3a6e;
+  --muk-primary-hover: #3d8bfd8c;
+  --muk-primary-shadow: #3d8bfd4d;
+  --muk-primary-shadow-hover: #3d8bfd81;
+
+  // Secondary - flipped scale
+  --muk-secondary-dark: #adb5bd;
+  --muk-secondary-darker: #6c757d;
+  --muk-secondary-light: #ced4da;
+  --muk-secondary-lighter: #2c3034;
+  --muk-secondary-hover: #adb5bd8c;
+  --muk-secondary-shadow: #adb5bd4d;
+  --muk-secondary-shadow-hover: #adb5bd81;
+
+  // Surfaces
+  --muk-surface:           #1e293b;
+  --muk-surface-elevated:  #273449;
+  --muk-surface-sunken:    #0f172a;
+  --muk-surface-muted:     #334155;
+  --muk-surface-hover:     #273449;
+
+  // Text
+  --muk-text:              #f1f5f9;
+  --muk-text-muted:        #cbd5e1;
+  --muk-text-subtle:       #94a3b8;
+  --muk-text-disabled:     #64748b;
+  --muk-text-inverse:      #1f2937;
+
+  // Borders
+  --muk-border:            #334155;
+  --muk-border-strong:     #475569;
+  --muk-border-subtle:     #1e293b;
+
+  // Overlay
+  --muk-overlay:           rgba(0, 0, 0, 0.7);
+  --muk-overlay-light:     rgba(15, 23, 42, 0.85);
+
+  // Shadows (deeper)
+  --muk-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --muk-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+  --muk-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
+  --muk-shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 10px 10px -5px rgba(0, 0, 0, 0.3);
+
+  // Status tints (deeper for dark bg)
+  --muk-success-tint: #064e3b;
+  --muk-warning-tint: #78350f;
+  --muk-danger-tint:  #7f1d1d;
+  --muk-info-tint:    #0c4a6e;
+}
+
+
+// ============================================================
+// SYSTEM PREFERENCE (auto dark)
+// ============================================================
+// Auto-applies dark unless user explicitly chose light.
 @media (prefers-color-scheme: dark) {
-  :root:not(.muk-theme-light) {
-    @include muk-dark-theme-tokens;
+  :root:not(.muk-theme-light):not([data-theme="light"]) {
+    --muk-primary-dark: #3d8bfd;
+    --muk-primary-darker: #0d6efd;
+    --muk-primary-light: #6ea8fe;
+    --muk-primary-lighter: #1a3a6e;
+    --muk-primary-hover: #3d8bfd8c;
+    --muk-primary-shadow: #3d8bfd4d;
+    --muk-primary-shadow-hover: #3d8bfd81;
+
+    --muk-secondary-dark: #adb5bd;
+    --muk-secondary-darker: #6c757d;
+    --muk-secondary-light: #ced4da;
+    --muk-secondary-lighter: #2c3034;
+    --muk-secondary-hover: #adb5bd8c;
+    --muk-secondary-shadow: #adb5bd4d;
+    --muk-secondary-shadow-hover: #adb5bd81;
+
+    --muk-surface:           #1e293b;
+    --muk-surface-elevated:  #273449;
+    --muk-surface-sunken:    #0f172a;
+    --muk-surface-muted:     #334155;
+    --muk-surface-hover:     #273449;
+
+    --muk-text:              #f1f5f9;
+    --muk-text-muted:        #cbd5e1;
+    --muk-text-subtle:       #94a3b8;
+    --muk-text-disabled:     #64748b;
+    --muk-text-inverse:      #1f2937;
+
+    --muk-border:            #334155;
+    --muk-border-strong:     #475569;
+    --muk-border-subtle:     #1e293b;
+
+    --muk-overlay:       rgba(0, 0, 0, 0.7);
+    --muk-overlay-light: rgba(15, 23, 42, 0.85);
+
+    --muk-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+    --muk-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+    --muk-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
+    --muk-shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 10px 10px -5px rgba(0, 0, 0, 0.3);
+
+    --muk-success-tint: #064e3b;
+    --muk-warning-tint: #78350f;
+    --muk-danger-tint:  #7f1d1d;
+    --muk-info-tint:    #0c4a6e;
   }
 }
 
 
 // ============================================================
-// DARK MODE - MANUAL OVERRIDE
-// .muk-theme-dark anywhere (html, body, or any wrapper) = dark
-// ============================================================
-.muk-theme-dark {
-  @include muk-dark-theme-tokens;
-}
-
-
-// ============================================================
-// FORCE LIGHT - .muk-theme-light overrides system dark
-// (No tokens needed - :root already has light values;
-//  this class just blocks the @media query above.)
-// ============================================================
-.muk-theme-light {
-  color-scheme: light;
-}
-
-
-// ============================================================
-// SCSS VARIABLE WRAPPERS
-// ============================================================
-// Components import meka and use as SCSS variables.
-// All theme tokens are CSS vars, so they auto-adapt.
+// SCSS VARIABLES (wrap CSS variables)
 // ============================================================
 
-// ── PRIMARY (user themeable) ──
+// ── Primary (themeable) ──
 $primary:              var(--muk-primary-user);
 $primary-dark:         var(--muk-primary-dark);
 $primary-darker:       var(--muk-primary-darker);
@@ -202,7 +200,7 @@ $primary-shadow:       var(--muk-primary-shadow);
 $primary-shadow-hover: var(--muk-primary-shadow-hover);
 $primary-contrast:     var(--muk-primary-contrast);
 
-// ── SECONDARY (user themeable) ──
+// ── Secondary (themeable) ──
 $secondary:              var(--muk-secondary-user);
 $secondary-dark:         var(--muk-secondary-dark);
 $secondary-darker:       var(--muk-secondary-darker);
@@ -213,160 +211,137 @@ $secondary-shadow:       var(--muk-secondary-shadow);
 $secondary-shadow-hover: var(--muk-secondary-shadow-hover);
 $secondary-contrast:     var(--muk-secondary-contrast);
 
-// ── SEMANTIC THEME TOKENS (theme-aware!) ──
-$bg:              var(--muk-bg);
-$bg-subtle:       var(--muk-bg-subtle);
-$bg-muted:        var(--muk-bg-muted);
-$bg-elevated:     var(--muk-bg-elevated);
-$bg-inverse:      var(--muk-bg-inverse);
-$bg-overlay:      var(--muk-bg-overlay);
-$bg-backdrop:     var(--muk-bg-backdrop);
+// ── SEMANTIC TOKENS (auto-flip with theme) ──
+// USE THESE in components for theme-aware values!
+$surface:           var(--muk-surface);
+$surface-elevated:  var(--muk-surface-elevated);
+$surface-sunken:    var(--muk-surface-sunken);
+$surface-muted:     var(--muk-surface-muted);
+$surface-hover:     var(--muk-surface-hover);
 
-$text:            var(--muk-text);
-$text-muted:      var(--muk-text-muted);
-$text-subtle:     var(--muk-text-subtle);
-$text-inverse:    var(--muk-text-inverse);
-$text-link:       var(--muk-text-link);
+$text:              var(--muk-text);
+$text-muted:        var(--muk-text-muted);
+$text-subtle:       var(--muk-text-subtle);
+$text-disabled:     var(--muk-text-disabled);
+$text-inverse:      var(--muk-text-inverse);
 
-$border:          var(--muk-border);
-$border-strong:   var(--muk-border-strong);
-$border-subtle:   var(--muk-border-subtle);
+$border:            var(--muk-border);
+$border-strong:     var(--muk-border-strong);
+$border-subtle:     var(--muk-border-subtle);
 
-$input-bg:           var(--muk-input-bg);
-$input-bg-disabled:  var(--muk-input-bg-disabled);
-$input-border:       var(--muk-input-border);
-$input-border-hover: var(--muk-input-border-hover);
+$overlay:           var(--muk-overlay);
+$overlay-light:     var(--muk-overlay-light);
 
-$surface-hover:    var(--muk-surface-hover);
-$surface-active:   var(--muk-surface-active);
-$surface-selected: var(--muk-surface-selected);
+$shadow-sm:         var(--muk-shadow-sm);
+$shadow-md:         var(--muk-shadow-md);
+$shadow-lg:         var(--muk-shadow-lg);
+$shadow-xl:         var(--muk-shadow-xl);
 
-$shadow-sm: var(--muk-shadow-sm);
-$shadow-md: var(--muk-shadow-md);
-$shadow-lg: var(--muk-shadow-lg);
-$shadow-xl: var(--muk-shadow-xl);
+$success-tint:      var(--muk-success-tint);
+$warning-tint:      var(--muk-warning-tint);
+$danger-tint:       var(--muk-danger-tint);
+$info-tint:         var(--muk-info-tint);
 
 
-// ============================================================
-// STATUS COLORS (Solid values - work on both themes)
-// ============================================================
+// ── Status colors (theme-independent) ──
+$success: #10b981; $success-dark: #059669; $success-darker: #047857;
+$success-light: #6ee7b7; $success-lighter: #d1fae5;
+$success-hover: #10b9818c; $success-shadow: #10b9814d; $success-contrast: #ffffff;
 
-// SUCCESS
-$success:          #10b981;
-$success-dark:     #059669;
-$success-darker:   #047857;
-$success-light:    #6ee7b7;
-$success-lighter:  var(--muk-success-lighter, #d1fae5);
-$success-hover:    #10b9818c;
-$success-shadow:   #10b9814d;
-$success-contrast: #ffffff;
+$warning: #f59e0b; $warning-dark: #d97706; $warning-darker: #b45309;
+$warning-light: #fcd34d; $warning-lighter: #fef3c7;
+$warning-hover: #f59e0b8c; $warning-shadow: #f59e0b4d; $warning-contrast: #ffffff;
 
-// WARNING
-$warning:          #f59e0b;
-$warning-dark:     #d97706;
-$warning-darker:   #b45309;
-$warning-light:    #fcd34d;
-$warning-lighter:  var(--muk-warning-lighter, #fef3c7);
-$warning-hover:    #f59e0b8c;
-$warning-shadow:   #f59e0b4d;
-$warning-contrast: #ffffff;
+$danger: #ef4444; $danger-dark: #dc2626; $danger-darker: #b91c1c;
+$danger-light: #fca5a5; $danger-lighter: #fee2e2;
+$danger-hover: #ef44448c; $danger-shadow: #ef44444d; $danger-contrast: #ffffff;
 
-// DANGER
-$danger:          #ef4444;
-$danger-dark:     #dc2626;
-$danger-darker:   #b91c1c;
-$danger-light:    #fca5a5;
-$danger-lighter:  var(--muk-danger-lighter, #fee2e2);
-$danger-hover:    #ef44448c;
-$danger-shadow:   #ef44444d;
-$danger-contrast: #ffffff;
-
-// INFO
-$info:          #0ea5e9;
-$info-dark:     #0284c7;
-$info-darker:   #0369a1;
-$info-light:    #7dd3fc;
-$info-lighter:  var(--muk-info-lighter, #e0f2fe);
-$info-hover:    #0ea5e98c;
-$info-shadow:   #0ea5e94d;
-$info-contrast: #ffffff;
+$info: #0ea5e9; $info-dark: #0284c7; $info-darker: #0369a1;
+$info-light: #7dd3fc; $info-lighter: #e0f2fe;
+$info-hover: #0ea5e98c; $info-shadow: #0ea5e94d; $info-contrast: #ffffff;
 
 
-// ============================================================
-// NEUTRALS (kept for backward compat)
-// For NEW components prefer theme tokens above ($bg, $text, $border)
-// ============================================================
+// ── Legacy fixed colors (NOT theme-aware - use $surface/$text instead) ──
+$light: #f3f4f6; $light-dark: #e5e7eb; $light-darker: #d1d5db;
+$light-hover: #e5e7eb8c; $light-shadow: #d1d5db66; $light-contrast: #1f2937;
 
-$light:          #f3f4f6;
-$light-dark:     #e5e7eb;
-$light-darker:   #d1d5db;
-$light-hover:    #e5e7eb8c;
-$light-shadow:   #d1d5db66;
-$light-contrast: #1f2937;
-
-$dark:          #1f2937;
-$dark-dark:     #111827;
-$dark-darker:   #030712;
-$dark-light:    #374151;
-$dark-hover:    #1f29378c;
-$dark-shadow:   #1f29374d;
+$dark: #1f2937; $dark-dark: #111827; $dark-darker: #030712;
+$dark-light: #374151; $dark-hover: #1f29378c; $dark-shadow: #1f29374d;
 $dark-contrast: #ffffff;
 
-$gray:          #6c757d;
-$gray-dark:     #5a6268;
-$gray-darker:   #495057;
-$gray-light:    #adb5bd;
-$gray-lighter:  #dee2e6;
-$gray-hover:    #6c757d8c;
-$gray-shadow:   #6c757d4d;
-$gray-contrast: #ffffff;
-
-// Accent colors
-$teal:   #14b8a6; $teal-dark:   #0d9488;
-$cyan:   #06b6d4; $cyan-dark:   #0891b2;
-$violet: #8b5cf6; $violet-dark: #7c3aed;
-$purple: #a855f7; $purple-dark: #9333ea;
-$pink:   #ec4899; $pink-dark:   #db2777;
-$orange: #f97316; $orange-dark: #ea580c;
-$rose:   #f43f5e; $rose-dark:   #e11d48;
-$lime:   #84cc16; $lime-dark:   #65a30d;
-$indigo: #6366f1; $indigo-dark: #4f46e5;
-$slate:  #64748b; $slate-dark:  #475569;
-$zinc:   #71717a; $zinc-dark:   #52525b;
-
-$white: #ffffff;
-$black: #000000;
+$gray: #6c757d; $gray-dark: #5a6268; $gray-darker: #495057;
+$gray-light: #adb5bd; $gray-lighter: #dee2e6;
+$gray-hover: #6c757d8c; $gray-shadow: #6c757d4d; $gray-contrast: #ffffff;
 
 
-// ============================================================
-// OPTIONAL BASE STYLES
-// ============================================================
-// Apply this class to <body> or app wrapper to get themed
-// background + text color automatically.
-// ============================================================
-.muk-theme-base {
-  background: $bg;
-  color: $text;
-  min-height: 100vh;
-  transition: background-color 0.25s ease, color 0.25s ease;
-}
+// ── Accent colors (theme-independent) ──
+$teal: #14b8a6; $teal-dark: #0d9488; $teal-darker: #0f766e;
+$teal-light: #5eead4; $teal-lighter: #ccfbf1;
+$teal-hover: #14b8a68c; $teal-shadow: #14b8a64d; $teal-contrast: #ffffff;
+
+$cyan: #06b6d4; $cyan-dark: #0891b2; $cyan-darker: #0e7490;
+$cyan-light: #67e8f9; $cyan-lighter: #cffafe;
+$cyan-hover: #06b6d48c; $cyan-shadow: #06b6d44d; $cyan-contrast: #ffffff;
+
+$violet: #8b5cf6; $violet-dark: #7c3aed; $violet-darker: #6d28d9;
+$violet-light: #c4b5fd; $violet-lighter: #ede9fe;
+$violet-hover: #8b5cf68c; $violet-shadow: #8b5cf64d; $violet-contrast: #ffffff;
+
+$purple: #a855f7; $purple-dark: #9333ea; $purple-darker: #7e22ce;
+$purple-light: #d8b4fe; $purple-lighter: #f3e8ff;
+$purple-hover: #a855f78c; $purple-shadow: #a855f74d; $purple-contrast: #ffffff;
+
+$fuchsia: #d946ef; $fuchsia-dark: #c026d3; $fuchsia-darker: #a21caf;
+$fuchsia-light: #f0abfc; $fuchsia-lighter: #fae8ff;
+$fuchsia-hover: #d946ef8c; $fuchsia-shadow: #d946ef4d; $fuchsia-contrast: #ffffff;
+
+$pink: #ec4899; $pink-dark: #db2777; $pink-darker: #be185d;
+$pink-light: #f9a8d4; $pink-lighter: #fce7f3;
+$pink-hover: #ec48998c; $pink-shadow: #ec48994d; $pink-contrast: #ffffff;
+
+$rose: #f43f5e; $rose-dark: #e11d48; $rose-darker: #be123c;
+$rose-light: #fda4af; $rose-lighter: #ffe4e6;
+$rose-hover: #f43f5e8c; $rose-shadow: #f43f5e4d; $rose-contrast: #ffffff;
+
+$orange: #f97316; $orange-dark: #ea580c; $orange-darker: #c2410c;
+$orange-light: #fdba74; $orange-lighter: #ffedd5;
+$orange-hover: #f973168c; $orange-shadow: #f973164d; $orange-contrast: #ffffff;
+
+$lime: #84cc16; $lime-dark: #65a30d; $lime-darker: #4d7c0f;
+$lime-light: #bef264; $lime-lighter: #ecfccb;
+$lime-hover: #84cc168c; $lime-shadow: #84cc164d; $lime-contrast: #ffffff;
+
+$indigo: #6366f1; $indigo-dark: #4f46e5; $indigo-darker: #4338ca;
+$indigo-light: #a5b4fc; $indigo-lighter: #e0e7ff;
+$indigo-hover: #6366f18c; $indigo-shadow: #6366f14d; $indigo-contrast: #ffffff;
+
+$blue: #3b82f6; $blue-dark: #2563eb; $blue-darker: #1d4ed8;
+$blue-light: #93c5fd; $blue-lighter: #dbeafe;
+$blue-hover: #3b82f68c; $blue-shadow: #3b82f64d; $blue-contrast: #ffffff;
+
+$yellow: #eab308; $yellow-dark: #ca8a04; $yellow-darker: #a16207;
+$yellow-light: #fde047; $yellow-lighter: #fef9c3;
+$yellow-hover: #eab3088c; $yellow-shadow: #eab3084d; $yellow-contrast: #1f2937;
+
+$green: #22c55e; $green-dark: #16a34a; $green-darker: #15803d;
+$green-light: #86efac; $green-lighter: #dcfce7;
+$green-hover: #22c55e8c; $green-shadow: #22c55e4d; $green-contrast: #ffffff;
+
+$slate: #64748b; $slate-dark: #475569; $slate-darker: #334155;
+$slate-light: #94a3b8; $slate-lighter: #cbd5e1;
+$slate-hover: #64748b8c; $slate-shadow: #64748b4d; $slate-contrast: #ffffff;
+
+$zinc: #71717a; $zinc-dark: #52525b; $zinc-darker: #3f3f46;
+$zinc-light: #a1a1aa; $zinc-lighter: #d4d4d8;
+$zinc-hover: #71717a8c; $zinc-shadow: #71717a4d; $zinc-contrast: #ffffff;
+
+$neutral: #737373; $neutral-dark: #525252; $neutral-darker: #404040;
+$neutral-light: #a3a3a3; $neutral-lighter: #d4d4d4;
+$neutral-hover: #7373738c; $neutral-shadow: #7373734d; $neutral-contrast: #ffffff;
 
 
-// ============================================================
-// OPTIONAL SMOOTH TRANSITIONS
-// ============================================================
-// Add .muk-theme-transitions class to <html> or body for smooth
-// color animation when theme switches.
-// ============================================================
-.muk-theme-transitions,
-.muk-theme-transitions *,
-.muk-theme-transitions *::before,
-.muk-theme-transitions *::after {
-  transition:
-    background-color 0.25s ease,
-    border-color 0.25s ease,
-    color 0.25s ease,
-    fill 0.25s ease,
-    stroke 0.25s ease,
-    box-shadow 0.25s ease !important;
-}
+// ── Pure (theme-independent) ──
+$white:        #ffffff;
+$white-shadow: #ffffff4d;
+$black:        #000000;
+$black-shadow: #0000004d;

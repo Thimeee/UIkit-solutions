@@ -1,17 +1,17 @@
-import { Injectable, Inject, PLATFORM_ID, signal, computed, effect } from '@angular/core';
-import { isPlatformBrowser } from '@angular/common';
+import { Injectable, inject, signal, computed, effect } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 /**
- * Theme preference set by the user.
+ * Theme mode.
+ * - 'light' : force light
+ * - 'dark'  : force dark
  * - 'auto'  : follow system preference (default)
- * - 'light' : force light, overrides system
- * - 'dark'  : force dark, overrides system
  */
-export type MukThemePreference = 'auto' | 'light' | 'dark';
+export type MukThemeMode = 'light' | 'dark' | 'auto';
 
 /**
- * The resolved theme that is actually applied at the moment.
- * 'auto' resolves to 'light' or 'dark' based on system.
+ * Resolved theme (what's actually applied right now).
  */
 export type MukResolvedTheme = 'light' | 'dark';
 
@@ -20,158 +20,155 @@ const CLASS_LIGHT = 'muk-theme-light';
 const CLASS_DARK = 'muk-theme-dark';
 
 /**
- * MUK Theme Service
+ * MUK Theme Service - dark/light/auto theme switching.
  *
- * Manages app theme with three modes: auto, light, dark.
- * Persists preference in localStorage.
- * Listens to system color-scheme changes.
+ * Defaults:
+ *  - 'auto' mode (follows OS preference) unless user has saved a choice
+ *  - Persists choice to localStorage
+ *  - Live updates when OS theme changes (while in 'auto')
  *
  * ── USAGE ──
  *
- * Inject and read current state:
+ * Inject and use:
  *   constructor(private theme: ThemeService) {}
- *   isDark = this.theme.resolvedTheme; // signal: 'light' | 'dark'
  *
- * Set preference:
- *   this.theme.setTheme('dark');
- *   this.theme.setTheme('light');
- *   this.theme.setTheme('auto');
+ *   toggleTheme()  { this.theme.toggle(); }
+ *   useDark()      { this.theme.setMode('dark'); }
+ *   useLight()     { this.theme.setMode('light'); }
+ *   useSystem()    { this.theme.setMode('auto'); }
  *
- * Toggle light/dark (skips auto):
- *   this.theme.toggle();
+ * Read state (signals):
+ *   this.theme.mode()       // 'light' | 'dark' | 'auto'
+ *   this.theme.resolved()   // 'light' | 'dark' (what's showing)
+ *   this.theme.isDark()     // boolean
  *
- * In template:
- *   <button (click)="theme.toggle()">
- *     {{ theme.resolvedTheme() === 'dark' ? '☀️' : '🌙' }}
- *   </button>
- *
- * ── INITIALIZATION (avoid FOUC) ──
- *
- * To avoid a flash of light theme on page load, add this inline
- * <script> in your index.html BEFORE any stylesheets:
- *
- *   <script>
- *     (function() {
- *       try {
- *         var pref = localStorage.getItem('muk-theme') || 'auto';
- *         var isDark = pref === 'dark' ||
- *           (pref === 'auto' &&
- *            window.matchMedia('(prefers-color-scheme: dark)').matches);
- *         document.documentElement.classList.add(
- *           isDark ? 'muk-theme-dark' : 'muk-theme-light'
- *         );
- *       } catch(e) {}
- *     })();
- *   </script>
+ * RxJS subscribers:
+ *   this.theme.mode$.subscribe(...)
+ *   this.theme.resolved$.subscribe(...)
  */
 @Injectable({ providedIn: 'root' })
 export class ThemeService {
-  private readonly isBrowser: boolean;
-  private readonly mediaQuery?: MediaQueryList;
+  private document = inject(DOCUMENT);
 
-  /** User's preference (what they explicitly chose). */
-  readonly preference = signal<MukThemePreference>('auto');
+  /** User's chosen mode. */
+  readonly mode = signal<MukThemeMode>(this.loadInitialMode());
 
-  /** System color scheme preference. */
-  private readonly systemPrefersDark = signal<boolean>(false);
-
-  /** Actually-applied theme (computed). */
-  readonly resolvedTheme = computed<MukResolvedTheme>(() => {
-    const pref = this.preference();
-    if (pref === 'dark') return 'dark';
-    if (pref === 'light') return 'light';
-    return this.systemPrefersDark() ? 'dark' : 'light';
+  /** Resolved theme (what's actually applied). */
+  readonly resolved = computed<MukResolvedTheme>(() => {
+    const m = this.mode();
+    if (m === 'auto') return this.getSystemTheme();
+    return m;
   });
 
-  /** Convenience boolean signal. */
-  readonly isDark = computed(() => this.resolvedTheme() === 'dark');
+  /** Convenience - is dark mode active right now? */
+  readonly isDark = computed(() => this.resolved() === 'dark');
 
-  constructor(@Inject(PLATFORM_ID) platformId: object) {
-    this.isBrowser = isPlatformBrowser(platformId);
+  // RxJS observables for non-signal consumers
+  private modeSubject = new BehaviorSubject<MukThemeMode>(this.mode());
+  private resolvedSubject = new BehaviorSubject<MukResolvedTheme>(this.resolved());
 
-    if (this.isBrowser) {
-      // Load persisted preference
-      this.loadPreference();
+  readonly mode$: Observable<MukThemeMode> = this.modeSubject.asObservable();
+  readonly resolved$: Observable<MukResolvedTheme> = this.resolvedSubject.asObservable();
 
-      // Setup system preference listener
-      this.mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-      this.systemPrefersDark.set(this.mediaQuery.matches);
 
-      // React to system changes
-      this.mediaQuery.addEventListener('change', this.onSystemChange);
+  constructor() {
+    this.applyTheme();
 
-      // Apply theme whenever resolved theme changes
-      effect(() => {
-        this.applyThemeClass(this.resolvedTheme());
-      });
+    effect(() => {
+      const m = this.mode();
+      this.applyTheme();
+      this.persistMode(m);
+      this.modeSubject.next(m);
+      this.resolvedSubject.next(this.resolved());
+    });
 
-      // Persist preference changes
-      effect(() => {
-        this.persistPreference(this.preference());
-      });
-    }
+    this.watchSystemPreference();
   }
+
 
   // ── PUBLIC API ──
 
-  /**
-   * Set theme preference.
-   * - 'auto'  : follow system
-   * - 'light' : force light
-   * - 'dark'  : force dark
-   */
-  setTheme(pref: MukThemePreference): void {
-    this.preference.set(pref);
+  /** Set the theme mode (light/dark/auto). */
+  setMode(mode: MukThemeMode): void {
+    this.mode.set(mode);
   }
 
-  /**
-   * Toggle between light and dark.
-   * If currently 'auto', toggles based on resolved theme.
-   */
+  /** Toggle between light and dark. If 'auto', flips to opposite of resolved. */
   toggle(): void {
-    const current = this.resolvedTheme();
-    this.setTheme(current === 'dark' ? 'light' : 'dark');
+    const next: MukThemeMode = this.resolved() === 'dark' ? 'light' : 'dark';
+    this.setMode(next);
   }
 
-  /**
-   * Reset to system preference.
-   */
-  useAuto(): void {
-    this.setTheme('auto');
-  }
 
   // ── PRIVATE ──
 
-  private onSystemChange = (e: MediaQueryListEvent): void => {
-    this.systemPrefersDark.set(e.matches);
-  };
-
-  private loadPreference(): void {
+  private loadInitialMode(): MukThemeMode {
+    if (typeof localStorage === 'undefined') return 'auto';
     try {
-      const stored = localStorage.getItem(STORAGE_KEY) as MukThemePreference | null;
-      if (stored === 'auto' || stored === 'light' || stored === 'dark') {
-        this.preference.set(stored);
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved === 'light' || saved === 'dark' || saved === 'auto') {
+        return saved;
       }
     } catch {
-      // localStorage unavailable - ignore
+      // localStorage might throw in private/sandboxed contexts
     }
+    return 'auto';
   }
 
-  private persistPreference(pref: MukThemePreference): void {
+  private persistMode(mode: MukThemeMode): void {
     try {
-      localStorage.setItem(STORAGE_KEY, pref);
+      if (typeof localStorage !== 'undefined') {
+        localStorage.setItem(STORAGE_KEY, mode);
+      }
     } catch {
-      // localStorage unavailable - ignore
+      // silently ignore
     }
   }
 
-  private applyThemeClass(resolved: MukResolvedTheme): void {
-    const html = document.documentElement;
+  private getSystemTheme(): MukResolvedTheme {
+    if (typeof window === 'undefined' || !window.matchMedia) return 'light';
+    return window.matchMedia('(prefers-color-scheme: dark)').matches
+      ? 'dark'
+      : 'light';
+  }
 
-    // Remove both classes first to handle any inline-script init
-    html.classList.remove(CLASS_LIGHT, CLASS_DARK);
+  private applyTheme(): void {
+    const root = this.document.documentElement;
+    const m = this.mode();
 
-    // Apply the resolved class
-    html.classList.add(resolved === 'dark' ? CLASS_DARK : CLASS_LIGHT);
+    // Clean up first
+    root.classList.remove(CLASS_LIGHT, CLASS_DARK);
+
+    // Apply class:
+    //   'auto'  - no class, @media (prefers-color-scheme) takes over
+    //   'light' - .muk-theme-light blocks the @media query
+    //   'dark'  - .muk-theme-dark forces dark
+    if (m === 'light') {
+      root.classList.add(CLASS_LIGHT);
+    } else if (m === 'dark') {
+      root.classList.add(CLASS_DARK);
+    }
+
+    // data-theme attribute for non-Angular CSS or analytics
+    root.setAttribute('data-theme', m === 'auto' ? this.getSystemTheme() : m);
+  }
+
+  private watchSystemPreference(): void {
+    if (typeof window === 'undefined' || !window.matchMedia) return;
+
+    const mq = window.matchMedia('(prefers-color-scheme: dark)');
+    const handler = () => {
+      // Only react if in 'auto' mode - explicit choices ignore OS
+      if (this.mode() === 'auto') {
+        this.applyTheme();
+        this.resolvedSubject.next(this.resolved());
+      }
+    };
+
+    if (typeof mq.addEventListener === 'function') {
+      mq.addEventListener('change', handler);
+    } else if (typeof (mq as any).addListener === 'function') {
+      (mq as any).addListener(handler);
+    }
   }
 }
