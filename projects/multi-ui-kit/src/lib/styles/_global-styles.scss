@@ -39,24 +39,24 @@
 
   // ── SEMANTIC THEME TOKENS (LIGHT) ──
   // Use these for theme-aware backgrounds, text, borders.
-  --muk-surface:           #ffffff;        // cards, inputs, modals
-  --muk-surface-elevated:  #ffffff;        // popovers, tooltips
-  --muk-surface-sunken:    #f9fafb;        // page bg, code blocks
-  --muk-surface-muted:     #f3f4f6;        // disabled/readonly fields
-  --muk-surface-hover:     #f9fafb;        // hover overlays
+  --muk-surface: #ffffff; // cards, inputs, modals
+  --muk-surface-elevated: #ffffff; // popovers, tooltips
+  --muk-surface-sunken: #f9fafb; // page bg, code blocks
+  --muk-surface-muted: #f3f4f6; // disabled/readonly fields
+  --muk-surface-hover: #f9fafb; // hover overlays
 
-  --muk-text:              #1f2937;        // primary text
-  --muk-text-muted:        #4b5563;        // secondary text
-  --muk-text-subtle:       #6b7280;        // placeholders
-  --muk-text-disabled:     #9ca3af;        // disabled text
-  --muk-text-inverse:      #ffffff;        // on dark bg
+  --muk-text: #1f2937; // primary text
+  --muk-text-muted: #4b5563; // secondary text
+  --muk-text-subtle: #6b7280; // placeholders
+  --muk-text-disabled: #9ca3af; // disabled text
+  --muk-text-inverse: #ffffff; // on dark bg
 
-  --muk-border:            #e5e7eb;        // default
-  --muk-border-strong:     #d1d5db;        // hover
-  --muk-border-subtle:     #f3f4f6;        // dividers
+  --muk-border: #e5e7eb; // default
+  --muk-border-strong: #d1d5db; // hover
+  --muk-border-subtle: #f3f4f6; // dividers
 
-  --muk-overlay:           rgba(0, 0, 0, 0.5);
-  --muk-overlay-light:     rgba(255, 255, 255, 0.85);
+  --muk-overlay: rgba(0, 0, 0, 0.5);
+  --muk-overlay-light: rgba(255, 255, 255, 0.85);
 
   --muk-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
   --muk-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.08), 0 2px 4px -1px rgba(0, 0, 0, 0.04);
@@ -65,8 +65,16 @@
 
   --muk-success-tint: #d1fae5;
   --muk-warning-tint: #fef3c7;
-  --muk-danger-tint:  #fee2e2;
-  --muk-info-tint:    #e0f2fe;
+  --muk-danger-tint: #fee2e2;
+  --muk-info-tint: #e0f2fe;
+
+  // Soft text - readable on tint bg (LIGHT: darker shade)
+  --muk-primary-soft-text: #0a58ca;
+  --muk-secondary-soft-text: #495057;
+  --muk-success-soft-text: #047857;
+  --muk-warning-soft-text: #b45309;
+  --muk-danger-soft-text: #b91c1c;
+  --muk-info-soft-text: #0369a1;
 }
 
 
@@ -95,27 +103,27 @@
   --muk-secondary-shadow-hover: #adb5bd81;
 
   // Surfaces
-  --muk-surface:           #1e293b;
-  --muk-surface-elevated:  #273449;
-  --muk-surface-sunken:    #0f172a;
-  --muk-surface-muted:     #334155;
-  --muk-surface-hover:     #273449;
+  --muk-surface: #1e293b;
+  --muk-surface-elevated: #273449;
+  --muk-surface-sunken: #0f172a;
+  --muk-surface-muted: #334155;
+  --muk-surface-hover: #273449;
 
   // Text
-  --muk-text:              #f1f5f9;
-  --muk-text-muted:        #cbd5e1;
-  --muk-text-subtle:       #94a3b8;
-  --muk-text-disabled:     #64748b;
-  --muk-text-inverse:      #1f2937;
+  --muk-text: #f1f5f9;
+  --muk-text-muted: #cbd5e1;
+  --muk-text-subtle: #94a3b8;
+  --muk-text-disabled: #64748b;
+  --muk-text-inverse: #1f2937;
 
   // Borders
-  --muk-border:            #334155;
-  --muk-border-strong:     #475569;
-  --muk-border-subtle:     #1e293b;
+  --muk-border: #334155;
+  --muk-border-strong: #475569;
+  --muk-border-subtle: #1e293b;
 
   // Overlay
-  --muk-overlay:           rgba(0, 0, 0, 0.7);
-  --muk-overlay-light:     rgba(15, 23, 42, 0.85);
+  --muk-overlay: rgba(0, 0, 0, 0.7);
+  --muk-overlay-light: rgba(15, 23, 42, 0.85);
 
   // Shadows (deeper)
   --muk-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
@@ -126,8 +134,16 @@
   // Status tints (deeper for dark bg)
   --muk-success-tint: #064e3b;
   --muk-warning-tint: #78350f;
-  --muk-danger-tint:  #7f1d1d;
-  --muk-info-tint:    #0c4a6e;
+  --muk-danger-tint: #7f1d1d;
+  --muk-info-tint: #0c4a6e;
+
+  // Soft text (DARK: lighter shade)
+  --muk-primary-soft-text: #93c5fd;
+  --muk-secondary-soft-text: #ced4da;
+  --muk-success-soft-text: #6ee7b7;
+  --muk-warning-soft-text: #fcd34d;
+  --muk-danger-soft-text: #fca5a5;
+  --muk-info-soft-text: #7dd3fc;
 }
 
 
@@ -153,23 +169,23 @@
     --muk-secondary-shadow: #adb5bd4d;
     --muk-secondary-shadow-hover: #adb5bd81;
 
-    --muk-surface:           #1e293b;
-    --muk-surface-elevated:  #273449;
-    --muk-surface-sunken:    #0f172a;
-    --muk-surface-muted:     #334155;
-    --muk-surface-hover:     #273449;
+    --muk-surface: #1e293b;
+    --muk-surface-elevated: #273449;
+    --muk-surface-sunken: #0f172a;
+    --muk-surface-muted: #334155;
+    --muk-surface-hover: #273449;
 
-    --muk-text:              #f1f5f9;
-    --muk-text-muted:        #cbd5e1;
-    --muk-text-subtle:       #94a3b8;
-    --muk-text-disabled:     #64748b;
-    --muk-text-inverse:      #1f2937;
+    --muk-text: #f1f5f9;
+    --muk-text-muted: #cbd5e1;
+    --muk-text-subtle: #94a3b8;
+    --muk-text-disabled: #64748b;
+    --muk-text-inverse: #1f2937;
 
-    --muk-border:            #334155;
-    --muk-border-strong:     #475569;
-    --muk-border-subtle:     #1e293b;
+    --muk-border: #334155;
+    --muk-border-strong: #475569;
+    --muk-border-subtle: #1e293b;
 
-    --muk-overlay:       rgba(0, 0, 0, 0.7);
+    --muk-overlay: rgba(0, 0, 0, 0.7);
     --muk-overlay-light: rgba(15, 23, 42, 0.85);
 
     --muk-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
@@ -179,8 +195,15 @@
 
     --muk-success-tint: #064e3b;
     --muk-warning-tint: #78350f;
-    --muk-danger-tint:  #7f1d1d;
-    --muk-info-tint:    #0c4a6e;
+    --muk-danger-tint: #7f1d1d;
+    --muk-info-tint: #0c4a6e;
+
+    --muk-primary-soft-text: #93c5fd;
+    --muk-secondary-soft-text: #ced4da;
+    --muk-success-soft-text: #6ee7b7;
+    --muk-warning-soft-text: #fcd34d;
+    --muk-danger-soft-text: #fca5a5;
+    --muk-info-soft-text: #7dd3fc;
   }
 }
 
@@ -190,158 +213,279 @@
 // ============================================================
 
 // ── Primary (themeable) ──
-$primary:              var(--muk-primary-user);
-$primary-dark:         var(--muk-primary-dark);
-$primary-darker:       var(--muk-primary-darker);
-$primary-light:        var(--muk-primary-light);
-$primary-lighter:      var(--muk-primary-lighter);
-$primary-hover:        var(--muk-primary-hover);
-$primary-shadow:       var(--muk-primary-shadow);
+$primary: var(--muk-primary-user);
+$primary-dark: var(--muk-primary-dark);
+$primary-darker: var(--muk-primary-darker);
+$primary-light: var(--muk-primary-light);
+$primary-lighter: var(--muk-primary-lighter);
+$primary-hover: var(--muk-primary-hover);
+$primary-shadow: var(--muk-primary-shadow);
 $primary-shadow-hover: var(--muk-primary-shadow-hover);
-$primary-contrast:     var(--muk-primary-contrast);
+$primary-contrast: var(--muk-primary-contrast);
 
 // ── Secondary (themeable) ──
-$secondary:              var(--muk-secondary-user);
-$secondary-dark:         var(--muk-secondary-dark);
-$secondary-darker:       var(--muk-secondary-darker);
-$secondary-light:        var(--muk-secondary-light);
-$secondary-lighter:      var(--muk-secondary-lighter);
-$secondary-hover:        var(--muk-secondary-hover);
-$secondary-shadow:       var(--muk-secondary-shadow);
+$secondary: var(--muk-secondary-user);
+$secondary-dark: var(--muk-secondary-dark);
+$secondary-darker: var(--muk-secondary-darker);
+$secondary-light: var(--muk-secondary-light);
+$secondary-lighter: var(--muk-secondary-lighter);
+$secondary-hover: var(--muk-secondary-hover);
+$secondary-shadow: var(--muk-secondary-shadow);
 $secondary-shadow-hover: var(--muk-secondary-shadow-hover);
-$secondary-contrast:     var(--muk-secondary-contrast);
+$secondary-contrast: var(--muk-secondary-contrast);
 
 // ── SEMANTIC TOKENS (auto-flip with theme) ──
 // USE THESE in components for theme-aware values!
-$surface:           var(--muk-surface);
-$surface-elevated:  var(--muk-surface-elevated);
-$surface-sunken:    var(--muk-surface-sunken);
-$surface-muted:     var(--muk-surface-muted);
-$surface-hover:     var(--muk-surface-hover);
+$surface: var(--muk-surface);
+$surface-elevated: var(--muk-surface-elevated);
+$surface-sunken: var(--muk-surface-sunken);
+$surface-muted: var(--muk-surface-muted);
+$surface-hover: var(--muk-surface-hover);
 
-$text:              var(--muk-text);
-$text-muted:        var(--muk-text-muted);
-$text-subtle:       var(--muk-text-subtle);
-$text-disabled:     var(--muk-text-disabled);
-$text-inverse:      var(--muk-text-inverse);
+$text: var(--muk-text);
+$text-muted: var(--muk-text-muted);
+$text-subtle: var(--muk-text-subtle);
+$text-disabled: var(--muk-text-disabled);
+$text-inverse: var(--muk-text-inverse);
 
-$border:            var(--muk-border);
-$border-strong:     var(--muk-border-strong);
-$border-subtle:     var(--muk-border-subtle);
+$border: var(--muk-border);
+$border-strong: var(--muk-border-strong);
+$border-subtle: var(--muk-border-subtle);
 
-$overlay:           var(--muk-overlay);
-$overlay-light:     var(--muk-overlay-light);
+$overlay: var(--muk-overlay);
+$overlay-light: var(--muk-overlay-light);
 
-$shadow-sm:         var(--muk-shadow-sm);
-$shadow-md:         var(--muk-shadow-md);
-$shadow-lg:         var(--muk-shadow-lg);
-$shadow-xl:         var(--muk-shadow-xl);
+$shadow-sm: var(--muk-shadow-sm);
+$shadow-md: var(--muk-shadow-md);
+$shadow-lg: var(--muk-shadow-lg);
+$shadow-xl: var(--muk-shadow-xl);
 
-$success-tint:      var(--muk-success-tint);
-$warning-tint:      var(--muk-warning-tint);
-$danger-tint:       var(--muk-danger-tint);
-$info-tint:         var(--muk-info-tint);
+$success-tint: var(--muk-success-tint);
+$warning-tint: var(--muk-warning-tint);
+$danger-tint: var(--muk-danger-tint);
+$info-tint: var(--muk-info-tint);
+
+// Soft text (theme-aware - for soft-style alerts/badges)
+$primary-soft-text: var(--muk-primary-soft-text);
+$secondary-soft-text: var(--muk-secondary-soft-text);
+$success-soft-text: var(--muk-success-soft-text);
+$warning-soft-text: var(--muk-warning-soft-text);
+$danger-soft-text: var(--muk-danger-soft-text);
+$info-soft-text: var(--muk-info-soft-text);
 
 
 // ── Status colors (theme-independent) ──
-$success: #10b981; $success-dark: #059669; $success-darker: #047857;
-$success-light: #6ee7b7; $success-lighter: #d1fae5;
-$success-hover: #10b9818c; $success-shadow: #10b9814d; $success-contrast: #ffffff;
+$success: #10b981;
+$success-dark: #059669;
+$success-darker: #047857;
+$success-light: #6ee7b7;
+$success-lighter: #d1fae5;
+$success-hover: #10b9818c;
+$success-shadow: #10b9814d;
+$success-contrast: #ffffff;
 
-$warning: #f59e0b; $warning-dark: #d97706; $warning-darker: #b45309;
-$warning-light: #fcd34d; $warning-lighter: #fef3c7;
-$warning-hover: #f59e0b8c; $warning-shadow: #f59e0b4d; $warning-contrast: #ffffff;
+$warning: #f59e0b;
+$warning-dark: #d97706;
+$warning-darker: #b45309;
+$warning-light: #fcd34d;
+$warning-lighter: #fef3c7;
+$warning-hover: #f59e0b8c;
+$warning-shadow: #f59e0b4d;
+$warning-contrast: #ffffff;
 
-$danger: #ef4444; $danger-dark: #dc2626; $danger-darker: #b91c1c;
-$danger-light: #fca5a5; $danger-lighter: #fee2e2;
-$danger-hover: #ef44448c; $danger-shadow: #ef44444d; $danger-contrast: #ffffff;
+$danger: #ef4444;
+$danger-dark: #dc2626;
+$danger-darker: #b91c1c;
+$danger-light: #fca5a5;
+$danger-lighter: #fee2e2;
+$danger-hover: #ef44448c;
+$danger-shadow: #ef44444d;
+$danger-contrast: #ffffff;
 
-$info: #0ea5e9; $info-dark: #0284c7; $info-darker: #0369a1;
-$info-light: #7dd3fc; $info-lighter: #e0f2fe;
-$info-hover: #0ea5e98c; $info-shadow: #0ea5e94d; $info-contrast: #ffffff;
+$info: #0ea5e9;
+$info-dark: #0284c7;
+$info-darker: #0369a1;
+$info-light: #7dd3fc;
+$info-lighter: #e0f2fe;
+$info-hover: #0ea5e98c;
+$info-shadow: #0ea5e94d;
+$info-contrast: #ffffff;
 
 
 // ── Legacy fixed colors (NOT theme-aware - use $surface/$text instead) ──
-$light: #f3f4f6; $light-dark: #e5e7eb; $light-darker: #d1d5db;
-$light-hover: #e5e7eb8c; $light-shadow: #d1d5db66; $light-contrast: #1f2937;
+$light: #f3f4f6;
+$light-dark: #e5e7eb;
+$light-darker: #d1d5db;
+$light-hover: #e5e7eb8c;
+$light-shadow: #d1d5db66;
+$light-contrast: #1f2937;
 
-$dark: #1f2937; $dark-dark: #111827; $dark-darker: #030712;
-$dark-light: #374151; $dark-hover: #1f29378c; $dark-shadow: #1f29374d;
+$dark: #1f2937;
+$dark-dark: #111827;
+$dark-darker: #030712;
+$dark-light: #374151;
+$dark-hover: #1f29378c;
+$dark-shadow: #1f29374d;
 $dark-contrast: #ffffff;
 
-$gray: #6c757d; $gray-dark: #5a6268; $gray-darker: #495057;
-$gray-light: #adb5bd; $gray-lighter: #dee2e6;
-$gray-hover: #6c757d8c; $gray-shadow: #6c757d4d; $gray-contrast: #ffffff;
+$gray: #6c757d;
+$gray-dark: #5a6268;
+$gray-darker: #495057;
+$gray-light: #adb5bd;
+$gray-lighter: #dee2e6;
+$gray-hover: #6c757d8c;
+$gray-shadow: #6c757d4d;
+$gray-contrast: #ffffff;
 
 
 // ── Accent colors (theme-independent) ──
-$teal: #14b8a6; $teal-dark: #0d9488; $teal-darker: #0f766e;
-$teal-light: #5eead4; $teal-lighter: #ccfbf1;
-$teal-hover: #14b8a68c; $teal-shadow: #14b8a64d; $teal-contrast: #ffffff;
+$teal: #14b8a6;
+$teal-dark: #0d9488;
+$teal-darker: #0f766e;
+$teal-light: #5eead4;
+$teal-lighter: #ccfbf1;
+$teal-hover: #14b8a68c;
+$teal-shadow: #14b8a64d;
+$teal-contrast: #ffffff;
 
-$cyan: #06b6d4; $cyan-dark: #0891b2; $cyan-darker: #0e7490;
-$cyan-light: #67e8f9; $cyan-lighter: #cffafe;
-$cyan-hover: #06b6d48c; $cyan-shadow: #06b6d44d; $cyan-contrast: #ffffff;
+$cyan: #06b6d4;
+$cyan-dark: #0891b2;
+$cyan-darker: #0e7490;
+$cyan-light: #67e8f9;
+$cyan-lighter: #cffafe;
+$cyan-hover: #06b6d48c;
+$cyan-shadow: #06b6d44d;
+$cyan-contrast: #ffffff;
 
-$violet: #8b5cf6; $violet-dark: #7c3aed; $violet-darker: #6d28d9;
-$violet-light: #c4b5fd; $violet-lighter: #ede9fe;
-$violet-hover: #8b5cf68c; $violet-shadow: #8b5cf64d; $violet-contrast: #ffffff;
+$violet: #8b5cf6;
+$violet-dark: #7c3aed;
+$violet-darker: #6d28d9;
+$violet-light: #c4b5fd;
+$violet-lighter: #ede9fe;
+$violet-hover: #8b5cf68c;
+$violet-shadow: #8b5cf64d;
+$violet-contrast: #ffffff;
 
-$purple: #a855f7; $purple-dark: #9333ea; $purple-darker: #7e22ce;
-$purple-light: #d8b4fe; $purple-lighter: #f3e8ff;
-$purple-hover: #a855f78c; $purple-shadow: #a855f74d; $purple-contrast: #ffffff;
+$purple: #a855f7;
+$purple-dark: #9333ea;
+$purple-darker: #7e22ce;
+$purple-light: #d8b4fe;
+$purple-lighter: #f3e8ff;
+$purple-hover: #a855f78c;
+$purple-shadow: #a855f74d;
+$purple-contrast: #ffffff;
 
-$fuchsia: #d946ef; $fuchsia-dark: #c026d3; $fuchsia-darker: #a21caf;
-$fuchsia-light: #f0abfc; $fuchsia-lighter: #fae8ff;
-$fuchsia-hover: #d946ef8c; $fuchsia-shadow: #d946ef4d; $fuchsia-contrast: #ffffff;
+$fuchsia: #d946ef;
+$fuchsia-dark: #c026d3;
+$fuchsia-darker: #a21caf;
+$fuchsia-light: #f0abfc;
+$fuchsia-lighter: #fae8ff;
+$fuchsia-hover: #d946ef8c;
+$fuchsia-shadow: #d946ef4d;
+$fuchsia-contrast: #ffffff;
 
-$pink: #ec4899; $pink-dark: #db2777; $pink-darker: #be185d;
-$pink-light: #f9a8d4; $pink-lighter: #fce7f3;
-$pink-hover: #ec48998c; $pink-shadow: #ec48994d; $pink-contrast: #ffffff;
+$pink: #ec4899;
+$pink-dark: #db2777;
+$pink-darker: #be185d;
+$pink-light: #f9a8d4;
+$pink-lighter: #fce7f3;
+$pink-hover: #ec48998c;
+$pink-shadow: #ec48994d;
+$pink-contrast: #ffffff;
 
-$rose: #f43f5e; $rose-dark: #e11d48; $rose-darker: #be123c;
-$rose-light: #fda4af; $rose-lighter: #ffe4e6;
-$rose-hover: #f43f5e8c; $rose-shadow: #f43f5e4d; $rose-contrast: #ffffff;
+$rose: #f43f5e;
+$rose-dark: #e11d48;
+$rose-darker: #be123c;
+$rose-light: #fda4af;
+$rose-lighter: #ffe4e6;
+$rose-hover: #f43f5e8c;
+$rose-shadow: #f43f5e4d;
+$rose-contrast: #ffffff;
 
-$orange: #f97316; $orange-dark: #ea580c; $orange-darker: #c2410c;
-$orange-light: #fdba74; $orange-lighter: #ffedd5;
-$orange-hover: #f973168c; $orange-shadow: #f973164d; $orange-contrast: #ffffff;
+$orange: #f97316;
+$orange-dark: #ea580c;
+$orange-darker: #c2410c;
+$orange-light: #fdba74;
+$orange-lighter: #ffedd5;
+$orange-hover: #f973168c;
+$orange-shadow: #f973164d;
+$orange-contrast: #ffffff;
 
-$lime: #84cc16; $lime-dark: #65a30d; $lime-darker: #4d7c0f;
-$lime-light: #bef264; $lime-lighter: #ecfccb;
-$lime-hover: #84cc168c; $lime-shadow: #84cc164d; $lime-contrast: #ffffff;
+$lime: #84cc16;
+$lime-dark: #65a30d;
+$lime-darker: #4d7c0f;
+$lime-light: #bef264;
+$lime-lighter: #ecfccb;
+$lime-hover: #84cc168c;
+$lime-shadow: #84cc164d;
+$lime-contrast: #ffffff;
 
-$indigo: #6366f1; $indigo-dark: #4f46e5; $indigo-darker: #4338ca;
-$indigo-light: #a5b4fc; $indigo-lighter: #e0e7ff;
-$indigo-hover: #6366f18c; $indigo-shadow: #6366f14d; $indigo-contrast: #ffffff;
+$indigo: #6366f1;
+$indigo-dark: #4f46e5;
+$indigo-darker: #4338ca;
+$indigo-light: #a5b4fc;
+$indigo-lighter: #e0e7ff;
+$indigo-hover: #6366f18c;
+$indigo-shadow: #6366f14d;
+$indigo-contrast: #ffffff;
 
-$blue: #3b82f6; $blue-dark: #2563eb; $blue-darker: #1d4ed8;
-$blue-light: #93c5fd; $blue-lighter: #dbeafe;
-$blue-hover: #3b82f68c; $blue-shadow: #3b82f64d; $blue-contrast: #ffffff;
+$blue: #3b82f6;
+$blue-dark: #2563eb;
+$blue-darker: #1d4ed8;
+$blue-light: #93c5fd;
+$blue-lighter: #dbeafe;
+$blue-hover: #3b82f68c;
+$blue-shadow: #3b82f64d;
+$blue-contrast: #ffffff;
 
-$yellow: #eab308; $yellow-dark: #ca8a04; $yellow-darker: #a16207;
-$yellow-light: #fde047; $yellow-lighter: #fef9c3;
-$yellow-hover: #eab3088c; $yellow-shadow: #eab3084d; $yellow-contrast: #1f2937;
+$yellow: #eab308;
+$yellow-dark: #ca8a04;
+$yellow-darker: #a16207;
+$yellow-light: #fde047;
+$yellow-lighter: #fef9c3;
+$yellow-hover: #eab3088c;
+$yellow-shadow: #eab3084d;
+$yellow-contrast: #1f2937;
 
-$green: #22c55e; $green-dark: #16a34a; $green-darker: #15803d;
-$green-light: #86efac; $green-lighter: #dcfce7;
-$green-hover: #22c55e8c; $green-shadow: #22c55e4d; $green-contrast: #ffffff;
+$green: #22c55e;
+$green-dark: #16a34a;
+$green-darker: #15803d;
+$green-light: #86efac;
+$green-lighter: #dcfce7;
+$green-hover: #22c55e8c;
+$green-shadow: #22c55e4d;
+$green-contrast: #ffffff;
 
-$slate: #64748b; $slate-dark: #475569; $slate-darker: #334155;
-$slate-light: #94a3b8; $slate-lighter: #cbd5e1;
-$slate-hover: #64748b8c; $slate-shadow: #64748b4d; $slate-contrast: #ffffff;
+$slate: #64748b;
+$slate-dark: #475569;
+$slate-darker: #334155;
+$slate-light: #94a3b8;
+$slate-lighter: #cbd5e1;
+$slate-hover: #64748b8c;
+$slate-shadow: #64748b4d;
+$slate-contrast: #ffffff;
 
-$zinc: #71717a; $zinc-dark: #52525b; $zinc-darker: #3f3f46;
-$zinc-light: #a1a1aa; $zinc-lighter: #d4d4d8;
-$zinc-hover: #71717a8c; $zinc-shadow: #71717a4d; $zinc-contrast: #ffffff;
+$zinc: #71717a;
+$zinc-dark: #52525b;
+$zinc-darker: #3f3f46;
+$zinc-light: #a1a1aa;
+$zinc-lighter: #d4d4d8;
+$zinc-hover: #71717a8c;
+$zinc-shadow: #71717a4d;
+$zinc-contrast: #ffffff;
 
-$neutral: #737373; $neutral-dark: #525252; $neutral-darker: #404040;
-$neutral-light: #a3a3a3; $neutral-lighter: #d4d4d4;
-$neutral-hover: #7373738c; $neutral-shadow: #7373734d; $neutral-contrast: #ffffff;
+$neutral: #737373;
+$neutral-dark: #525252;
+$neutral-darker: #404040;
+$neutral-light: #a3a3a3;
+$neutral-lighter: #d4d4d4;
+$neutral-hover: #7373738c;
+$neutral-shadow: #7373734d;
+$neutral-contrast: #ffffff;
 
 
 // ── Pure (theme-independent) ──
-$white:        #ffffff;
+$white: #ffffff;
 $white-shadow: #ffffff4d;
-$black:        #000000;
+$black: #000000;
 $black-shadow: #0000004d;

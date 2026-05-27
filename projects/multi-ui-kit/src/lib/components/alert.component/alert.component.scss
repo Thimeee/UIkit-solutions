@@ -1,0 +1,396 @@
+// ============================================================
+// MUK Alert Component - SCSS
+// ============================================================
+// Native CSS only. Theme-aware via global tokens.
+// Works in light + dark mode automatically.
+// ============================================================
+
+@use "../../styles/global-styles.scss" as *;
+
+
+// ============================================================
+// VARIANT STYLE MIXIN
+// ============================================================
+// Generates all 4 styles (soft / solid / outline / left-accent)
+// for one color set.
+// ============================================================
+@mixin alert-variant($base, $dark, $light, $contrast, $tint, $soft-text) {
+
+    // ── SOFT (default) - tinted bg, colored text ──
+    // $soft-text auto-adjusts: dark text in light mode, light text in dark mode
+    &.muk-alert-soft {
+        background: $tint;
+        color: $soft-text;
+        border: 1px solid transparent;
+
+        .muk-alert-icon {
+            color: $soft-text;
+        }
+
+        .muk-alert-title {
+            color: $soft-text;
+        }
+
+        .muk-alert-progress {
+            background: $base;
+        }
+
+        .muk-alert-close:hover {
+            background: rgba($base, 0.18);
+        }
+    }
+
+    // ── SOLID - filled bg, contrast text ──
+    &.muk-alert-solid {
+        background: $base;
+        color: $contrast;
+        border: 1px solid transparent;
+
+        .muk-alert-icon {
+            color: $contrast;
+        }
+
+        .muk-alert-title {
+            color: $contrast;
+        }
+
+        .muk-alert-body {
+            color: $contrast;
+            opacity: 0.95;
+        }
+
+        .muk-alert-progress {
+            background: rgba(255, 255, 255, 0.7);
+        }
+
+        .muk-alert-close {
+            color: $contrast;
+
+            &:hover {
+                background: rgba(255, 255, 255, 0.2);
+            }
+        }
+    }
+
+    // ── OUTLINE - transparent, colored border ──
+    &.muk-alert-outline {
+        background: $surface;
+        color: $text;
+        border: 1.5px solid $base;
+
+        .muk-alert-icon {
+            color: $base;
+        }
+
+        .muk-alert-title {
+            color: $base;
+        }
+
+        .muk-alert-progress {
+            background: $base;
+        }
+
+        .muk-alert-close:hover {
+            background: rgba($base, 0.12);
+        }
+    }
+
+    // ── LEFT-ACCENT - surface bg, colored left bar ──
+    &.muk-alert-left-accent {
+        background: $surface;
+        color: $text;
+        border: 1px solid $border;
+        border-left: 4px solid $base;
+
+        .muk-alert-icon {
+            color: $base;
+        }
+
+        .muk-alert-title {
+            color: $text;
+        }
+
+        .muk-alert-progress {
+            background: $base;
+        }
+
+        .muk-alert-close:hover {
+            background: rgba($base, 0.12);
+        }
+    }
+}
+
+
+// ============================================================
+// BASE ALERT
+// ============================================================
+.muk-alert {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    width: 100%;
+    padding: var(--muk-alert-py) var(--muk-alert-px);
+    font-size: var(--muk-alert-fs);
+    line-height: 1.5;
+    overflow: hidden;
+    box-shadow: $shadow-sm;
+    transition:
+        background-color 0.25s ease,
+        border-color 0.25s ease,
+        color 0.25s ease;
+
+    &.is-rounded {
+        border-radius: 0.75rem;
+    }
+
+    // Entrance animation
+    &.is-animated {
+        animation: mukAlertEnter 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    // Leave animation
+    &.is-leaving {
+        animation: mukAlertLeave 0.25s ease forwards;
+    }
+}
+
+
+// ============================================================
+// SIZE VARIANTS
+// ============================================================
+.muk-alert-size-sm {
+    --muk-alert-px: 0.75rem;
+    --muk-alert-py: 0.625rem;
+    --muk-alert-fs: 0.8125rem;
+    --muk-alert-icon-size: 1.125rem;
+    --muk-alert-title-fs: 0.875rem;
+}
+
+.muk-alert-size-md {
+    --muk-alert-px: 1rem;
+    --muk-alert-py: 0.875rem;
+    --muk-alert-fs: 0.9375rem;
+    --muk-alert-icon-size: 1.375rem;
+    --muk-alert-title-fs: 1rem;
+}
+
+.muk-alert-size-lg {
+    --muk-alert-px: 1.25rem;
+    --muk-alert-py: 1.125rem;
+    --muk-alert-fs: 1rem;
+    --muk-alert-icon-size: 1.5rem;
+    --muk-alert-title-fs: 1.125rem;
+}
+
+
+// ============================================================
+// ICON
+// ============================================================
+.muk-alert-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 0.0625rem;
+
+    >* {
+        width: var(--muk-alert-icon-size);
+        height: var(--muk-alert-icon-size);
+        display: block;
+    }
+
+    svg {
+        width: var(--muk-alert-icon-size);
+        height: var(--muk-alert-icon-size);
+    }
+}
+
+
+// ============================================================
+// CONTENT
+// ============================================================
+.muk-alert-content {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.muk-alert-title {
+    font-size: var(--muk-alert-title-fs);
+    font-weight: 600;
+    line-height: 1.35;
+    margin-bottom: 0.1875rem;
+}
+
+.muk-alert-body {
+    font-size: var(--muk-alert-fs);
+    font-weight: 400;
+
+    // Reset margins on projected paragraphs
+    ::ng-deep p {
+        margin: 0;
+
+        &:not(:last-child) {
+            margin-bottom: 0.5rem;
+        }
+    }
+
+    // Links inside alerts
+    ::ng-deep a {
+        color: inherit;
+        font-weight: 600;
+        text-decoration: underline;
+        text-underline-offset: 2px;
+    }
+}
+
+.muk-alert-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 0.75rem;
+}
+
+
+// ============================================================
+// CLOSE BUTTON
+// ============================================================
+.muk-alert-close {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 1.75rem;
+    height: 1.75rem;
+    margin: -0.25rem -0.25rem 0 0;
+    padding: 0;
+    background: transparent;
+    border: 0;
+    border-radius: 0.4375rem;
+    cursor: pointer;
+    color: currentColor;
+    opacity: 0.7;
+    transition: opacity 0.15s ease, background-color 0.15s ease;
+
+    &:hover {
+        opacity: 1;
+    }
+
+    &:focus-visible {
+        outline: 2px solid currentColor;
+        outline-offset: 1px;
+        opacity: 1;
+    }
+
+    svg {
+        width: 1rem;
+        height: 1rem;
+        display: block;
+    }
+}
+
+
+// ============================================================
+// PROGRESS BAR (auto-dismiss)
+// ============================================================
+.muk-alert-progress {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 3px;
+    width: 100%;
+    transform-origin: left;
+    animation: mukAlertProgress linear forwards;
+    opacity: 0.6;
+}
+
+@keyframes mukAlertProgress {
+    from {
+        transform: scaleX(1);
+    }
+
+    to {
+        transform: scaleX(0);
+    }
+}
+
+
+// ============================================================
+// COLOR VARIANTS
+// ============================================================
+.muk-alert-primary {
+    @include alert-variant($primary, $primary-dark, $primary-light, $primary-contrast, $primary-lighter, $primary-soft-text);
+}
+
+.muk-alert-secondary {
+    @include alert-variant($secondary, $secondary-dark, $secondary-light, $secondary-contrast, $secondary-lighter, $secondary-soft-text);
+}
+
+.muk-alert-success {
+    @include alert-variant($success, $success-dark, $success-light, $success-contrast, $success-tint, $success-soft-text);
+}
+
+.muk-alert-warning {
+    @include alert-variant($warning, $warning-dark, $warning-light, $warning-contrast, $warning-tint, $warning-soft-text);
+}
+
+.muk-alert-danger {
+    @include alert-variant($danger, $danger-dark, $danger-light, $danger-contrast, $danger-tint, $danger-soft-text);
+}
+
+.muk-alert-info {
+    @include alert-variant($info, $info-dark, $info-light, $info-contrast, $info-tint, $info-soft-text);
+}
+
+
+// ============================================================
+// ANIMATIONS
+// ============================================================
+@keyframes mukAlertEnter {
+    from {
+        opacity: 0;
+        transform: translateY(-8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes mukAlertLeave {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+        max-height: 200px;
+    }
+
+    to {
+        opacity: 0;
+        transform: translateY(-8px);
+        max-height: 0;
+        padding-top: 0;
+        padding-bottom: 0;
+        margin-top: 0;
+        margin-bottom: 0;
+    }
+}
+
+
+// ============================================================
+// REDUCED MOTION
+// ============================================================
+@media (prefers-reduced-motion: reduce) {
+    .muk-alert {
+        transition: none;
+
+        &.is-animated,
+        &.is-leaving {
+            animation: none;
+        }
+    }
+
+    .muk-alert-progress {
+        // keep progress (functional) but no other motion
+    }
+}

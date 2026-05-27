@@ -1,0 +1,303 @@
+// ============================================================
+// MUK Toast Container - SCSS
+// ============================================================
+// Fixed-position regions at 6 screen positions.
+// Each toast animates in based on its [data-animation].
+// ============================================================
+
+// ── REGION (a fixed cluster at one screen position) ──
+.muk-toast-region {
+    position: fixed;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
+    width: min(380px, calc(100vw - 2rem));
+    pointer-events: none; // let clicks pass through gaps
+
+    // toasts themselves are clickable
+    .muk-toast-item {
+        pointer-events: auto;
+    }
+
+    // ── TOP positions ──
+    &[data-position="top-left"] {
+        top: 1rem;
+        left: 1rem;
+        align-items: flex-start;
+    }
+
+    &[data-position="top-center"] {
+        top: 1rem;
+        left: 50%;
+        transform: translateX(-50%);
+        align-items: center;
+    }
+
+    &[data-position="top-right"] {
+        top: 1rem;
+        right: 1rem;
+        align-items: flex-end;
+    }
+
+    // ── BOTTOM positions (column-reverse: newest at bottom edge) ──
+    &[data-position="bottom-left"] {
+        bottom: 1rem;
+        left: 1rem;
+        align-items: flex-start;
+        flex-direction: column-reverse;
+    }
+
+    &[data-position="bottom-center"] {
+        bottom: 1rem;
+        left: 50%;
+        transform: translateX(-50%);
+        align-items: center;
+        flex-direction: column-reverse;
+    }
+
+    &[data-position="bottom-right"] {
+        bottom: 1rem;
+        right: 1rem;
+        align-items: flex-end;
+        flex-direction: column-reverse;
+    }
+}
+
+// ── TOAST ITEM (wrapper that animates) ──
+.muk-toast-item {
+    width: 100%;
+
+    // Animation applied per direction
+    &[data-animation="from-left"] {
+        animation: mukToastFromLeft 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    &[data-animation="from-right"] {
+        animation: mukToastFromRight 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    &[data-animation="from-top"] {
+        animation: mukToastFromTop 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    &[data-animation="from-bottom"] {
+        animation: mukToastFromBottom 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    &[data-animation="fade"] {
+        animation: mukToastFade 0.35s ease;
+    }
+
+    // ── EXIT (leaving) animations - reverse direction ──
+    &.is-leaving {
+        &[data-animation="from-left"] {
+            animation: mukToastExitLeft 0.28s ease forwards;
+        }
+
+        &[data-animation="from-right"] {
+            animation: mukToastExitRight 0.28s ease forwards;
+        }
+
+        &[data-animation="from-top"] {
+            animation: mukToastExitTop 0.28s ease forwards;
+        }
+
+        &[data-animation="from-bottom"] {
+            animation: mukToastExitBottom 0.28s ease forwards;
+        }
+
+        &[data-animation="fade"] {
+            animation: mukToastExitFade 0.28s ease forwards;
+        }
+    }
+}
+
+
+// ============================================================
+// ENTRANCE ANIMATIONS
+// ============================================================
+
+// Left edge → slides RIGHT into place
+@keyframes mukToastFromLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-120%);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+// Right edge → slides LEFT into place
+@keyframes mukToastFromRight {
+    from {
+        opacity: 0;
+        transform: translateX(120%);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+// Above → slides DOWN into place
+@keyframes mukToastFromTop {
+    from {
+        opacity: 0;
+        transform: translateY(-120%);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+// Below → slides UP into place
+@keyframes mukToastFromBottom {
+    from {
+        opacity: 0;
+        transform: translateY(120%);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+// Fade in place (no movement)
+@keyframes mukToastFade {
+    from {
+        opacity: 0;
+        transform: scale(0.96);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+
+// ============================================================
+// EXIT ANIMATIONS (collapse height for smooth stack reflow)
+// ============================================================
+@keyframes mukToastExitLeft {
+    from {
+        opacity: 1;
+        transform: translateX(0);
+        max-height: 200px;
+    }
+
+    to {
+        opacity: 0;
+        transform: translateX(-120%);
+        max-height: 0;
+        margin-bottom: -10px;
+    }
+}
+
+@keyframes mukToastExitRight {
+    from {
+        opacity: 1;
+        transform: translateX(0);
+        max-height: 200px;
+    }
+
+    to {
+        opacity: 0;
+        transform: translateX(120%);
+        max-height: 0;
+        margin-bottom: -10px;
+    }
+}
+
+@keyframes mukToastExitTop {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+        max-height: 200px;
+    }
+
+    to {
+        opacity: 0;
+        transform: translateY(-120%);
+        max-height: 0;
+        margin-bottom: -10px;
+    }
+}
+
+@keyframes mukToastExitBottom {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+        max-height: 200px;
+    }
+
+    to {
+        opacity: 0;
+        transform: translateY(120%);
+        max-height: 0;
+        margin-bottom: -10px;
+    }
+}
+
+@keyframes mukToastExitFade {
+    from {
+        opacity: 1;
+        transform: scale(1);
+        max-height: 200px;
+    }
+
+    to {
+        opacity: 0;
+        transform: scale(0.96);
+        max-height: 0;
+        margin-bottom: -10px;
+    }
+}
+
+
+// ============================================================
+// REDUCED MOTION
+// ============================================================
+@media (prefers-reduced-motion: reduce) {
+    .muk-toast-item {
+        animation: mukToastFade 0.2s ease !important;
+    }
+}
+
+
+// ============================================================
+// MOBILE - stretch toasts full width
+// ============================================================
+@media (max-width: 480px) {
+    .muk-toast-region {
+        width: calc(100vw - 1.5rem);
+
+        &[data-position="top-left"],
+        &[data-position="top-center"],
+        &[data-position="top-right"] {
+            top: 0.75rem;
+            left: 0.75rem;
+            right: 0.75rem;
+            transform: none;
+            align-items: stretch;
+        }
+
+        &[data-position="bottom-left"],
+        &[data-position="bottom-center"],
+        &[data-position="bottom-right"] {
+            bottom: 0.75rem;
+            left: 0.75rem;
+            right: 0.75rem;
+            transform: none;
+            align-items: stretch;
+        }
+    }
+}
