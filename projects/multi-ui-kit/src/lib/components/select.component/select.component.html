@@ -1,0 +1,162 @@
+<div class="muk-select" [ngClass]="hostClasses" (keydown)="onKeydown($event)">
+    <!-- Label -->
+    @if (label) {
+    <label class="muk-select-label">
+        {{ label }}
+        @if (required) { <span class="muk-select-required">*</span> }
+    </label>
+    }
+
+    <!-- Trigger (the visible select box) -->
+    <div class="muk-select-trigger" [class.is-focused]="isOpen" [attr.tabindex]="disabled ? -1 : 0"
+        [attr.aria-haspopup]="'listbox'" [attr.aria-expanded]="isOpen" [attr.aria-disabled]="disabled"
+        (click)="toggleDropdown()">
+        <div class="muk-select-value">
+            @if (multiple) {
+            @if (selectedOptions.length === 0) {
+            <span class="muk-select-placeholder">{{ placeholder }}</span>
+            } @else {
+            <div class="muk-select-chips">
+                @for (opt of displayChips; track opt.value) {
+                <span class="muk-select-chip">
+                    <span class="muk-select-chip-text">{{ opt.label }}</span>
+                    @if (!disabled) {
+                    <button type="button" class="muk-select-chip-x" (click)="removeChip(opt, $event)"
+                        [attr.aria-label]="'Remove ' + opt.label">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
+                            stroke-linecap="round">
+                            <line x1="18" y1="6" x2="6" y2="18" />
+                            <line x1="6" y1="6" x2="18" y2="18" />
+                        </svg>
+                    </button>
+                    }
+                </span>
+                }
+                @if (extraCount > 0) {
+                <span class="muk-select-chip-more">+{{ extraCount }}</span>
+                }
+            </div>
+            }
+            } @else {
+            @if (hasValue) {
+            <span class="muk-select-single">{{ singleLabel }}</span>
+            } @else {
+            <span class="muk-select-placeholder">{{ placeholder }}</span>
+            }
+            }
+        </div>
+
+        <div class="muk-select-actions">
+            @if (clearable && hasValue && !disabled) {
+            <button type="button" class="muk-select-clear" (click)="clear($event)" aria-label="Clear selection">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+                    <line x1="18" y1="6" x2="6" y2="18" />
+                    <line x1="6" y1="6" x2="18" y2="18" />
+                </svg>
+            </button>
+            }
+            <span class="muk-select-arrow" [class.is-up]="isOpen">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                    stroke-linejoin="round">
+                    <polyline points="6 9 12 15 18 9" />
+                </svg>
+            </span>
+        </div>
+    </div>
+
+    <!-- Dropdown panel -->
+    @if (isOpen) {
+    <div class="muk-select-panel" role="listbox" [attr.aria-multiselectable]="multiple">
+        <!-- Search -->
+        @if (searchable) {
+        <div class="muk-select-search">
+            <svg class="muk-select-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="8" />
+                <line x1="21" y1="21" x2="16.65" y2="16.65" />
+            </svg>
+            <input #searchInput type="text" class="muk-select-search-input" [placeholder]="searchPlaceholder"
+                [ngModel]="searchTerm" (ngModelChange)="onSearchChange($event)" (click)="$event.stopPropagation()" />
+        </div>
+        }
+
+        <!-- Options list -->
+        <div class="muk-select-options">
+            @if (filteredOptions.length === 0) {
+            <div class="muk-select-empty">{{ noResultsText }}</div>
+            } @else if (hasGroups) {
+            @for (g of groupedOptions; track g.group) {
+            @if (g.group) {
+            <div class="muk-select-group-label">{{ g.group }}</div>
+            }
+            @for (opt of g.options; track opt.value; let i = $index) {
+            <button type="button" class="muk-select-option" [class.is-selected]="isSelected(opt)"
+                [class.is-disabled]="opt.disabled" [attr.aria-selected]="isSelected(opt)"
+                [attr.disabled]="opt.disabled ? true : null" (click)="selectOption(opt)">
+                @if (multiple) {
+                <span class="muk-select-checkbox" [class.is-checked]="isSelected(opt)">
+                    @if (isSelected(opt)) {
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <polyline points="20 6 9 17 4 12" />
+                    </svg>
+                    }
+                </span>
+                }
+                <span class="muk-select-option-text">
+                    <span class="muk-select-option-label">{{ opt.label }}</span>
+                    @if (opt.description) {
+                    <span class="muk-select-option-desc">{{ opt.description }}</span>
+                    }
+                </span>
+                @if (!multiple && isSelected(opt)) {
+                <svg class="muk-select-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="20 6 9 17 4 12" />
+                </svg>
+                }
+            </button>
+            }
+            }
+            } @else {
+            @for (opt of filteredOptions; track opt.value; let i = $index) {
+            <button type="button" class="muk-select-option" [class.is-selected]="isSelected(opt)"
+                [class.is-highlighted]="i === highlightedIndex" [class.is-disabled]="opt.disabled"
+                [attr.aria-selected]="isSelected(opt)" [attr.disabled]="opt.disabled ? true : null"
+                (click)="selectOption(opt)">
+                @if (multiple) {
+                <span class="muk-select-checkbox" [class.is-checked]="isSelected(opt)">
+                    @if (isSelected(opt)) {
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <polyline points="20 6 9 17 4 12" />
+                    </svg>
+                    }
+                </span>
+                }
+                <span class="muk-select-option-text">
+                    <span class="muk-select-option-label">{{ opt.label }}</span>
+                    @if (opt.description) {
+                    <span class="muk-select-option-desc">{{ opt.description }}</span>
+                    }
+                </span>
+                @if (!multiple && isSelected(opt)) {
+                <svg class="muk-select-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="20 6 9 17 4 12" />
+                </svg>
+                }
+            </button>
+            }
+            }
+        </div>
+    </div>
+    }
+
+    <!-- Helper / Error text -->
+    @if (hasError) {
+    <div class="muk-select-error">{{ errorMessage }}</div>
+    } @else if (helperText) {
+    <div class="muk-select-helper">{{ helperText }}</div>
+    }
+</div>

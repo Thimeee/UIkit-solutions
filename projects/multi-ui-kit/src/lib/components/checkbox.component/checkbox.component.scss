@@ -1,0 +1,148 @@
+// ============================================================
+// MUK Checkbox - SCSS (theme-aware)
+// ============================================================
+@use "../../styles/global-styles.scss" as *;
+
+.muk-check {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    user-select: none;
+    font-size: var(--muk-check-fs);
+    color: $text;
+    line-height: 1.4;
+
+    &.is-disabled {
+        cursor: not-allowed;
+        opacity: 0.55;
+    }
+}
+
+// ── SIZES ──
+.muk-check-size-sm {
+    --muk-check-size: 16px;
+    --muk-check-fs: 0.8125rem;
+    --muk-check-radius: 4px;
+}
+
+.muk-check-size-md {
+    --muk-check-size: 20px;
+    --muk-check-fs: 0.9375rem;
+    --muk-check-radius: 5px;
+}
+
+.muk-check-size-lg {
+    --muk-check-size: 24px;
+    --muk-check-fs: 1rem;
+    --muk-check-radius: 6px;
+}
+
+// ── BOX ──
+.muk-check-box {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--muk-check-size);
+    height: var(--muk-check-size);
+    flex-shrink: 0;
+}
+
+.muk-check-input {
+    position: absolute;
+    inset: 0;
+    margin: 0;
+    opacity: 0;
+    cursor: inherit;
+}
+
+.muk-check-mark {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    border: 2px solid $border-strong;
+    border-radius: var(--muk-check-radius);
+    background: $surface;
+    color: #fff;
+    transition: background-color 0.18s ease, border-color 0.18s ease, transform 0.1s ease;
+
+    svg {
+        width: 80%;
+        height: 80%;
+        opacity: 0;
+        transform: scale(0.5);
+        transition: opacity 0.15s ease, transform 0.15s ease;
+    }
+}
+
+// Checked / indeterminate state shows the mark
+.is-checked .muk-check-mark svg,
+.is-indeterminate .muk-check-mark svg {
+    opacity: 1;
+    transform: scale(1);
+}
+
+// Focus ring
+.muk-check-input:focus-visible+.muk-check-mark {
+    outline: 3px solid var(--muk-check-ring);
+    outline-offset: 2px;
+}
+
+// Hover
+.muk-check:not(.is-disabled):hover .muk-check-mark {
+    border-color: var(--muk-check-color);
+}
+
+.muk-check-label:empty {
+    display: none;
+}
+
+// ============================================================
+// VARIANTS
+// ============================================================
+@mixin check-variant($color, $ring) {
+    --muk-check-color: #{$color};
+    --muk-check-ring: #{$ring};
+
+    &.is-checked .muk-check-mark,
+    &.is-indeterminate .muk-check-mark {
+        background: $color;
+        border-color: $color;
+    }
+}
+
+.muk-check-primary {
+    @include check-variant($primary, $primary-shadow);
+}
+
+.muk-check-secondary {
+    @include check-variant($secondary, $secondary-shadow);
+}
+
+.muk-check-success {
+    @include check-variant($success, $success-shadow);
+}
+
+.muk-check-warning {
+    @include check-variant($warning, $warning-shadow);
+}
+
+.muk-check-danger {
+    @include check-variant($danger, $danger-shadow);
+}
+
+.muk-check-info {
+    @include check-variant($info, $info-shadow);
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    .muk-check-mark,
+    .muk-check-mark svg {
+        transition: none;
+    }
+}

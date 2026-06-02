@@ -1,0 +1,357 @@
+// ============================================================
+// MUK Timeline - SCSS (theme-aware)
+// ============================================================
+@use "../../styles/global-styles.scss" as *;
+
+.muk-tl {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    font-size: var(--muk-tl-fs);
+}
+
+// ── SIZES ──
+.muk-tl-size-sm {
+    --muk-tl-fs: 0.8125rem;
+    --muk-tl-marker: 24px;
+    --muk-tl-marker-icon: 12px;
+    --muk-tl-item-pad: 1rem;
+    --muk-tl-gap: 0.75rem;
+}
+
+.muk-tl-size-md {
+    --muk-tl-fs: 0.9375rem;
+    --muk-tl-marker: 32px;
+    --muk-tl-marker-icon: 16px;
+    --muk-tl-item-pad: 1.25rem;
+    --muk-tl-gap: 1rem;
+}
+
+.muk-tl-size-lg {
+    --muk-tl-fs: 1rem;
+    --muk-tl-marker: 40px;
+    --muk-tl-marker-icon: 20px;
+    --muk-tl-item-pad: 1.5rem;
+    --muk-tl-gap: 1.25rem;
+}
+
+
+// ── ITEM (default LEFT align) ──
+.muk-tl-item {
+    display: grid;
+    grid-template-columns: var(--muk-tl-marker) 1fr;
+    gap: var(--muk-tl-gap);
+    position: relative;
+    padding-bottom: var(--muk-tl-item-pad);
+
+    &:last-child {
+        padding-bottom: 0;
+    }
+}
+
+.muk-tl-side {
+    display: none;
+    font-size: 0.8125rem;
+    color: $text-muted;
+    line-height: 1.4;
+}
+
+.muk-tl-marker-col {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: var(--muk-tl-marker);
+}
+
+
+// ── MARKER ──
+.muk-tl-marker {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--muk-tl-marker);
+    height: var(--muk-tl-marker);
+    border-radius: 50%;
+    background: $surface;
+    border: 2px solid var(--muk-tl-color, #{$primary});
+    color: var(--muk-tl-color, #{$primary});
+    font-size: var(--muk-tl-marker-icon);
+    flex-shrink: 0;
+    z-index: 1;
+    transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+
+    svg {
+        width: 55%;
+        height: 55%;
+    }
+
+    i {
+        font-size: var(--muk-tl-marker-icon);
+        line-height: 1;
+    }
+
+    // Completed - filled
+    &.is-completed {
+        background: var(--muk-tl-color, #{$primary});
+        color: #fff;
+    }
+}
+
+
+// ── MARKER COLORS ──
+.muk-tl-marker-primary {
+    --muk-tl-color: #{$primary};
+}
+
+.muk-tl-marker-secondary {
+    --muk-tl-color: #{$secondary};
+}
+
+.muk-tl-marker-success {
+    --muk-tl-color: #{$success};
+}
+
+.muk-tl-marker-warning {
+    --muk-tl-color: #{$warning};
+}
+
+.muk-tl-marker-danger {
+    --muk-tl-color: #{$danger};
+}
+
+.muk-tl-marker-info {
+    --muk-tl-color: #{$info};
+}
+
+.muk-tl-marker-neutral {
+    --muk-tl-color: #{$text-muted};
+}
+
+
+// ── PULSE ANIMATION ──
+.muk-tl-marker.is-pulse {
+    background: var(--muk-tl-color, #{$primary});
+    color: #fff;
+}
+
+.muk-tl-pulse-ring {
+    position: absolute;
+    inset: -2px;
+    border-radius: 50%;
+    background: var(--muk-tl-color, #{$primary});
+    opacity: 0.5;
+    animation: mukTlPulse 1.6s ease-out infinite;
+    z-index: -1;
+}
+
+@keyframes mukTlPulse {
+    0% {
+        transform: scale(1);
+        opacity: 0.5;
+    }
+
+    100% {
+        transform: scale(1.9);
+        opacity: 0;
+    }
+}
+
+
+// ── CONNECTOR (line between markers) ──
+.muk-tl-connector {
+    flex: 1 1 auto;
+    width: 2px;
+    margin-top: 4px;
+    background: $border;
+    min-height: 16px;
+}
+
+.muk-tl-conn-dashed .muk-tl-connector {
+    background: transparent;
+    border-left: 2px dashed $border;
+    width: 0;
+}
+
+.muk-tl-conn-dotted .muk-tl-connector {
+    background: transparent;
+    border-left: 2px dotted $border-strong;
+    width: 0;
+}
+
+
+// ── BODY ──
+.muk-tl-body {
+    flex: 1 1 auto;
+    min-width: 0;
+    padding-top: calc((var(--muk-tl-marker) - 1.4em) / 2);
+}
+
+.muk-tl-head {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 0.5rem 0.75rem;
+    margin-bottom: 0.25rem;
+}
+
+.muk-tl-title {
+    font-weight: 600;
+    color: $text;
+    line-height: 1.3;
+}
+
+.muk-tl-time {
+    font-size: 0.75rem;
+    color: $text-subtle;
+    font-variant-numeric: tabular-nums;
+}
+
+.muk-tl-content {
+    color: $text-muted;
+    line-height: 1.55;
+}
+
+
+// ============================================================
+// VARIANTS
+// ============================================================
+
+// FILLED - all markers filled by default
+.muk-tl-variant-filled .muk-tl-marker {
+    background: var(--muk-tl-color, #{$primary});
+    color: #fff;
+    border-color: transparent;
+}
+
+// OUTLINE - thicker borders
+.muk-tl-variant-outline .muk-tl-marker {
+    border-width: 2.5px;
+    background: $surface;
+}
+
+.muk-tl-variant-outline .muk-tl-marker.is-completed {
+    border-width: 2.5px;
+}
+
+// MINIMAL - small dots, no border
+.muk-tl-variant-minimal {
+    --muk-tl-marker: 12px;
+}
+
+.muk-tl-variant-minimal .muk-tl-marker {
+    border: 0;
+    background: var(--muk-tl-color, #{$primary});
+    color: #fff;
+    width: 12px;
+    height: 12px;
+
+    svg,
+    i {
+        display: none;
+    }
+}
+
+.muk-tl-variant-minimal .muk-tl-item {
+    grid-template-columns: 12px 1fr;
+}
+
+.muk-tl-variant-minimal .muk-tl-body {
+    padding-top: 0;
+}
+
+
+// ============================================================
+// ALIGN: RIGHT - mirror layout
+// ============================================================
+.muk-tl-align-right .muk-tl-item {
+    grid-template-columns: 1fr var(--muk-tl-marker);
+}
+
+.muk-tl-align-right .muk-tl-body {
+    order: -1;
+    text-align: right;
+}
+
+.muk-tl-align-right .muk-tl-head {
+    justify-content: flex-end;
+}
+
+
+// ============================================================
+// ALIGN: ALTERNATE - zig-zag layout
+// ============================================================
+.muk-tl-align-alternate .muk-tl-item {
+    grid-template-columns: 1fr var(--muk-tl-marker) 1fr;
+
+    .muk-tl-side {
+        display: block;
+        text-align: right;
+        padding-right: var(--muk-tl-gap);
+        align-self: start;
+        padding-top: calc((var(--muk-tl-marker) - 1.4em) / 2);
+    }
+}
+
+.muk-tl-align-alternate .muk-tl-item.is-alt-right {
+    .muk-tl-body {
+        order: -1;
+        text-align: right;
+        padding-right: var(--muk-tl-gap);
+    }
+
+    .muk-tl-head {
+        justify-content: flex-end;
+    }
+
+    .muk-tl-side {
+        order: 2;
+        text-align: left;
+        padding-right: 0;
+        padding-left: var(--muk-tl-gap);
+    }
+}
+
+
+// ── REDUCED MOTION ──
+@media (prefers-reduced-motion: reduce) {
+    .muk-tl-marker {
+        transition: none;
+    }
+
+    .muk-tl-pulse-ring {
+        animation: none;
+        display: none;
+    }
+}
+
+
+// ── RESPONSIVE - alternate collapses to left on mobile ──
+@media (max-width: 640px) {
+    .muk-tl-align-alternate {
+        .muk-tl-item {
+            grid-template-columns: var(--muk-tl-marker) 1fr;
+        }
+
+        .muk-tl-side {
+            display: none;
+        }
+
+        .muk-tl-body {
+            order: 0;
+            text-align: left;
+            padding-right: 0;
+        }
+    }
+
+    .muk-tl-align-alternate .muk-tl-item.is-alt-right .muk-tl-body {
+        order: 0;
+        text-align: left;
+        padding-right: 0;
+    }
+
+    .muk-tl-align-alternate .muk-tl-head {
+        justify-content: flex-start;
+    }
+}

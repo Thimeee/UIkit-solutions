@@ -1,0 +1,241 @@
+// ============================================================
+// MUK Pagination - SCSS (theme-aware)
+// ============================================================
+@use "../../styles/global-styles.scss" as *;
+
+.muk-pg {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+    width: 100%;
+    font-size: var(--muk-pg-fs);
+    color: $text;
+}
+
+// ── SIZES ──
+.muk-pg-size-sm {
+    --muk-pg-fs: 0.8125rem;
+    --muk-pg-btn: 30px;
+    --muk-pg-icon: 14px;
+}
+
+.muk-pg-size-md {
+    --muk-pg-fs: 0.875rem;
+    --muk-pg-btn: 36px;
+    --muk-pg-icon: 16px;
+}
+
+.muk-pg-size-lg {
+    --muk-pg-fs: 0.9375rem;
+    --muk-pg-btn: 42px;
+    --muk-pg-icon: 18px;
+}
+
+
+// ── INFO TEXT ──
+.muk-pg-info {
+    color: $text-muted;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+
+// ── PAGE-SIZE SELECTOR ──
+.muk-pg-pagesize {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: $text-muted;
+    flex-shrink: 0;
+}
+
+.muk-pg-pagesize-label {
+    white-space: nowrap;
+}
+
+.muk-pg-pagesize-select {
+    padding: 4px 28px 4px 10px;
+    background: $surface;
+    border: 1.5px solid $border;
+    border-radius: 6px;
+    color: $text;
+    font-size: inherit;
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 6px center;
+    background-size: 14px;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+
+    &:hover {
+        border-color: $border-strong;
+    }
+
+    &:focus {
+        outline: none;
+        border-color: $primary;
+        box-shadow: 0 0 0 3px $primary-shadow;
+    }
+}
+
+
+// ── NAV ──
+.muk-pg-nav {
+    flex-shrink: 0;
+}
+
+.muk-pg-list {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+// ── BUTTONS ──
+.muk-pg-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    min-width: var(--muk-pg-btn);
+    height: var(--muk-pg-btn);
+    padding: 0 8px;
+    background: transparent;
+    border: 1.5px solid transparent;
+    border-radius: 8px;
+    color: $text;
+    font-size: inherit;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+
+    svg {
+        width: var(--muk-pg-icon);
+        height: var(--muk-pg-icon);
+        flex-shrink: 0;
+    }
+
+    &:hover:not(:disabled) {
+        background: $surface-hover;
+        color: $text;
+    }
+
+    &:focus-visible {
+        outline: 2px solid $primary;
+        outline-offset: 2px;
+    }
+
+    &:disabled {
+        color: $text-disabled;
+        cursor: not-allowed;
+        opacity: 0.55;
+    }
+
+    &.is-active {
+        background: $primary;
+        color: $primary-contrast;
+        border-color: $primary;
+        cursor: default;
+        pointer-events: none;
+    }
+}
+
+// Prev/Next labels (hidden on small screens)
+.muk-pg-btn-label {
+    font-weight: 500;
+}
+
+// Numeric buttons
+.muk-pg-num {
+    font-variant-numeric: tabular-nums;
+}
+
+// Ellipsis
+.muk-pg-ellipsis {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: var(--muk-pg-btn);
+    height: var(--muk-pg-btn);
+    color: $text-subtle;
+    font-weight: 600;
+    user-select: none;
+}
+
+// Minimal mode - current page indicator
+.muk-pg-current {
+    display: inline-flex;
+    align-items: center;
+    padding: 0 12px;
+    height: var(--muk-pg-btn);
+    color: $text;
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+}
+
+
+// ============================================================
+// VARIANTS
+// ============================================================
+
+// ROUNDED - more rounded corners
+.muk-pg-variant-rounded .muk-pg-btn,
+.muk-pg-variant-rounded .muk-pg-ellipsis {
+    border-radius: 50%;
+    padding: 0;
+}
+
+.muk-pg-variant-rounded .muk-pg-btn.muk-pg-prev,
+.muk-pg-variant-rounded .muk-pg-btn.muk-pg-next {
+    padding: 0 12px;
+    border-radius: 999px;
+}
+
+// PILL - all pills
+.muk-pg-variant-pill .muk-pg-btn,
+.muk-pg-variant-pill .muk-pg-ellipsis {
+    border-radius: 999px;
+}
+
+// MINIMAL - hide page numbers, just prev/next + count
+.muk-pg-variant-minimal {
+    .muk-pg-btn {
+        border: 1.5px solid $border;
+    }
+}
+
+
+// ============================================================
+// RESPONSIVE
+// ============================================================
+@media (max-width: 640px) {
+    .muk-pg {
+        justify-content: center;
+    }
+
+    .muk-pg-info,
+    .muk-pg-pagesize {
+        width: 100%;
+        justify-content: center;
+    }
+
+    // Hide Prev/Next text labels
+    .muk-pg-btn-label {
+        display: none;
+    }
+}
+
+
+@media (prefers-reduced-motion: reduce) {
+
+    .muk-pg-btn,
+    .muk-pg-pagesize-select {
+        transition: none;
+    }
+}

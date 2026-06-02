@@ -1,0 +1,504 @@
+// ============================================================
+// MUK Modal Component - SCSS
+// ============================================================
+// Theme-aware (light/dark). Center modal + 4 edge drawers.
+// ============================================================
+
+@use "../../styles/global-styles.scss" as *;
+
+
+// ============================================================
+// BACKDROP (scrim that covers the screen)
+// ============================================================
+.muk-modal-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: flex;
+    background: $overlay;
+    animation: mukBackdropIn 0.25s ease;
+
+    &.no-scrim {
+        background: transparent;
+        pointer-events: none;
+
+        .muk-modal-dialog {
+            pointer-events: auto;
+        }
+    }
+
+    &.has-blur {
+        backdrop-filter: blur(4px);
+        -webkit-backdrop-filter: blur(4px);
+    }
+
+    &.is-leaving {
+        animation: mukBackdropOut 0.25s ease forwards;
+    }
+
+    // ── Alignment per position ──
+    &.pos-center {
+        align-items: center;
+        justify-content: center;
+        padding: 1rem;
+    }
+
+    &.pos-top {
+        align-items: flex-start;
+        justify-content: stretch;
+    }
+
+    &.pos-bottom {
+        align-items: flex-end;
+        justify-content: stretch;
+    }
+
+    &.pos-left {
+        align-items: stretch;
+        justify-content: flex-start;
+    }
+
+    &.pos-right {
+        align-items: stretch;
+        justify-content: flex-end;
+    }
+}
+
+
+// ============================================================
+// DIALOG (the panel itself)
+// ============================================================
+.muk-modal-dialog {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    background: $surface;
+    color: $text;
+    box-shadow: $shadow-xl;
+    overflow: hidden;
+    max-height: 100vh;
+
+    // ── CENTER modal ──
+    &.muk-modal-center {
+        border-radius: 1rem;
+        max-height: calc(100vh - 2rem);
+        width: 100%;
+
+        &.muk-modal-size-sm {
+            max-width: 360px;
+        }
+
+        &.muk-modal-size-md {
+            max-width: 520px;
+        }
+
+        &.muk-modal-size-lg {
+            max-width: 720px;
+        }
+
+        &.muk-modal-size-xl {
+            max-width: 960px;
+        }
+
+        &.muk-modal-size-full {
+            max-width: calc(100vw - 2rem);
+            max-height: calc(100vh - 2rem);
+            width: 100%;
+            height: 100%;
+        }
+    }
+
+    // ── LEFT / RIGHT drawers (full height, width varies) ──
+    &.muk-modal-left,
+    &.muk-modal-right {
+        height: 100vh;
+        max-height: 100vh;
+        border-radius: 0;
+
+        &.muk-modal-size-sm {
+            width: 300px;
+        }
+
+        &.muk-modal-size-md {
+            width: 400px;
+        }
+
+        &.muk-modal-size-lg {
+            width: 560px;
+        }
+
+        &.muk-modal-size-xl {
+            width: 720px;
+        }
+
+        &.muk-modal-size-full {
+            width: 100vw;
+        }
+    }
+
+    // ── TOP / BOTTOM drawers (full width, height varies) ──
+    &.muk-modal-top,
+    &.muk-modal-bottom {
+        width: 100vw;
+        max-width: 100vw;
+        border-radius: 0;
+
+        &.muk-modal-size-sm {
+            max-height: 25vh;
+        }
+
+        &.muk-modal-size-md {
+            max-height: 40vh;
+        }
+
+        &.muk-modal-size-lg {
+            max-height: 60vh;
+        }
+
+        &.muk-modal-size-xl {
+            max-height: 80vh;
+        }
+
+        &.muk-modal-size-full {
+            height: 100vh;
+            max-height: 100vh;
+        }
+    }
+}
+
+
+// ============================================================
+// HEADER
+// ============================================================
+.muk-modal-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1.125rem 1.25rem;
+    // border-bottom: 1px solid $border;
+    flex-shrink: 0;
+
+    &.is-hidden {
+        display: none;
+    }
+}
+
+.muk-modal-title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: $text;
+    line-height: 1.4;
+    flex: 1 1 auto;
+
+    &.is-hidden {
+        display: none;
+    }
+}
+
+.muk-modal-close {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 2rem;
+    height: 2rem;
+    margin: -0.25rem -0.375rem 0 0;
+    padding: 0;
+    background: transparent;
+    border: 0;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    color: $text-muted;
+    transition: background-color 0.15s ease, color 0.15s ease;
+
+    &:hover {
+        background: $surface-hover;
+        color: $text;
+    }
+
+    &:focus-visible {
+        outline: 2px solid $primary;
+        outline-offset: 1px;
+    }
+
+    svg {
+        width: 1.125rem;
+        height: 1.125rem;
+        display: block;
+    }
+}
+
+
+// ============================================================
+// BODY
+// ============================================================
+.muk-modal-body {
+    padding: 1.25rem;
+    color: $text;
+    flex: 1 1 auto;
+    font-size: 0.9375rem;
+    line-height: 1.6;
+
+    &.is-scrollable {
+        overflow-y: auto;
+    }
+}
+
+
+// ============================================================
+// FOOTER
+// ============================================================
+.muk-modal-footer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.625rem;
+    padding: 1rem 1.25rem;
+    // border-top: 1px solid $border;
+    flex-shrink: 0;
+    flex-wrap: wrap;
+
+    &.is-hidden {
+        display: none;
+    }
+}
+
+
+// ============================================================
+// ENTRANCE ANIMATIONS
+// ============================================================
+
+// Center: ZOOM
+.anim-zoom:not(.is-leaving) {
+    animation: mukModalZoomIn 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.anim-zoom.is-leaving {
+    animation: mukModalZoomOut 0.22s ease forwards;
+}
+
+// Center: FADE
+.anim-fade:not(.is-leaving) {
+    animation: mukModalFadeIn 0.25s ease;
+}
+
+.anim-fade.is-leaving {
+    animation: mukModalFadeOut 0.22s ease forwards;
+}
+
+// SLIDE - direction depends on position
+.muk-modal-left.anim-slide:not(.is-leaving) {
+    animation: mukSlideFromLeft 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.muk-modal-right.anim-slide:not(.is-leaving) {
+    animation: mukSlideFromRight 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.muk-modal-top.anim-slide:not(.is-leaving) {
+    animation: mukSlideFromTop 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.muk-modal-bottom.anim-slide:not(.is-leaving) {
+    animation: mukSlideFromBottom 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.muk-modal-left.anim-slide.is-leaving {
+    animation: mukSlideToLeft 0.25s ease forwards;
+}
+
+.muk-modal-right.anim-slide.is-leaving {
+    animation: mukSlideToRight 0.25s ease forwards;
+}
+
+.muk-modal-top.anim-slide.is-leaving {
+    animation: mukSlideToTop 0.25s ease forwards;
+}
+
+.muk-modal-bottom.anim-slide.is-leaving {
+    animation: mukSlideToBottom 0.25s ease forwards;
+}
+
+// Center using slide → fallback to zoom
+.muk-modal-center.anim-slide:not(.is-leaving) {
+    animation: mukModalZoomIn 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.muk-modal-center.anim-slide.is-leaving {
+    animation: mukModalZoomOut 0.22s ease forwards;
+}
+
+
+// ── Keyframes ──
+@keyframes mukBackdropIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes mukBackdropOut {
+    from {
+        opacity: 1;
+    }
+
+    to {
+        opacity: 0;
+    }
+}
+
+@keyframes mukModalZoomIn {
+    from {
+        opacity: 0;
+        transform: scale(0.94) translateY(8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+@keyframes mukModalZoomOut {
+    from {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+
+    to {
+        opacity: 0;
+        transform: scale(0.96) translateY(6px);
+    }
+}
+
+@keyframes mukModalFadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes mukModalFadeOut {
+    from {
+        opacity: 1;
+    }
+
+    to {
+        opacity: 0;
+    }
+}
+
+@keyframes mukSlideFromLeft {
+    from {
+        transform: translateX(-100%);
+    }
+
+    to {
+        transform: translateX(0);
+    }
+}
+
+@keyframes mukSlideToLeft {
+    from {
+        transform: translateX(0);
+    }
+
+    to {
+        transform: translateX(-100%);
+    }
+}
+
+@keyframes mukSlideFromRight {
+    from {
+        transform: translateX(100%);
+    }
+
+    to {
+        transform: translateX(0);
+    }
+}
+
+@keyframes mukSlideToRight {
+    from {
+        transform: translateX(0);
+    }
+
+    to {
+        transform: translateX(100%);
+    }
+}
+
+@keyframes mukSlideFromTop {
+    from {
+        transform: translateY(-100%);
+    }
+
+    to {
+        transform: translateY(0);
+    }
+}
+
+@keyframes mukSlideToTop {
+    from {
+        transform: translateY(0);
+    }
+
+    to {
+        transform: translateY(-100%);
+    }
+}
+
+@keyframes mukSlideFromBottom {
+    from {
+        transform: translateY(100%);
+    }
+
+    to {
+        transform: translateY(0);
+    }
+}
+
+@keyframes mukSlideToBottom {
+    from {
+        transform: translateY(0);
+    }
+
+    to {
+        transform: translateY(100%);
+    }
+}
+
+
+// ============================================================
+// REDUCED MOTION
+// ============================================================
+@media (prefers-reduced-motion: reduce) {
+
+    .muk-modal-backdrop,
+    .muk-modal-dialog {
+        animation-duration: 0.01ms !important;
+    }
+}
+
+
+// ============================================================
+// MOBILE - center modals near-full width
+// ============================================================
+@media (max-width: 480px) {
+    .muk-modal-dialog.muk-modal-center {
+
+        &.muk-modal-size-sm,
+        &.muk-modal-size-md,
+        &.muk-modal-size-lg,
+        &.muk-modal-size-xl {
+            max-width: calc(100vw - 1.5rem);
+        }
+    }
+}

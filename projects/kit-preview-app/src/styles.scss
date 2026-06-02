@@ -3,18 +3,13 @@
    ============================================================
    Theme variables and dark-mode rules are inlined here directly
    to guarantee they exist in the global CSS scope.
-   
-   The library components reference these CSS variables - so as
-   long as they're defined globally (here in styles.scss), every
-   component automatically becomes theme-aware.
    ============================================================ */
-
+@use 'tailwindcss';
 
 /* ============================================================
    LIGHT THEME (default)
    ============================================================ */
 :root {
-  /* User-overridable: primary + secondary */
   --muk-primary-user: #0d6efd;
   --muk-primary-dark: #0a58ca;
   --muk-primary-darker: #084298;
@@ -35,7 +30,6 @@
   --muk-secondary-shadow-hover: #6c757d81;
   --muk-secondary-contrast: #ffffff;
 
-  /* Semantic theme tokens - LIGHT */
   --muk-surface: #ffffff;
   --muk-surface-elevated: #ffffff;
   --muk-surface-sunken: #f9fafb;
@@ -65,7 +59,6 @@
   --muk-danger-tint: #fee2e2;
   --muk-info-tint: #e0f2fe;
 
-  // Soft text - readable color on tint backgrounds (LIGHT mode: darker shade)
   --muk-primary-soft-text: #0a58ca;
   --muk-secondary-soft-text: #495057;
   --muk-success-soft-text: #047857;
@@ -81,7 +74,6 @@
 .muk-theme-dark,
 :root[data-theme="dark"],
 :root.muk-theme-dark {
-  /* Primary - brighter for dark bg */
   --muk-primary-dark: #3d8bfd;
   --muk-primary-darker: #0d6efd;
   --muk-primary-light: #6ea8fe;
@@ -98,42 +90,35 @@
   --muk-secondary-shadow: #adb5bd4d;
   --muk-secondary-shadow-hover: #adb5bd81;
 
-  /* Surfaces */
   --muk-surface: #1e293b;
   --muk-surface-elevated: #273449;
   --muk-surface-sunken: #0f172a;
   --muk-surface-muted: #334155;
   --muk-surface-hover: #273449;
 
-  /* Text */
   --muk-text: #f1f5f9;
   --muk-text-muted: #cbd5e1;
   --muk-text-subtle: #94a3b8;
   --muk-text-disabled: #64748b;
   --muk-text-inverse: #1f2937;
 
-  /* Borders */
   --muk-border: #334155;
   --muk-border-strong: #475569;
   --muk-border-subtle: #1e293b;
 
-  /* Overlay */
   --muk-overlay: rgba(0, 0, 0, 0.7);
   --muk-overlay-light: rgba(15, 23, 42, 0.85);
 
-  /* Shadows */
   --muk-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
   --muk-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
   --muk-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
   --muk-shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 10px 10px -5px rgba(0, 0, 0, 0.3);
 
-  /* Status tints */
   --muk-success-tint: #064e3b;
   --muk-warning-tint: #78350f;
   --muk-danger-tint: #7f1d1d;
   --muk-info-tint: #0c4a6e;
 
-  /* Soft text - readable on dark tints (DARK mode: lighter shade) */
   --muk-primary-soft-text: #93c5fd;
   --muk-secondary-soft-text: #ced4da;
   --muk-success-soft-text: #6ee7b7;
@@ -145,7 +130,6 @@
 
 /* ============================================================
    SYSTEM PREFERENCE (auto dark)
-   Auto-applies dark UNLESS user has chosen light explicitly.
    ============================================================ */
 @media (prefers-color-scheme: dark) {
   :root:not(.muk-theme-light):not([data-theme="light"]) {
@@ -207,7 +191,7 @@
 /* ============================================================
    TAILWIND
    ============================================================ */
-@import 'tailwindcss';
+
 
 @source "../../multi-ui-kit/src/**/*.{html,ts}";
 
@@ -219,15 +203,12 @@
 
 /* ============================================================
    THEME-AWARE PAGE STYLES
-   Body uses theme tokens so the whole page flips with theme.
    ============================================================ */
 html,
 body {
   background-color: var(--muk-surface-sunken);
   color: var(--muk-text);
-  transition:
-    background-color 0.25s ease,
-    color 0.25s ease;
+  transition: background-color 0.25s ease, color 0.25s ease;
   margin: 0;
   padding: 0;
   min-height: 100vh;
@@ -249,4 +230,145 @@ label {
 strong,
 b {
   color: var(--muk-text);
+}
+
+
+/* ============================================================
+   MUK TOOLTIP - GLOBAL STYLES (REQUIRED)
+   ============================================================
+   Tooltip elements are appended to <body> by the directive, so
+   their CSS must live in the global scope (not in component
+   styles, which are scoped by Angular's view encapsulation).
+   ============================================================ */
+
+.muk-tooltip {
+  position: fixed;
+  z-index: 10000;
+  padding: 6px 10px;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  line-height: 1.4;
+  border-radius: 6px;
+  box-shadow: var(--muk-shadow-lg);
+  pointer-events: none;
+  opacity: 0;
+  transform: scale(0.94);
+  transition: opacity 0.15s ease, transform 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+  word-wrap: break-word;
+  white-space: normal;
+}
+
+.muk-tooltip.is-visible {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.muk-tooltip-arrow {
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-style: solid;
+}
+
+.muk-tooltip-pos-top .muk-tooltip-arrow {
+  bottom: -6px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 6px 6px 0 6px;
+  border-color: currentColor transparent transparent transparent;
+}
+
+.muk-tooltip-pos-bottom .muk-tooltip-arrow {
+  top: -6px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 0 6px 6px 6px;
+  border-color: transparent transparent currentColor transparent;
+}
+
+.muk-tooltip-pos-left .muk-tooltip-arrow {
+  right: -6px;
+  top: 50%;
+  transform: translateY(-50%);
+  border-width: 6px 0 6px 6px;
+  border-color: transparent transparent transparent currentColor;
+}
+
+.muk-tooltip-pos-right .muk-tooltip-arrow {
+  left: -6px;
+  top: 50%;
+  transform: translateY(-50%);
+  border-width: 6px 6px 6px 0;
+  border-color: transparent currentColor transparent transparent;
+}
+
+/* Variants - arrow uses currentColor so it follows the body color */
+.muk-tooltip-dark {
+  background: var(--muk-text);
+  color: var(--muk-surface);
+}
+
+.muk-tooltip-dark>.muk-tooltip-arrow {
+  color: var(--muk-text);
+}
+
+.muk-tooltip-light {
+  background: var(--muk-surface);
+  color: var(--muk-text);
+  border: 1px solid var(--muk-border);
+}
+
+.muk-tooltip-light>.muk-tooltip-arrow {
+  color: var(--muk-surface);
+}
+
+.muk-tooltip-primary {
+  background: var(--muk-primary-user);
+  color: var(--muk-primary-contrast);
+}
+
+.muk-tooltip-primary>.muk-tooltip-arrow {
+  color: var(--muk-primary-user);
+}
+
+.muk-tooltip-success {
+  background: #10b981;
+  color: #ffffff;
+}
+
+.muk-tooltip-success>.muk-tooltip-arrow {
+  color: #10b981;
+}
+
+.muk-tooltip-warning {
+  background: #f59e0b;
+  color: #ffffff;
+}
+
+.muk-tooltip-warning>.muk-tooltip-arrow {
+  color: #f59e0b;
+}
+
+.muk-tooltip-danger {
+  background: #ef4444;
+  color: #ffffff;
+}
+
+.muk-tooltip-danger>.muk-tooltip-arrow {
+  color: #ef4444;
+}
+
+.muk-tooltip-info {
+  background: #0ea5e9;
+  color: #ffffff;
+}
+
+.muk-tooltip-info>.muk-tooltip-arrow {
+  color: #0ea5e9;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .muk-tooltip {
+    transition: opacity 0.05s ease;
+  }
 }

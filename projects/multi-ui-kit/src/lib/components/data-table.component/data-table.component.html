@@ -1,0 +1,340 @@
+<div [ngClass]="hostClasses">
+
+    <!-- ═══════════ TOOLBAR ═══════════ -->
+    @if (showToolbar) {
+    <div class="muk-dt-toolbar">
+        <div class="muk-dt-toolbar-left">
+            @if (title) {
+            <h3 class="muk-dt-title">{{ title }}</h3>
+            }
+            @if (showSearch) {
+            <div class="muk-dt-search">
+                <muk-input type="search" [placeholder]="searchPlaceholder" [clearable]="true" labelStyle="none"
+                    size="sm" (ngModelChange)="onSearchInput($event)" [ngModel]="searchTerm()">
+                    <i slot="icon-left" class="bi bi-search"></i>
+                </muk-input>
+            </div>
+            }
+        </div>
+
+        <div class="muk-dt-toolbar-right">
+            <!-- Bulk action bar (when rows selected) -->
+            @if (selectable === 'multi' && selectedRows.length > 0 && bulkActions.length > 0) {
+            <div class="muk-dt-bulk">
+                <span class="muk-dt-bulk-count">{{ selectedRows.length }} selected</span>
+                @for (act of bulkActions; track act.id) {
+                <muk-button size="sm" [variant]="act.variant || 'primary'" [buttonStyle]="act.buttonStyle || 'soft'"
+                    (clicked)="act.handler(selectedRows)">
+                    @if (act.icon) {
+                    <i slot="icon-left" [class]="act.icon"></i>
+                    }
+                    {{ act.label }}
+                </muk-button>
+                }
+                <muk-button size="sm" buttonStyle="ghost" (clicked)="clearSelection()">
+                    Clear
+                </muk-button>
+            </div>
+            }
+
+            <!-- Filters toggle -->
+            @if (hasFilterableColumns()) {
+            <muk-button size="sm" buttonStyle="soft" variant="secondary"
+                (clicked)="showFiltersPanel.set(!showFiltersPanel())">
+                <i slot="icon-left" class="bi bi-funnel"></i>
+                Filters
+                @if (activeFilterChips().length > 0) {
+                <span class="muk-dt-filter-count">{{ activeFilterChips().length }}</span>
+                }
+            </muk-button>
+            }
+
+            <!-- Column visibility -->
+            @if (showColumnToggle) {
+            <muk-button size="sm" buttonStyle="ghost" variant="secondary" mukTooltip="Columns"
+                (clicked)="showColumnPanel.set(!showColumnPanel())">
+                <i class="bi bi-layout-three-columns"></i>
+            </muk-button>
+            }
+
+            <!-- Refresh -->
+            @if (showRefresh) {
+            <muk-button size="sm" buttonStyle="ghost" variant="secondary" mukTooltip="Refresh" (clicked)="doRefresh()"
+                [loading]="loading">
+                <i class="bi bi-arrow-clockwise"></i>
+            </muk-button>
+            }
+        </div>
+    </div>
+
+    <!-- Column toggle panel -->
+    @if (showColumnPanel()) {
+    <div class="muk-dt-col-panel">
+        <span class="muk-dt-col-panel-title">Visible columns:</span>
+        @for (col of columns; track col.key) {
+        <muk-checkbox [ngModel]="columnVisibility()[col.key] !== false" (checkedChange)="toggleColumn(col.key)"
+            size="sm">{{ col.label || col.key }}</muk-checkbox>
+        }
+    </div>
+    }
+
+    <!-- Filters panel -->
+    @if (showFiltersPanel()) {
+    <div class="muk-dt-filters-panel">
+        @for (col of columns; track col.key) {
+        @if (col.filterable && col.filterType !== 'none') {
+        <div class="muk-dt-filter-item">
+            @switch (col.filterType) {
+            @case ('text') {
+            <muk-input [label]="col.label || col.key" labelStyle="top" size="sm"
+                [placeholder]="col.filterPlaceholder || ''" [ngModel]="filters()[col.key] || ''"
+                (ngModelChange)="setFilter(col.key, $event)" [clearable]="true"></muk-input>
+            }
+            @case ('number') {
+            <muk-input [label]="col.label || col.key" labelStyle="top" type="number" size="sm"
+                [ngModel]="filters()[col.key] || ''" (ngModelChange)="setFilter(col.key, $event)"
+                [clearable]="true"></muk-input>
+            }
+            @case ('select') {
+            <muk-select [label]="col.label || col.key" size="sm" [options]="getFilterSelectOptions(col)"
+                [ngModel]="filters()[col.key]" (ngModelChange)="setFilter(col.key, $event)"
+                [clearable]="true"></muk-select>
+            }
+            @case ('multi-select') {
+            <muk-select [label]="col.label || col.key" size="sm" [options]="getFilterSelectOptions(col)"
+                [multiple]="true" [searchable]="true" [ngModel]="filters()[col.key]"
+                (ngModelChange)="setFilter(col.key, $event)"></muk-select>
+            }
+            @case ('date') {
+            <muk-date-picker [label]="col.label || col.key" labelStyle="top" size="sm" [ngModel]="filters()[col.key]"
+                (ngModelChange)="setFilter(col.key, $event)"></muk-date-picker>
+            }
+            @case ('date-range') {
+            <div class="muk-dt-date-range">
+                <muk-date-picker [label]="(col.label || col.key) + ' from'" labelStyle="top" size="sm"
+                    [ngModel]="filters()[col.key]?.from"
+                    (ngModelChange)="setFilter(col.key, { ...(filters()[col.key] || {}), from: $event })"></muk-date-picker>
+                <muk-date-picker [label]="(col.label || col.key) + ' to'" labelStyle="top" size="sm"
+                    [ngModel]="filters()[col.key]?.to"
+                    (ngModelChange)="setFilter(col.key, { ...(filters()[col.key] || {}), to: $event })"></muk-date-picker>
+            </div>
+            }
+            @case ('boolean') {
+            <muk-select [label]="col.label || col.key" size="sm"
+                [options]="[{label:'Yes',value:true},{label:'No',value:false}]" [ngModel]="filters()[col.key]"
+                (ngModelChange)="setFilter(col.key, $event)" [clearable]="true"></muk-select>
+            }
+            }
+        </div>
+        }
+        }
+        <div class="muk-dt-filter-actions">
+            <muk-button size="sm" buttonStyle="ghost" (clicked)="clearAllFilters()">
+                Clear all
+            </muk-button>
+        </div>
+    </div>
+    }
+
+    <!-- Active filter chips -->
+    @if (activeFilterChips().length > 0) {
+    <div class="muk-dt-filter-chips">
+        @for (chip of activeFilterChips(); track chip.key) {
+        <muk-chip size="sm" variant="primary" chipStyle="soft" [removable]="true" (removed)="clearFilter(chip.key)">{{
+            chip.label }}: {{ chip.value }}</muk-chip>
+        }
+        <muk-button size="sm" buttonStyle="ghost" (clicked)="clearAllFilters()">
+            Clear all
+        </muk-button>
+    </div>
+    }
+    }
+
+
+    <!-- ═══════════ TABLE ═══════════ -->
+    <div class="muk-dt-scroll" [style.max-height]="maxHeight">
+        <table class="muk-dt-table">
+
+            <!-- ── HEADER ── -->
+            <thead>
+                <tr>
+                    <!-- Expand column header -->
+                    @if (expandable) {
+                    <th class="muk-dt-th muk-dt-th-expand"></th>
+                    }
+
+                    <!-- Select-all checkbox -->
+                    @if (selectable) {
+                    <th class="muk-dt-th muk-dt-th-select">
+                        @if (selectable === 'multi') {
+                        <muk-checkbox [ngModel]="allSelected()" [indeterminate]="someSelected()"
+                            (checkedChange)="toggleAll()" ariaLabel="Select all"></muk-checkbox>
+                        }
+                    </th>
+                    }
+
+                    <!-- Column headers -->
+                    @for (col of visibleColumns(); track col.key) {
+                    <th class="muk-dt-th" [class.is-sortable]="col.sortable"
+                        [class.is-sticky-left]="col.sticky === 'left'" [class.is-sticky-right]="col.sticky === 'right'"
+                        [class.hide-on-mobile]="col.hideOnMobile" [class.align-center]="col.align === 'center'"
+                        [class.align-right]="col.align === 'right'" [class]="col.headerClass || ''"
+                        [style.width]="col.width" [style.min-width]="col.minWidth" [style.max-width]="col.maxWidth"
+                        (click)="sortBy(col)">
+                        <span class="muk-dt-th-content">
+                            <span class="muk-dt-th-label">{{ col.label || col.key }}</span>
+                            @if (col.sortable) {
+                            <span class="muk-dt-sort" [class]="'is-' + sortState(col)">
+                                <svg viewBox="0 0 12 16" fill="currentColor">
+                                    <path d="M6 2 L10 7 H2 Z" class="muk-dt-sort-up" />
+                                    <path d="M6 14 L10 9 H2 Z" class="muk-dt-sort-down" />
+                                </svg>
+                            </span>
+                            }
+                        </span>
+                    </th>
+                    }
+
+                    <!-- Actions column header -->
+                    @if (actions.length > 0) {
+                    <th class="muk-dt-th muk-dt-th-actions align-right">Actions</th>
+                    }
+                </tr>
+            </thead>
+
+
+            <!-- ── BODY ── -->
+            <tbody>
+                @if (loading) {
+                <!-- Loading skeletons -->
+                @for (n of [].constructor(loadingRowCount); track $index) {
+                <tr class="muk-dt-row">
+                    @if (expandable) {
+                    <td class="muk-dt-td muk-dt-td-expand"><muk-skeleton variant="circle" width="20px"
+                            height="20px"></muk-skeleton></td>
+                    }
+                    @if (selectable) {
+                    <td class="muk-dt-td muk-dt-td-select"><muk-skeleton variant="rounded" width="18px"
+                            height="18px"></muk-skeleton></td>
+                    }
+                    @for (col of visibleColumns(); track col.key) {
+                    <td class="muk-dt-td">
+                        <muk-skeleton variant="text" [width]="col.skeletonWidth || '80%'"></muk-skeleton>
+                    </td>
+                    }
+                    @if (actions.length > 0) {
+                    <td class="muk-dt-td muk-dt-td-actions">
+                        <muk-skeleton variant="rounded" width="60px" height="28px"></muk-skeleton>
+                    </td>
+                    }
+                </tr>
+                }
+                } @else if (displayRows().length === 0) {
+                <!-- Empty state -->
+                <tr class="muk-dt-empty-row">
+                    <td [attr.colspan]="totalColumnCount()">
+                        @if (emptyTpl) {
+                        <ng-container *ngTemplateOutlet="emptyTpl.template"></ng-container>
+                        } @else {
+                        <muk-empty-state [icon]="emptyIcon" [title]="emptyTitle"
+                            [description]="emptyDescription"></muk-empty-state>
+                        }
+                    </td>
+                </tr>
+                } @else {
+                @for (row of displayRows(); track trackRow($index, row); let i = $index) {
+                <tr class="muk-dt-row" [class.is-selected]="isRowSelected(row)" [class.is-expanded]="isExpanded(row)"
+                    [class.is-clickable]="rowClick.observed" (click)="onRowClick(row, $event)">
+                    <!-- Expand caret -->
+                    @if (expandable) {
+                    <td class="muk-dt-td muk-dt-td-expand">
+                        @if (expandableFn(row)) {
+                        <button type="button" class="muk-dt-expand-btn" [class.is-open]="isExpanded(row)"
+                            (click)="toggleExpand(row, $event)"
+                            [attr.aria-label]="isExpanded(row) ? 'Collapse' : 'Expand'">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="9 18 15 12 9 6" />
+                            </svg>
+                        </button>
+                        }
+                    </td>
+                    }
+
+                    <!-- Selection checkbox -->
+                    @if (selectable) {
+                    <td class="muk-dt-td muk-dt-td-select">
+                        <span class="muk-dt-checkbox" (click)="$event.stopPropagation()">
+                            <muk-checkbox [ngModel]="isRowSelected(row)" [disabled]="!selectableFn(row)"
+                                (checkedChange)="toggleRow(row)" ariaLabel="Select row"></muk-checkbox>
+                        </span>
+                    </td>
+                    }
+
+                    <!-- Cells -->
+                    @for (col of visibleColumns(); track col.key) {
+                    <td class="muk-dt-td" [class.is-sticky-left]="col.sticky === 'left'"
+                        [class.is-sticky-right]="col.sticky === 'right'" [class.hide-on-mobile]="col.hideOnMobile"
+                        [class.align-center]="col.align === 'center'" [class.align-right]="col.align === 'right'"
+                        [class]="cellClassFor(row, col)" [attr.data-label]="col.label || col.key">
+                        @if (getCellTemplate(col.key); as tpl) {
+                        <ng-container
+                            *ngTemplateOutlet="tpl; context: { $implicit: row, row: row, value: formatValue(row, col), index: i, column: col }"></ng-container>
+                        } @else if (col.html) {
+                        <span [innerHTML]="formatValue(row, col)"></span>
+                        } @else {
+                        {{ formatValue(row, col) }}
+                        }
+                    </td>
+                    }
+
+                    <!-- Actions cell -->
+                    @if (actions.length > 0) {
+                    <td class="muk-dt-td muk-dt-td-actions align-right" (click)="$event.stopPropagation()">
+                        <div class="muk-dt-actions">
+                            @for (act of actions; track act.id) {
+                            @if (actionVisible(act, row)) {
+                            <muk-button class="muk-dt-action-btn" size="sm" [variant]="act.variant || 'secondary'"
+                                [buttonStyle]="act.buttonStyle || 'ghost'"
+                                [iconOnly]="act.iconOnly !== false && !actionLabel(act, row)"
+                                [disabled]="!!act.disabled?.(row)" [mukTooltip]="actionTooltip(act, row)"
+                                [ariaLabel]="actionTooltip(act, row) || actionLabel(act, row)"
+                                (clicked)="onActionClick(act, row, $event)">
+                                @if (actionIcon(act, row)) {
+                                <i [class]="actionIcon(act, row)" [class.slot-icon-left]="!!actionLabel(act, row)"
+                                    [attr.slot]="actionLabel(act, row) ? 'icon-left' : null"></i>
+                                }
+                                {{ actionLabel(act, row) }}
+                            </muk-button>
+                            }
+                            }
+                        </div>
+                    </td>
+                    }
+                </tr>
+
+                <!-- Expanded row (nested grid) -->
+                @if (expandable && isExpanded(row) && rowDetailTpl) {
+                <tr class="muk-dt-detail-row">
+                    <td [attr.colspan]="totalColumnCount()" class="muk-dt-detail">
+                        <ng-container
+                            *ngTemplateOutlet="rowDetailTpl.template; context: { $implicit: row, row: row, index: i }"></ng-container>
+                    </td>
+                </tr>
+                }
+                }
+                }
+            </tbody>
+        </table>
+    </div>
+
+
+    <!-- ═══════════ FOOTER ═══════════ -->
+    @if (showPagination && !loading && displayRows().length > 0) {
+    <div class="muk-dt-footer">
+        <muk-pagination [totalItems]="resolvedTotal()" [(page)]="page" [(pageSize)]="pageSize"
+            [pageSizeOptions]="pageSizeOptions" [showInfo]="showRowCount" size="sm" (pageChange)="onPageChange($event)"
+            (pageSizeChange)="onPageSizeChange($event)"></muk-pagination>
+    </div>
+    }
+</div>

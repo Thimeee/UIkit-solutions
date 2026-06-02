@@ -1,0 +1,142 @@
+// ============================================================
+// MUK Empty State - SCSS (theme-aware)
+// ============================================================
+@use "../../styles/global-styles.scss" as *;
+
+.muk-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: var(--muk-empty-pad);
+    text-align: center;
+    color: $text-muted;
+    width: 100%;
+}
+
+.muk-empty-align-left {
+    align-items: flex-start;
+    text-align: left;
+
+    .muk-empty-actions {
+        justify-content: flex-start;
+    }
+}
+
+// ── SIZES ──
+.muk-empty-size-sm {
+    --muk-empty-pad: 1.5rem 1rem;
+    --muk-empty-icon-size: 40px;
+    --muk-empty-title-fs: 1rem;
+    --muk-empty-desc-fs: 0.8125rem;
+    --muk-empty-gap: 0.5rem;
+}
+
+.muk-empty-size-md {
+    --muk-empty-pad: 2.5rem 1.5rem;
+    --muk-empty-icon-size: 64px;
+    --muk-empty-title-fs: 1.125rem;
+    --muk-empty-desc-fs: 0.875rem;
+    --muk-empty-gap: 0.75rem;
+}
+
+.muk-empty-size-lg {
+    --muk-empty-pad: 4rem 2rem;
+    --muk-empty-icon-size: 96px;
+    --muk-empty-title-fs: 1.375rem;
+    --muk-empty-desc-fs: 0.9375rem;
+    --muk-empty-gap: 1rem;
+}
+
+// ── VARIANTS ──
+.muk-empty-variant-bordered {
+    border: 1.5px dashed $border-strong;
+    border-radius: 12px;
+    background: $surface;
+}
+
+.muk-empty-variant-subtle {
+    background: $surface-muted;
+    border-radius: 12px;
+}
+
+
+// ── ICON ──
+.muk-empty-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--muk-empty-icon-size);
+    height: var(--muk-empty-icon-size);
+    margin-bottom: var(--muk-empty-gap);
+    color: $text-subtle;
+    font-size: var(--muk-empty-icon-size);
+    line-height: 1;
+
+    svg {
+        width: 100%;
+        height: 100%;
+    }
+
+    i {
+        font-size: calc(var(--muk-empty-icon-size) * 0.85);
+        line-height: 1;
+    }
+
+    &::before,
+    &>* {
+        font-size: inherit;
+        line-height: 1;
+    }
+
+    // Image fallback
+    ::ng-deep img,
+    ::ng-deep svg {
+        max-width: 100%;
+        max-height: 100%;
+    }
+}
+
+
+// ── BODY ──
+.muk-empty-body {
+    display: flex;
+    flex-direction: column;
+    align-items: inherit;
+    gap: var(--muk-empty-gap);
+    max-width: 480px;
+}
+
+.muk-empty-title {
+    margin: 0;
+    font-size: var(--muk-empty-title-fs);
+    font-weight: 600;
+    color: $text;
+    line-height: 1.35;
+}
+
+.muk-empty-desc {
+    color: $text-muted;
+    font-size: var(--muk-empty-desc-fs);
+    line-height: 1.55;
+
+    p {
+        margin: 0;
+    }
+}
+
+
+// ── ACTIONS ──
+.muk-empty-actions {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-top: 0.5rem;
+
+    &:empty,
+    &.is-hidden:not(:has(*)) {
+        display: none;
+    }
+}

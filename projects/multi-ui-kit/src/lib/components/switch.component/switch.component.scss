@@ -1,0 +1,138 @@
+// ============================================================
+// MUK Switch - SCSS (theme-aware)
+// ============================================================
+@use "../../styles/global-styles.scss" as *;
+
+.muk-switch {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    user-select: none;
+    font-size: var(--muk-switch-fs);
+    color: $text;
+    line-height: 1.4;
+
+    &.label-left {
+        flex-direction: row-reverse;
+    }
+
+    &.is-disabled {
+        cursor: not-allowed;
+        opacity: 0.55;
+    }
+}
+
+// ── SIZES ──
+.muk-switch-size-sm {
+    --muk-switch-w: 34px;
+    --muk-switch-h: 18px;
+    --muk-switch-thumb: 12px;
+    --muk-switch-fs: 0.8125rem;
+}
+
+.muk-switch-size-md {
+    --muk-switch-w: 44px;
+    --muk-switch-h: 24px;
+    --muk-switch-thumb: 18px;
+    --muk-switch-fs: 0.9375rem;
+}
+
+.muk-switch-size-lg {
+    --muk-switch-w: 54px;
+    --muk-switch-h: 30px;
+    --muk-switch-thumb: 23px;
+    --muk-switch-fs: 1rem;
+}
+
+// ── TRACK ──
+.muk-switch-track {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    width: var(--muk-switch-w);
+    height: var(--muk-switch-h);
+    flex-shrink: 0;
+    background: $border-strong;
+    border-radius: 999px;
+    transition: background-color 0.2s ease;
+}
+
+.muk-switch-input {
+    position: absolute;
+    inset: 0;
+    margin: 0;
+    opacity: 0;
+    cursor: inherit;
+}
+
+.muk-switch-thumb {
+    position: absolute;
+    top: 50%;
+    left: 3px;
+    width: var(--muk-switch-thumb);
+    height: var(--muk-switch-thumb);
+    background: #fff;
+    border-radius: 50%;
+    transform: translateY(-50%);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+    transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+// Checked → thumb slides right
+.is-checked .muk-switch-thumb {
+    transform: translateY(-50%) translateX(calc(var(--muk-switch-w) - var(--muk-switch-thumb) - 6px));
+}
+
+// Focus ring
+.muk-switch-input:focus-visible+.muk-switch-thumb {
+    outline: 3px solid var(--muk-switch-ring);
+    outline-offset: 2px;
+}
+
+.muk-switch-label:empty {
+    display: none;
+}
+
+// ============================================================
+// VARIANTS - checked track color
+// ============================================================
+@mixin switch-variant($color, $ring) {
+    --muk-switch-ring: #{$ring};
+
+    &.is-checked .muk-switch-track {
+        background: $color;
+    }
+}
+
+.muk-switch-primary {
+    @include switch-variant($primary, $primary-shadow);
+}
+
+.muk-switch-secondary {
+    @include switch-variant($secondary, $secondary-shadow);
+}
+
+.muk-switch-success {
+    @include switch-variant($success, $success-shadow);
+}
+
+.muk-switch-warning {
+    @include switch-variant($warning, $warning-shadow);
+}
+
+.muk-switch-danger {
+    @include switch-variant($danger, $danger-shadow);
+}
+
+.muk-switch-info {
+    @include switch-variant($info, $info-shadow);
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    .muk-switch-track,
+    .muk-switch-thumb {
+        transition: none;
+    }
+}

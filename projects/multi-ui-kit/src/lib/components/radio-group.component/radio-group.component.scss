@@ -1,0 +1,164 @@
+// ============================================================
+// MUK Radio Group - SCSS (theme-aware)
+// ============================================================
+@use "../../styles/global-styles.scss" as *;
+
+.muk-radio-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
+
+    &.is-horizontal {
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+}
+
+.muk-radio {
+    display: inline-flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    cursor: pointer;
+    user-select: none;
+    font-size: var(--muk-radio-fs);
+    color: $text;
+    line-height: 1.4;
+
+    &.is-disabled {
+        cursor: not-allowed;
+        opacity: 0.55;
+    }
+}
+
+// ── SIZES ──
+.muk-radio-size-sm {
+    --muk-radio-size: 16px;
+    --muk-radio-fs: 0.8125rem;
+}
+
+.muk-radio-size-md {
+    --muk-radio-size: 20px;
+    --muk-radio-fs: 0.9375rem;
+}
+
+.muk-radio-size-lg {
+    --muk-radio-size: 24px;
+    --muk-radio-fs: 1rem;
+}
+
+// ── CIRCLE ──
+.muk-radio-circle {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--muk-radio-size);
+    height: var(--muk-radio-size);
+    flex-shrink: 0;
+    margin-top: 1px;
+}
+
+.muk-radio-input {
+    position: absolute;
+    inset: 0;
+    margin: 0;
+    opacity: 0;
+    cursor: inherit;
+}
+
+.muk-radio-dot {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    border: 2px solid $border-strong;
+    border-radius: 50%;
+    background: $surface;
+    transition: border-color 0.18s ease;
+
+    &::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 50%;
+        height: 50%;
+        border-radius: 50%;
+        background: var(--muk-radio-color);
+        transform: translate(-50%, -50%) scale(0);
+        transition: transform 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+}
+
+.is-selected .muk-radio-dot {
+    border-color: var(--muk-radio-color);
+
+    &::after {
+        transform: translate(-50%, -50%) scale(1);
+    }
+}
+
+.muk-radio:not(.is-disabled):hover .muk-radio-dot {
+    border-color: var(--muk-radio-color);
+}
+
+.muk-radio-input:focus-visible+.muk-radio-dot {
+    outline: 3px solid var(--muk-radio-ring);
+    outline-offset: 2px;
+}
+
+// ── TEXT ──
+.muk-radio-text {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+}
+
+.muk-radio-label {
+    font-weight: 500;
+}
+
+.muk-radio-desc {
+    font-size: 0.8125rem;
+    color: $text-muted;
+}
+
+// ============================================================
+// VARIANTS
+// ============================================================
+@mixin radio-variant($color, $ring) {
+    --muk-radio-color: #{$color};
+    --muk-radio-ring: #{$ring};
+}
+
+.muk-radio-primary {
+    @include radio-variant($primary, $primary-shadow);
+}
+
+.muk-radio-secondary {
+    @include radio-variant($secondary, $secondary-shadow);
+}
+
+.muk-radio-success {
+    @include radio-variant($success, $success-shadow);
+}
+
+.muk-radio-warning {
+    @include radio-variant($warning, $warning-shadow);
+}
+
+.muk-radio-danger {
+    @include radio-variant($danger, $danger-shadow);
+}
+
+.muk-radio-info {
+    @include radio-variant($info, $info-shadow);
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    .muk-radio-dot,
+    .muk-radio-dot::after {
+        transition: none;
+    }
+}

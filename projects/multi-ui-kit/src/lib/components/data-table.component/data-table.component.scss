@@ -1,0 +1,555 @@
+// ============================================================
+// MUK Data Table - SCSS (theme-aware, flagship component)
+// ============================================================
+@use "../../styles/global-styles.scss" as *;
+
+.muk-dt {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    background: $surface;
+    border: 1px solid $border;
+    border-radius: 12px;
+    overflow: hidden;
+    font-size: var(--muk-dt-fs);
+    color: $text;
+}
+
+// ── SIZES ──
+.muk-dt-size-sm {
+    --muk-dt-fs: 0.8125rem;
+    --muk-dt-cell-py: 0.5rem;
+    --muk-dt-cell-px: 0.75rem;
+    --muk-dt-toolbar-pad: 0.75rem;
+}
+
+.muk-dt-size-md {
+    --muk-dt-fs: 0.875rem;
+    --muk-dt-cell-py: 0.75rem;
+    --muk-dt-cell-px: 1rem;
+    --muk-dt-toolbar-pad: 1rem;
+}
+
+.muk-dt-size-lg {
+    --muk-dt-fs: 0.9375rem;
+    --muk-dt-cell-py: 1rem;
+    --muk-dt-cell-px: 1.25rem;
+    --muk-dt-toolbar-pad: 1.25rem;
+}
+
+
+// ============================================================
+// TOOLBAR
+// ============================================================
+.muk-dt-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: var(--muk-dt-toolbar-pad);
+    flex-wrap: wrap;
+    background: $surface;
+    border-bottom: 1px solid $border;
+}
+
+.muk-dt-toolbar-left,
+.muk-dt-toolbar-right {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.muk-dt-toolbar-left {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.muk-dt-title {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 600;
+    color: $text;
+}
+
+.muk-dt-search {
+    width: 280px;
+    max-width: 100%;
+}
+
+// Bulk selection bar
+.muk-dt-bulk {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 4px 12px;
+    background: $primary-lighter;
+    border-radius: 8px;
+    color: $primary-soft-text;
+    font-size: 0.8125rem;
+}
+
+.muk-dt-bulk-count {
+    font-weight: 600;
+}
+
+// Filter count badge
+.muk-dt-filter-count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 5px;
+    margin-left: 4px;
+    background: $primary;
+    color: $primary-contrast;
+    border-radius: 999px;
+    font-size: 0.6875rem;
+    font-weight: 700;
+}
+
+
+// ============================================================
+// FILTERS PANEL
+// ============================================================
+.muk-dt-filters-panel {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 0.75rem;
+    padding: var(--muk-dt-toolbar-pad);
+    background: $surface-sunken;
+    border-bottom: 1px solid $border;
+    align-items: end;
+}
+
+.muk-dt-filter-item {
+    min-width: 0;
+}
+
+.muk-dt-date-range {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+}
+
+.muk-dt-filter-actions {
+    grid-column: 1 / -1;
+    display: flex;
+    justify-content: flex-end;
+}
+
+// Column toggle panel
+.muk-dt-col-panel {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem 1rem;
+    padding: var(--muk-dt-toolbar-pad);
+    background: $surface-sunken;
+    border-bottom: 1px solid $border;
+}
+
+.muk-dt-col-panel-title {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: $text-muted;
+}
+
+// Active filter chips
+.muk-dt-filter-chips {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.625rem var(--muk-dt-toolbar-pad);
+    background: $surface;
+    border-bottom: 1px solid $border-subtle;
+}
+
+
+// ============================================================
+// TABLE
+// ============================================================
+.muk-dt-scroll {
+    overflow: auto;
+    width: 100%;
+    background: $surface;
+
+    // Custom scrollbars (Webkit)
+    &::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+    }
+
+    &::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background: $border-strong;
+        border-radius: 4px;
+
+        &:hover {
+            background: $text-subtle;
+        }
+    }
+}
+
+.muk-dt-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: inherit;
+    font-variant-numeric: tabular-nums;
+}
+
+
+// ── HEADER ──
+.muk-dt-table thead th {
+    background: $surface-muted;
+    color: $text-muted;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    text-align: left;
+    padding: 0.625rem var(--muk-dt-cell-px);
+    border-bottom: 1px solid $border;
+    user-select: none;
+    white-space: nowrap;
+    position: relative;
+}
+
+.has-sticky-header .muk-dt-table thead th {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+}
+
+.muk-dt-th {
+    &.align-center {
+        text-align: center;
+    }
+
+    &.align-right {
+        text-align: right;
+    }
+
+    &.is-sortable {
+        cursor: pointer;
+        transition: background-color 0.15s ease, color 0.15s ease;
+
+        &:hover {
+            background: $surface-hover;
+            color: $text;
+        }
+    }
+}
+
+.muk-dt-th-content {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+}
+
+.muk-dt-th.align-right .muk-dt-th-content {
+    flex-direction: row-reverse;
+}
+
+.muk-dt-th-expand,
+.muk-dt-th-select {
+    width: 44px;
+    padding-left: var(--muk-dt-cell-px);
+    padding-right: 0;
+}
+
+.muk-dt-th-actions {
+    text-align: right;
+    width: 1%;
+    white-space: nowrap;
+}
+
+
+// ── SORT INDICATOR ──
+.muk-dt-sort {
+    display: inline-flex;
+    width: 10px;
+    height: 14px;
+    color: $text-disabled;
+    flex-shrink: 0;
+
+    svg {
+        width: 100%;
+        height: 100%;
+    }
+
+    .muk-dt-sort-up,
+    .muk-dt-sort-down {
+        opacity: 0.4;
+    }
+
+    &.is-asc .muk-dt-sort-up {
+        opacity: 1;
+        color: $primary;
+    }
+
+    &.is-desc .muk-dt-sort-down {
+        opacity: 1;
+        color: $primary;
+    }
+
+    &.is-asc,
+    &.is-desc {
+        color: $primary;
+    }
+}
+
+
+// ── ROW ──
+.muk-dt-row {
+    transition: background-color 0.12s ease;
+    border-bottom: 1px solid $border-subtle;
+
+    &:last-child {
+        border-bottom: 0;
+    }
+
+    &:hover {
+        background: $surface-hover;
+    }
+
+    &.is-clickable {
+        cursor: pointer;
+    }
+
+    &.is-selected {
+        background: $primary-lighter;
+        color: $primary-soft-text;
+    }
+
+    &.is-expanded {
+        background: $surface-hover;
+    }
+}
+
+
+// ── CELL ──
+.muk-dt-td {
+    padding: var(--muk-dt-cell-py) var(--muk-dt-cell-px);
+    vertical-align: middle;
+    color: $text;
+    line-height: 1.45;
+
+    &.align-center {
+        text-align: center;
+    }
+
+    &.align-right {
+        text-align: right;
+    }
+}
+
+.muk-dt-td-select,
+.muk-dt-td-expand {
+    width: 44px;
+    padding-left: var(--muk-dt-cell-px);
+    padding-right: 0;
+}
+
+.muk-dt-checkbox {
+    display: inline-flex;
+}
+
+.muk-dt-td-actions {
+    width: 1%;
+    white-space: nowrap;
+    padding-right: var(--muk-dt-cell-px);
+}
+
+.muk-dt-actions {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+
+// ── EXPAND BUTTON ──
+.muk-dt-expand-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 6px;
+    color: $text-muted;
+    cursor: pointer;
+    transition: background-color 0.15s ease, transform 0.2s ease;
+
+    &:hover {
+        background: $surface-muted;
+        color: $text;
+    }
+
+    &:focus-visible {
+        outline: 2px solid $primary;
+        outline-offset: 1px;
+    }
+
+    svg {
+        width: 14px;
+        height: 14px;
+    }
+
+    &.is-open {
+        transform: rotate(90deg);
+        color: $primary;
+    }
+}
+
+
+// ── EXPANDED ROW (nested grid container) ──
+.muk-dt-detail-row {
+    background: $surface-sunken;
+    border-bottom: 1px solid $border-subtle;
+}
+
+.muk-dt-detail {
+    padding: 1rem var(--muk-dt-cell-px);
+    background: $surface-sunken;
+}
+
+
+// ── EMPTY STATE ROW ──
+.muk-dt-empty-row td {
+    padding: 0;
+    background: $surface;
+    border: 0;
+}
+
+
+// ============================================================
+// STICKY COLUMNS
+// ============================================================
+.muk-dt-th.is-sticky-left,
+.muk-dt-td.is-sticky-left {
+    position: sticky;
+    left: 0;
+    z-index: 1;
+    background: $surface;
+}
+
+.muk-dt-th.is-sticky-left {
+    z-index: 3;
+}
+
+.muk-dt-th.is-sticky-right,
+.muk-dt-td.is-sticky-right {
+    position: sticky;
+    right: 0;
+    z-index: 1;
+    background: $surface;
+}
+
+.muk-dt-th.is-sticky-right {
+    z-index: 3;
+}
+
+.muk-dt-row:hover .muk-dt-td.is-sticky-left,
+.muk-dt-row:hover .muk-dt-td.is-sticky-right {
+    background: $surface-hover;
+}
+
+.muk-dt-row.is-selected .muk-dt-td.is-sticky-left,
+.muk-dt-row.is-selected .muk-dt-td.is-sticky-right {
+    background: $primary-lighter;
+}
+
+
+// ============================================================
+// VARIANTS
+// ============================================================
+.muk-dt-variant-striped .muk-dt-row:nth-child(even):not(.is-selected):not(.is-expanded) {
+    background: $surface-sunken;
+}
+
+.muk-dt-variant-bordered .muk-dt-td {
+    border-right: 1px solid $border-subtle;
+
+    &:last-child {
+        border-right: 0;
+    }
+}
+
+.muk-dt-variant-bordered .muk-dt-th {
+    border-right: 1px solid $border;
+
+    &:last-child {
+        border-right: 0;
+    }
+}
+
+.muk-dt-variant-minimal {
+    border: 0;
+    border-radius: 0;
+
+    .muk-dt-table thead th {
+        background: transparent;
+        border-bottom: 2px solid $border-strong;
+    }
+}
+
+
+// ============================================================
+// FOOTER (pagination)
+// ============================================================
+.muk-dt-footer {
+    padding: 0.75rem var(--muk-dt-toolbar-pad);
+    border-top: 1px solid $border;
+    background: $surface;
+}
+
+
+// ============================================================
+// LOADING
+// ============================================================
+.muk-dt.is-loading .muk-dt-table thead th {
+    color: $text-disabled;
+}
+
+
+// ============================================================
+// RESPONSIVE
+// ============================================================
+@media (max-width: 640px) {
+    .muk-dt-toolbar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .muk-dt-toolbar-left,
+    .muk-dt-toolbar-right {
+        width: 100%;
+    }
+
+    .muk-dt-search {
+        width: 100%;
+    }
+
+    .muk-dt-th.hide-on-mobile,
+    .muk-dt-td.hide-on-mobile {
+        display: none;
+    }
+}
+
+
+@media (prefers-reduced-motion: reduce) {
+
+    .muk-dt-row,
+    .muk-dt-th,
+    .muk-dt-expand-btn {
+        transition: none;
+    }
+}

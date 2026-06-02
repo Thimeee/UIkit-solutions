@@ -1,0 +1,319 @@
+// ============================================================
+// MUK Stepper - SCSS (theme-aware)
+// ============================================================
+@use "../../styles/global-styles.scss" as *;
+
+.muk-stepper {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    font-size: var(--muk-step-fs);
+    gap: var(--muk-step-body-gap);
+}
+
+// ── SIZES ──
+.muk-stepper-size-sm {
+    --muk-step-fs: 0.8125rem;
+    --muk-step-circle: 28px;
+    --muk-step-icon: 14px;
+    --muk-step-num: 0.75rem;
+    --muk-step-gap: 0.5rem;
+    --muk-step-body-gap: 1.5rem;
+}
+
+.muk-stepper-size-md {
+    --muk-step-fs: 0.9375rem;
+    --muk-step-circle: 36px;
+    --muk-step-icon: 18px;
+    --muk-step-num: 0.875rem;
+    --muk-step-gap: 0.75rem;
+    --muk-step-body-gap: 2rem;
+}
+
+.muk-stepper-size-lg {
+    --muk-step-fs: 1rem;
+    --muk-step-circle: 44px;
+    --muk-step-icon: 20px;
+    --muk-step-num: 1rem;
+    --muk-step-gap: 1rem;
+    --muk-step-body-gap: 2.5rem;
+}
+
+// ── HEADER (steps row/column) ──
+.muk-step-header {
+    display: flex;
+}
+
+// ── ORIENTATION: HORIZONTAL ──
+.muk-stepper-orient-horizontal .muk-step-header {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 0;
+}
+
+.muk-stepper-orient-horizontal .muk-step {
+    flex: 1 1 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    position: relative;
+    min-width: 0;
+    text-align: center;
+
+    &:last-child {
+        flex: 0 0 auto;
+    }
+}
+
+.muk-stepper-orient-horizontal .muk-step-marker {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    z-index: 1;
+}
+
+// Connector for horizontal - line between circles
+.muk-stepper-orient-horizontal .muk-step-connector {
+    position: absolute;
+    top: calc(var(--muk-step-circle) / 2);
+    left: calc(50% + var(--muk-step-circle) / 2 + 6px);
+    right: calc(-50% + var(--muk-step-circle) / 2 + 6px);
+    height: 2px;
+    background: $border;
+    transition: background-color 0.25s ease;
+
+    &.is-completed {
+        background: $primary;
+    }
+}
+
+// ── ORIENTATION: VERTICAL ──
+.muk-stepper-orient-vertical {
+    flex-direction: row;
+    gap: 2rem;
+    align-items: stretch;
+}
+
+.muk-stepper-orient-vertical .muk-step-header {
+    flex-direction: column;
+    flex-shrink: 0;
+    gap: 0;
+    min-width: 200px;
+}
+
+.muk-stepper-orient-vertical .muk-step {
+    display: grid;
+    grid-template-columns: var(--muk-step-circle) 1fr;
+    gap: var(--muk-step-gap);
+    align-items: start;
+    padding-bottom: 1.5rem;
+    position: relative;
+    text-align: left;
+
+    &:last-child {
+        padding-bottom: 0;
+    }
+}
+
+.muk-stepper-orient-vertical .muk-step-connector {
+    position: absolute;
+    left: calc(var(--muk-step-circle) / 2 - 1px);
+    top: calc(var(--muk-step-circle) + 4px);
+    bottom: 4px;
+    width: 2px;
+    background: $border;
+    transition: background-color 0.25s ease;
+
+    &.is-completed {
+        background: $primary;
+    }
+}
+
+.muk-stepper-orient-vertical .muk-step-body {
+    flex: 1 1 auto;
+}
+
+// ── CIRCLE ──
+.muk-step-circle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--muk-step-circle);
+    height: var(--muk-step-circle);
+    background: $surface;
+    border: 2px solid $border-strong;
+    border-radius: 50%;
+    color: $text-muted;
+    font-weight: 600;
+    font-size: var(--muk-step-num);
+    flex-shrink: 0;
+    transition: background-color 0.25s ease, border-color 0.25s ease, color 0.25s ease;
+
+    svg {
+        width: var(--muk-step-icon);
+        height: var(--muk-step-icon);
+    }
+
+    i {
+        font-size: var(--muk-step-icon);
+        line-height: 1;
+    }
+}
+
+.muk-step-num {
+    line-height: 1;
+}
+
+// ── STATES ──
+
+// Active
+.muk-step.is-active .muk-step-circle {
+    background: $primary;
+    border-color: $primary;
+    color: $primary-contrast;
+    box-shadow: 0 0 0 4px $primary-shadow;
+}
+
+// Completed
+.muk-step.is-completed:not(.is-active) .muk-step-circle {
+    background: $primary;
+    border-color: $primary;
+    color: $primary-contrast;
+}
+
+// Error
+.muk-step.is-error .muk-step-circle {
+    background: $danger;
+    border-color: $danger;
+    color: $danger-contrast;
+    box-shadow: 0 0 0 4px $danger-shadow;
+}
+
+// Disabled / locked
+.muk-step.is-disabled {
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+// Clickable
+.muk-step.is-clickable {
+    cursor: pointer;
+
+    &:hover .muk-step-circle:not(.is-active) {
+        border-color: $primary;
+    }
+
+    &:focus-visible {
+        outline: none;
+
+        .muk-step-circle {
+            outline: 2px solid $primary;
+            outline-offset: 2px;
+        }
+    }
+}
+
+// ── TEXT ──
+.muk-step-text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+}
+
+.muk-step-label {
+    font-weight: 500;
+    color: $text-muted;
+    line-height: 1.3;
+    transition: color 0.18s ease;
+}
+
+.muk-step.is-active .muk-step-label,
+.muk-step.is-completed .muk-step-label {
+    color: $text;
+}
+
+.muk-step.is-error .muk-step-label {
+    color: $danger;
+}
+
+.muk-step-desc {
+    font-size: 0.75rem;
+    color: $text-subtle;
+    line-height: 1.4;
+}
+
+// Icons-only mode
+.is-icons-only .muk-step-text {
+    display: none;
+}
+
+
+// ============================================================
+// VARIANT: FILLED - circles always filled (lighter when inactive)
+// ============================================================
+.muk-stepper-variant-filled .muk-step-circle {
+    background: $surface-muted;
+    border-color: transparent;
+}
+
+// ============================================================
+// VARIANT: OUTLINE - thicker borders, no fill until active
+// ============================================================
+.muk-stepper-variant-outline .muk-step-circle {
+    background: transparent;
+    border-width: 2.5px;
+}
+
+
+// ============================================================
+// CONNECTOR STYLES
+// ============================================================
+.muk-stepper-conn-dashed .muk-step-connector {
+    background: transparent;
+    border-top: 2px dashed $border;
+    height: 0;
+
+    .muk-stepper-orient-vertical & {
+        border-top: 0;
+        border-left: 2px dashed $border;
+        width: 0;
+    }
+
+    &.is-completed {
+        border-color: $primary;
+        background: transparent;
+    }
+}
+
+.muk-stepper-conn-none .muk-step-connector {
+    display: none;
+}
+
+
+// ── BODY ──
+.muk-step-body {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+
+// ── REDUCED MOTION ──
+@media (prefers-reduced-motion: reduce) {
+
+    .muk-step-circle,
+    .muk-step-connector,
+    .muk-step-label {
+        transition: none;
+    }
+}
+
+
+// ── RESPONSIVE (horizontal collapses on small screens) ──
+@media (max-width: 640px) {
+    .muk-stepper-orient-horizontal .muk-step-desc {
+        display: none;
+    }
+}

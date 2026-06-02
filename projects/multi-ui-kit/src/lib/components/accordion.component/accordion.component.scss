@@ -1,0 +1,206 @@
+// ============================================================
+// MUK Accordion - SCSS (theme-aware)
+// ============================================================
+@use "../../styles/global-styles" as *;
+
+.muk-accordion {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    font-size: var(--muk-acc-fs);
+}
+
+// ── SIZES ──
+.muk-acc-size-sm {
+    --muk-acc-fs: 0.8125rem;
+    --muk-acc-header-py: 0.625rem;
+    --muk-acc-header-px: 0.875rem;
+    --muk-acc-body-pb: 0.875rem;
+    --muk-acc-icon-size: 16px;
+}
+
+.muk-acc-size-md {
+    --muk-acc-fs: 0.9375rem;
+    --muk-acc-header-py: 0.875rem;
+    --muk-acc-header-px: 1.125rem;
+    --muk-acc-body-pb: 1.125rem;
+    --muk-acc-icon-size: 18px;
+}
+
+.muk-acc-size-lg {
+    --muk-acc-fs: 1rem;
+    --muk-acc-header-py: 1.125rem;
+    --muk-acc-header-px: 1.375rem;
+    --muk-acc-body-pb: 1.375rem;
+    --muk-acc-icon-size: 20px;
+}
+
+// ── ITEM ──
+.muk-acc-item {
+    position: relative;
+    background: $surface;
+    transition: background-color 0.18s ease;
+
+    &.is-disabled {
+        opacity: 0.55;
+        pointer-events: none;
+    }
+}
+
+// ── HEADER (button) ──
+.muk-acc-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    width: 100%;
+    padding: var(--muk-acc-header-py) var(--muk-acc-header-px);
+    background: transparent;
+    border: 0;
+    font-size: inherit;
+    font-weight: 600;
+    text-align: left;
+    color: $text;
+    cursor: pointer;
+    transition: background-color 0.15s ease, color 0.15s ease;
+
+    &:hover:not([disabled]) {
+        background: $surface-hover;
+    }
+
+    &:focus-visible {
+        outline: 2px solid $primary;
+        outline-offset: -2px;
+    }
+}
+
+.muk-acc-title {
+    flex: 1 1 auto;
+    min-width: 0;
+    line-height: 1.4;
+}
+
+.muk-acc-leading-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--muk-acc-icon-size);
+    height: var(--muk-acc-icon-size);
+    font-size: var(--muk-acc-icon-size);
+    line-height: 1;
+    color: $text-muted;
+    flex-shrink: 0;
+
+    // Constrain Bootstrap Icons / Font Awesome / any <i> child
+    &::before,
+    &>* {
+        font-size: inherit;
+        line-height: 1;
+    }
+}
+
+.muk-acc-chevron {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.25rem;
+    height: 1.25rem;
+    color: $text-subtle;
+    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), color 0.18s ease;
+    flex-shrink: 0;
+
+    &.is-open {
+        transform: rotate(180deg);
+    }
+
+    svg {
+        width: 100%;
+        height: 100%;
+    }
+}
+
+.muk-acc-item.is-open .muk-acc-header {
+    color: $text;
+}
+
+.muk-acc-item.is-open .muk-acc-chevron {
+    color: $primary;
+}
+
+
+// ── BODY (collapsible) ──
+.muk-acc-body-wrap {
+    overflow: hidden;
+    max-height: 0;
+    transition: max-height 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.muk-acc-body {
+    padding: 0 var(--muk-acc-header-px) var(--muk-acc-body-pb);
+    color: $text-muted;
+    line-height: 1.6;
+}
+
+
+// ============================================================
+// VARIANTS
+// ============================================================
+
+// ── DEFAULT - simple top/bottom dividers between items ──
+.muk-acc-variant-default {
+    border-top: 1px solid $border;
+    border-bottom: 1px solid $border;
+
+    .muk-acc-item+.muk-acc-item {
+        border-top: 1px solid $border;
+    }
+}
+
+// ── BORDERED - all items wrapped in a single rounded box ──
+.muk-acc-variant-bordered {
+    border: 1px solid $border;
+    border-radius: 0.75rem;
+    overflow: hidden;
+
+    .muk-acc-item+.muk-acc-item {
+        border-top: 1px solid $border;
+    }
+}
+
+// ── FILLED - each item has its own subtle filled background ──
+.muk-acc-variant-filled {
+    gap: 0.5rem;
+
+    .muk-acc-item {
+        background: $surface-muted;
+        border-radius: 0.625rem;
+        overflow: hidden;
+    }
+
+    .muk-acc-header:hover:not([disabled]) {
+        background: $surface-hover;
+    }
+}
+
+// ── SEPARATED - each item is its own card with border ──
+.muk-acc-variant-separated {
+    gap: 0.625rem;
+
+    .muk-acc-item {
+        border: 1px solid $border;
+        border-radius: 0.75rem;
+        overflow: hidden;
+        background: $surface;
+        box-shadow: $shadow-sm;
+    }
+}
+
+
+// ── REDUCED MOTION ──
+@media (prefers-reduced-motion: reduce) {
+
+    .muk-acc-body-wrap,
+    .muk-acc-chevron,
+    .muk-acc-header {
+        transition: none;
+    }
+}

@@ -1,0 +1,41 @@
+<!--
+  MUK Modal Template
+  - Backdrop + dialog. Animations via CSS classes.
+  - Title / footer via content projection (single ng-content each).
+-->
+@if (open || leaving) {
+<div [ngClass]="backdropClasses" (click)="onBackdropClick()" [attr.aria-hidden]="false">
+    <div [ngClass]="dialogClasses" role="dialog" aria-modal="true"
+        [attr.aria-labelledby]="hasTitle ? modalId + '-title' : null" [id]="modalId" (click)="$event.stopPropagation()">
+        <!-- Header (renders if there's a title slot/input OR a close button) -->
+        <div class="muk-modal-header" [class.is-hidden]="!hasTitle && !showClose">
+            <div class="muk-modal-title" [id]="modalId + '-title'" [class.is-hidden]="!hasTitle">
+                @if (title) {
+                {{ title }}
+                } @else {
+                <ng-content select="[slot=title]"></ng-content>
+                }
+            </div>
+            @if (showClose) {
+            <button type="button" class="muk-modal-close" (click)="close()" aria-label="Close dialog">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                    stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+            }
+        </div>
+
+        <!-- Body -->
+        <div class="muk-modal-body" [class.is-scrollable]="scrollable">
+            <ng-content></ng-content>
+        </div>
+
+        <!-- Footer (renders only if footer slot is filled) -->
+        <div class="muk-modal-footer" [class.is-hidden]="!hasFooter">
+            <ng-content select="[slot=footer]"></ng-content>
+        </div>
+    </div>
+</div>
+}

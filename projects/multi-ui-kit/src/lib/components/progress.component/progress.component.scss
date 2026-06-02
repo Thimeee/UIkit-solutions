@@ -1,0 +1,262 @@
+// ============================================================
+// MUK Progress - SCSS (theme-aware)
+// ============================================================
+@use "../../styles/global-styles.scss" as *;
+
+// ============================================================
+// LINEAR
+// ============================================================
+.muk-prog-linear {
+    display: flex;
+    flex-direction: column;
+    gap: 0.375rem;
+    width: 100%;
+    font-size: 0.8125rem;
+}
+
+.muk-prog-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    color: $text;
+}
+
+.muk-prog-text {
+    font-weight: 500;
+}
+
+.muk-prog-value {
+    color: $text-muted;
+    font-variant-numeric: tabular-nums;
+}
+
+// ── SIZES (linear) ──
+.muk-prog-size-sm {
+    --muk-prog-h: 4px;
+}
+
+.muk-prog-size-md {
+    --muk-prog-h: 8px;
+}
+
+.muk-prog-size-lg {
+    --muk-prog-h: 14px;
+}
+
+.muk-prog-size-xl {
+    --muk-prog-h: 20px;
+}
+
+.muk-prog-track {
+    width: 100%;
+    height: var(--muk-prog-h);
+    background: $surface-muted;
+    border-radius: 999px;
+    overflow: hidden;
+}
+
+.muk-prog-bar {
+    height: 100%;
+    width: 0;
+    border-radius: 999px;
+    background: var(--muk-prog-color);
+    transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    min-width: 0;
+    color: #fff;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.muk-prog-inline-label {
+    padding: 0 8px;
+}
+
+// ── STRIPED ──
+.muk-prog-bar.is-striped {
+    background-image: linear-gradient(45deg,
+            rgba(255, 255, 255, 0.18) 25%,
+            transparent 25%,
+            transparent 50%,
+            rgba(255, 255, 255, 0.18) 50%,
+            rgba(255, 255, 255, 0.18) 75%,
+            transparent 75%,
+            transparent);
+    background-size: 1.25rem 1.25rem;
+    background-color: var(--muk-prog-color);
+}
+
+.muk-prog-bar.is-striped.is-animated {
+    animation: mukProgStripes 1s linear infinite;
+}
+
+@keyframes mukProgStripes {
+    from {
+        background-position: 0 0;
+    }
+
+    to {
+        background-position: 1.25rem 0;
+    }
+}
+
+// ── INDETERMINATE (linear) ──
+.muk-prog-bar.is-indeterminate {
+    width: 40% !important;
+    animation: mukProgIndet 1.5s cubic-bezier(0.65, 0.05, 0.35, 1) infinite;
+    background-image: none;
+}
+
+@keyframes mukProgIndet {
+    0% {
+        transform: translateX(-100%);
+    }
+
+    100% {
+        transform: translateX(250%);
+    }
+}
+
+.muk-prog-helper {
+    color: $text-muted;
+    font-size: 0.75rem;
+}
+
+
+// ============================================================
+// CIRCULAR
+// ============================================================
+.muk-prog-circle {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--muk-prog-circ-size);
+    height: var(--muk-prog-circ-size);
+}
+
+.muk-prog-circle-size-sm {
+    --muk-prog-circ-size: 32px;
+    --muk-prog-label-fs: 0.625rem;
+}
+
+.muk-prog-circle-size-md {
+    --muk-prog-circ-size: 48px;
+    --muk-prog-label-fs: 0.75rem;
+}
+
+.muk-prog-circle-size-lg {
+    --muk-prog-circ-size: 72px;
+    --muk-prog-label-fs: 0.9375rem;
+}
+
+.muk-prog-circle-size-xl {
+    --muk-prog-circ-size: 96px;
+    --muk-prog-label-fs: 1.125rem;
+}
+
+.muk-prog-circle svg {
+    width: 100%;
+    height: 100%;
+    transform: rotate(-90deg);
+}
+
+.muk-prog-circle-bg {
+    stroke: $surface-muted;
+}
+
+.muk-prog-circle-fg {
+    stroke: var(--muk-prog-color);
+    transition: stroke-dashoffset 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.muk-prog-circle-label {
+    position: absolute;
+    font-size: var(--muk-prog-label-fs);
+    font-weight: 600;
+    color: $text;
+    font-variant-numeric: tabular-nums;
+}
+
+// ── INDETERMINATE (circular) ──
+.muk-prog-circle svg.is-indeterminate {
+    animation: mukProgCircSpin 1.4s linear infinite;
+}
+
+.muk-prog-circle svg.is-indeterminate .muk-prog-circle-fg {
+    stroke-dasharray: 70 200;
+    animation: mukProgCircDash 1.4s ease-in-out infinite;
+}
+
+@keyframes mukProgCircSpin {
+    to {
+        transform: rotate(270deg);
+    }
+}
+
+@keyframes mukProgCircDash {
+    0% {
+        stroke-dasharray: 1 200;
+        stroke-dashoffset: 0;
+    }
+
+    50% {
+        stroke-dasharray: 90 200;
+        stroke-dashoffset: -35;
+    }
+
+    100% {
+        stroke-dasharray: 90 200;
+        stroke-dashoffset: -124;
+    }
+}
+
+
+// ============================================================
+// VARIANT COLORS
+// ============================================================
+.muk-prog-primary {
+    --muk-prog-color: #{$primary};
+}
+
+.muk-prog-secondary {
+    --muk-prog-color: #{$secondary};
+}
+
+.muk-prog-success {
+    --muk-prog-color: #{$success};
+}
+
+.muk-prog-warning {
+    --muk-prog-color: #{$warning};
+}
+
+.muk-prog-danger {
+    --muk-prog-color: #{$danger};
+}
+
+.muk-prog-info {
+    --muk-prog-color: #{$info};
+}
+
+
+// ── REDUCED MOTION ──
+@media (prefers-reduced-motion: reduce) {
+
+    .muk-prog-bar,
+    .muk-prog-circle-fg {
+        transition: none;
+    }
+
+    .muk-prog-bar.is-striped.is-animated,
+    .muk-prog-bar.is-indeterminate,
+    .muk-prog-circle svg.is-indeterminate,
+    .muk-prog-circle svg.is-indeterminate .muk-prog-circle-fg {
+        animation: none;
+    }
+}

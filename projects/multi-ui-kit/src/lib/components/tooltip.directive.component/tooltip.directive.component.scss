@@ -1,0 +1,145 @@
+// ============================================================
+// MUK Tooltip - GLOBAL styles
+// ============================================================
+// IMPORTANT: This file must be imported at the APP level (not as a
+// component style), because the tooltip element is appended to <body>
+// and component view encapsulation would prevent the styles from applying.
+//
+// In your app's styles.scss:
+//   @use 'multi-ui-kit/styles/tooltip-styles' as *;
+// OR copy the rules below into your app's global styles.scss.
+// ============================================================
+
+.muk-tooltip {
+    position: fixed;
+    z-index: 10000;
+    padding: 6px 10px;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    line-height: 1.4;
+    border-radius: 6px;
+    box-shadow: var(--muk-shadow-lg);
+    pointer-events: none;
+    opacity: 0;
+    transform: scale(0.94);
+    transition: opacity 0.15s ease, transform 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+    word-wrap: break-word;
+    white-space: normal;
+}
+
+.muk-tooltip.is-visible {
+    opacity: 1;
+    transform: scale(1);
+}
+
+// ── ARROW ──
+.muk-tooltip-arrow {
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-style: solid;
+}
+
+.muk-tooltip-pos-top .muk-tooltip-arrow {
+    bottom: -6px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 6px 6px 0 6px;
+    border-color: currentColor transparent transparent transparent;
+}
+
+.muk-tooltip-pos-bottom .muk-tooltip-arrow {
+    top: -6px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 0 6px 6px 6px;
+    border-color: transparent transparent currentColor transparent;
+}
+
+.muk-tooltip-pos-left .muk-tooltip-arrow {
+    right: -6px;
+    top: 50%;
+    transform: translateY(-50%);
+    border-width: 6px 0 6px 6px;
+    border-color: transparent transparent transparent currentColor;
+}
+
+.muk-tooltip-pos-right .muk-tooltip-arrow {
+    left: -6px;
+    top: 50%;
+    transform: translateY(-50%);
+    border-width: 6px 6px 6px 0;
+    border-color: transparent currentColor transparent transparent;
+}
+
+// ── VARIANTS ──
+// Arrow uses `currentColor` so it follows the body color.
+.muk-tooltip-dark {
+    background: var(--muk-text);
+    color: var(--muk-surface);
+
+    &>.muk-tooltip-arrow {
+        color: var(--muk-text);
+    }
+}
+
+.muk-tooltip-light {
+    background: var(--muk-surface);
+    color: var(--muk-text);
+    border: 1px solid var(--muk-border);
+
+    &>.muk-tooltip-arrow {
+        color: var(--muk-surface);
+    }
+}
+
+.muk-tooltip-primary {
+    background: var(--muk-primary-user);
+    color: var(--muk-primary-contrast);
+
+    &>.muk-tooltip-arrow {
+        color: var(--muk-primary-user);
+    }
+}
+
+.muk-tooltip-success {
+    background: #10b981;
+    color: #fff;
+
+    &>.muk-tooltip-arrow {
+        color: #10b981;
+    }
+}
+
+.muk-tooltip-warning {
+    background: #f59e0b;
+    color: #fff;
+
+    &>.muk-tooltip-arrow {
+        color: #f59e0b;
+    }
+}
+
+.muk-tooltip-danger {
+    background: #ef4444;
+    color: #fff;
+
+    &>.muk-tooltip-arrow {
+        color: #ef4444;
+    }
+}
+
+.muk-tooltip-info {
+    background: #0ea5e9;
+    color: #fff;
+
+    &>.muk-tooltip-arrow {
+        color: #0ea5e9;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .muk-tooltip {
+        transition: opacity 0.05s ease;
+    }
+}

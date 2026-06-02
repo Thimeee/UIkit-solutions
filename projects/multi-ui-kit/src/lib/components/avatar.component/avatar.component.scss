@@ -1,0 +1,204 @@
+// ============================================================
+// MUK Avatar - SCSS (theme-aware)
+// ============================================================
+@use "../../styles/global-styles.scss" as *;
+
+.muk-av {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--muk-av-size);
+    height: var(--muk-av-size);
+    background: var(--muk-av-bg, #{$surface-muted});
+    color: var(--muk-av-color, #{$text});
+    font-weight: 600;
+    font-size: var(--muk-av-fs);
+    flex-shrink: 0;
+    overflow: hidden;
+    user-select: none;
+    vertical-align: middle;
+
+    &.has-ring {
+        box-shadow: 0 0 0 2px $surface,
+        0 0 0 4px var(--muk-av-bg, #{$primary});
+    }
+
+    &.is-clickable {
+        cursor: pointer;
+        transition: transform 0.15s ease, filter 0.15s ease;
+
+        &:hover {
+            filter: brightness(0.95);
+            transform: scale(1.05);
+        }
+
+        &:focus-visible {
+            outline: 2px solid $primary;
+            outline-offset: 2px;
+        }
+    }
+}
+
+// ── SIZES ──
+.muk-av-size-xs {
+    --muk-av-size: 20px;
+    --muk-av-fs: 0.625rem;
+    --muk-av-status: 6px;
+}
+
+.muk-av-size-sm {
+    --muk-av-size: 28px;
+    --muk-av-fs: 0.75rem;
+    --muk-av-status: 8px;
+}
+
+.muk-av-size-md {
+    --muk-av-size: 36px;
+    --muk-av-fs: 0.875rem;
+    --muk-av-status: 10px;
+}
+
+.muk-av-size-lg {
+    --muk-av-size: 48px;
+    --muk-av-fs: 1rem;
+    --muk-av-status: 12px;
+}
+
+.muk-av-size-xl {
+    --muk-av-size: 64px;
+    --muk-av-fs: 1.25rem;
+    --muk-av-status: 14px;
+}
+
+.muk-av-size-2xl {
+    --muk-av-size: 96px;
+    --muk-av-fs: 1.875rem;
+    --muk-av-status: 18px;
+}
+
+// ── SHAPES ──
+.muk-av-shape-circle {
+    border-radius: 50%;
+}
+
+.muk-av-shape-rounded {
+    border-radius: 25%;
+}
+
+.muk-av-shape-square {
+    border-radius: 0;
+}
+
+// ── CONTENT ──
+.muk-av-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.muk-av-text {
+    line-height: 1;
+}
+
+.muk-av-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(var(--muk-av-size) * 0.5);
+    line-height: 1;
+
+    &::before,
+    &>* {
+        font-size: inherit;
+        line-height: 1;
+    }
+}
+
+.muk-av-fallback {
+    width: 65%;
+    height: 65%;
+    opacity: 0.7;
+}
+
+.muk-av-icon-probe {
+    display: none;
+}
+
+
+// ── COLORS (initials background) ──
+.muk-av-color-primary {
+    --muk-av-bg: #{$primary};
+    --muk-av-color: #{$primary-contrast};
+}
+
+.muk-av-color-secondary {
+    --muk-av-bg: #{$secondary};
+    --muk-av-color: #{$secondary-contrast};
+}
+
+.muk-av-color-success {
+    --muk-av-bg: #{$success};
+    --muk-av-color: #{$success-contrast};
+}
+
+.muk-av-color-warning {
+    --muk-av-bg: #{$warning};
+    --muk-av-color: #{$warning-contrast};
+}
+
+.muk-av-color-danger {
+    --muk-av-bg: #{$danger};
+    --muk-av-color: #{$danger-contrast};
+}
+
+.muk-av-color-info {
+    --muk-av-bg: #{$info};
+    --muk-av-color: #{$info-contrast};
+}
+
+.muk-av-color-neutral {
+    --muk-av-bg: #{$surface-muted};
+    --muk-av-color: #{$text-muted};
+}
+
+
+// ── STATUS DOT ──
+.muk-av-status {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: var(--muk-av-status);
+    height: var(--muk-av-status);
+    border-radius: 50%;
+    border: 2px solid $surface;
+    background: $text-subtle;
+}
+
+.muk-av-status-online {
+    background: $success;
+}
+
+.muk-av-status-offline {
+    background: $text-subtle;
+}
+
+.muk-av-status-away {
+    background: $warning;
+}
+
+.muk-av-status-busy {
+    background: $danger;
+}
+
+
+@media (prefers-reduced-motion: reduce) {
+    .muk-av.is-clickable {
+        transition: none;
+    }
+
+    .muk-av.is-clickable:hover {
+        transform: none;
+    }
+}

@@ -1,5 +1,4 @@
 import { Routes } from '@angular/router';
-import { AlertDemoComponent } from './alertComponent';
 import { KitPreviewComponent } from './kitPreviewComponent';
 
 export const routes: Routes = [
@@ -10,6 +9,5 @@ export const routes: Routes = [
     { path: 'preview', component: KitPreviewComponent },
 
     // Path for your dedicated alert component demo
-    { path: 'alert', component: AlertDemoComponent },
 
 ];

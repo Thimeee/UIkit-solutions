@@ -1,0 +1,261 @@
+// ============================================================
+// MUK Badge - SCSS (theme-aware)
+// ============================================================
+@use "../../styles/global-styles.scss" as *;
+
+// ── INLINE BADGE ──
+.muk-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: var(--muk-badge-py) var(--muk-badge-px);
+    font-size: var(--muk-badge-fs);
+    font-weight: 600;
+    line-height: 1;
+    white-space: nowrap;
+    border: 1px solid transparent;
+    transition: background-color 0.18s ease, color 0.18s ease, border-color 0.18s ease;
+}
+
+.muk-badge-icon:empty {
+    display: none;
+}
+
+.muk-badge-icon {
+    display: inline-flex;
+    align-items: center;
+    font-size: 0.9em;
+}
+
+// ── SIZES ──
+.muk-badge-size-sm {
+    --muk-badge-py: 2px;
+    --muk-badge-px: 6px;
+    --muk-badge-fs: 0.6875rem;
+}
+
+.muk-badge-size-md {
+    --muk-badge-py: 3px;
+    --muk-badge-px: 8px;
+    --muk-badge-fs: 0.75rem;
+}
+
+.muk-badge-size-lg {
+    --muk-badge-py: 5px;
+    --muk-badge-px: 10px;
+    --muk-badge-fs: 0.875rem;
+}
+
+// ── SHAPES ──
+.muk-badge-shape-rounded {
+    border-radius: 0.375rem;
+}
+
+.muk-badge-shape-pill {
+    border-radius: 999px;
+}
+
+.muk-badge-shape-square {
+    border-radius: 0;
+}
+
+
+// ============================================================
+// STYLE × VARIANT MIXIN
+// ============================================================
+@mixin badge-variant($base, $contrast, $tint, $soft-text) {
+
+    // SOLID
+    &.muk-badge-style-solid {
+        background: $base;
+        color: $contrast;
+        border-color: $base;
+    }
+
+    // SOFT
+    &.muk-badge-style-soft {
+        background: $tint;
+        color: $soft-text;
+        border-color: transparent;
+    }
+
+    // OUTLINE
+    &.muk-badge-style-outline {
+        background: transparent;
+        color: $base;
+        border-color: $base;
+    }
+}
+
+.muk-badge-primary {
+    @include badge-variant($primary, $primary-contrast, $primary-lighter, $primary-soft-text);
+}
+
+.muk-badge-secondary {
+    @include badge-variant($secondary, $secondary-contrast, $secondary-lighter, $secondary-soft-text);
+}
+
+.muk-badge-success {
+    @include badge-variant($success, $success-contrast, $success-tint, $success-soft-text);
+}
+
+.muk-badge-warning {
+    @include badge-variant($warning, $warning-contrast, $warning-tint, $warning-soft-text);
+}
+
+.muk-badge-danger {
+    @include badge-variant($danger, $danger-contrast, $danger-tint, $danger-soft-text);
+}
+
+.muk-badge-info {
+    @include badge-variant($info, $info-contrast, $info-tint, $info-soft-text);
+}
+
+.muk-badge-light {
+    &.muk-badge-style-solid {
+        background: $surface-muted;
+        color: $text;
+        border-color: $border;
+    }
+
+    &.muk-badge-style-soft {
+        background: $surface-muted;
+        color: $text-muted;
+    }
+
+    &.muk-badge-style-outline {
+        background: transparent;
+        color: $text-muted;
+        border-color: $border-strong;
+    }
+}
+
+.muk-badge-dark {
+    &.muk-badge-style-solid {
+        background: $text;
+        color: $surface;
+        border-color: $text;
+    }
+
+    &.muk-badge-style-soft {
+        background: $surface-muted;
+        color: $text;
+    }
+
+    &.muk-badge-style-outline {
+        background: transparent;
+        color: $text;
+        border-color: $text;
+    }
+}
+
+
+// ============================================================
+// OVERLAY MODE (notification dot / count)
+// ============================================================
+.muk-badge-wrap {
+    position: relative;
+    display: inline-flex;
+    vertical-align: middle;
+}
+
+.muk-badge-overlay {
+    position: absolute;
+    top: -4px;
+    right: -6px;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 5px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    font-size: 0.6875rem;
+    font-weight: 700;
+    line-height: 1;
+    color: #fff;
+    border: 2px solid $surface;
+    z-index: 1;
+
+    &.is-dot {
+        width: 10px;
+        height: 10px;
+        min-width: 10px;
+        padding: 0;
+        top: -2px;
+        right: -2px;
+    }
+
+    &.is-pulse::before {
+        content: '';
+        position: absolute;
+        inset: -2px;
+        border-radius: 50%;
+        background: inherit;
+        opacity: 0.6;
+        animation: mukBadgePulse 1.4s ease-out infinite;
+        z-index: -1;
+    }
+}
+
+// Hide overlay when count is 0 (and hideZero true) or empty
+.is-empty-count .muk-badge-overlay {
+    display: none;
+}
+
+// Overlay color by variant
+.muk-badge-primary .muk-badge-overlay {
+    background: $primary;
+}
+
+.muk-badge-secondary .muk-badge-overlay {
+    background: $secondary;
+}
+
+.muk-badge-success .muk-badge-overlay {
+    background: $success;
+}
+
+.muk-badge-warning .muk-badge-overlay {
+    background: $warning;
+}
+
+.muk-badge-danger .muk-badge-overlay {
+    background: $danger;
+}
+
+.muk-badge-info .muk-badge-overlay {
+    background: $info;
+}
+
+.muk-badge-dark .muk-badge-overlay {
+    background: $text;
+}
+
+.muk-badge-light .muk-badge-overlay {
+    background: $text-muted;
+    color: $surface;
+}
+
+
+@keyframes mukBadgePulse {
+    0% {
+        transform: scale(1);
+        opacity: 0.6;
+    }
+
+    100% {
+        transform: scale(2);
+        opacity: 0;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .muk-badge-overlay.is-pulse::before {
+        animation: none;
+    }
+
+    .muk-badge {
+        transition: none;
+    }
+}

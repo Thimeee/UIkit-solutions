@@ -1,0 +1,339 @@
+// ============================================================
+// MUK Card - SCSS (theme-aware, configurable)
+// ============================================================
+@use "../../styles/global-styles.scss" as *;
+
+.muk-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    background: $surface;
+    color: $text;
+    overflow: hidden;
+    transition:
+        background-color 0.2s ease,
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        transform 0.2s ease;
+
+    // Disabled
+    &.is-disabled {
+        opacity: 0.55;
+        pointer-events: none;
+        cursor: not-allowed;
+    }
+
+    // Clickable
+    &.is-clickable:not(.is-disabled) {
+        cursor: pointer;
+        user-select: none;
+
+        &:focus-visible {
+            outline: 2px solid $primary;
+            outline-offset: 2px;
+        }
+    }
+
+    // Selected
+    &.is-selected {
+        border-color: $primary !important;
+        box-shadow: 0 0 0 2px $primary-shadow;
+    }
+
+    // Loading - dims content
+    &.is-loading {
+        .muk-card-main {
+            opacity: 0.4;
+            pointer-events: none;
+        }
+    }
+}
+
+
+// ── SIZES (controls padding scale) ──
+.muk-card-size-sm {
+    --muk-card-px: 0.875rem;
+    --muk-card-py: 0.75rem;
+    --muk-card-gap: 0.5rem;
+    --muk-card-title-fs: 0.9375rem;
+    --muk-card-subtitle-fs: 0.8125rem;
+}
+
+.muk-card-size-md {
+    --muk-card-px: 1.125rem;
+    --muk-card-py: 1rem;
+    --muk-card-gap: 0.75rem;
+    --muk-card-title-fs: 1.0625rem;
+    --muk-card-subtitle-fs: 0.875rem;
+}
+
+.muk-card-size-lg {
+    --muk-card-px: 1.375rem;
+    --muk-card-py: 1.25rem;
+    --muk-card-gap: 0.875rem;
+    --muk-card-title-fs: 1.1875rem;
+    --muk-card-subtitle-fs: 0.9375rem;
+}
+
+.muk-card-size-xl {
+    --muk-card-px: 1.625rem;
+    --muk-card-py: 1.5rem;
+    --muk-card-gap: 1rem;
+    --muk-card-title-fs: 1.375rem;
+    --muk-card-subtitle-fs: 1rem;
+}
+
+
+// ── RADIUS ──
+.muk-card-radius-none {
+    border-radius: 0;
+}
+
+.muk-card-radius-sm {
+    border-radius: 0.375rem;
+}
+
+.muk-card-radius-md {
+    border-radius: 0.75rem;
+}
+
+.muk-card-radius-lg {
+    border-radius: 1rem;
+}
+
+.muk-card-radius-xl {
+    border-radius: 1.5rem;
+}
+
+
+// ── ORIENTATION ──
+.muk-card-orient-vertical {
+    flex-direction: column;
+}
+
+.muk-card-orient-horizontal {
+    flex-direction: row;
+    align-items: stretch;
+
+    .muk-card-media {
+        flex-shrink: 0;
+        width: 40%;
+        max-width: 280px;
+    }
+
+    .muk-card-main {
+        flex: 1 1 auto;
+    }
+}
+
+
+// ============================================================
+// VARIANTS
+// ============================================================
+
+// DEFAULT - simple bordered card
+.muk-card-variant-default {
+    border: 1px solid $border;
+}
+
+// BORDERED - more pronounced border
+.muk-card-variant-bordered {
+    border: 1.5px solid $border-strong;
+}
+
+// ELEVATED - no border, drop shadow
+.muk-card-variant-elevated {
+    border: 1px solid transparent;
+    box-shadow: $shadow-md;
+}
+
+// FILLED - tinted surface, no border
+.muk-card-variant-filled {
+    background: $surface-muted;
+    border: 1px solid transparent;
+}
+
+// GHOST - transparent, no border
+.muk-card-variant-ghost {
+    background: transparent;
+    border: 1px solid transparent;
+}
+
+// Shared shadow toggle
+.muk-card.has-shadow {
+    box-shadow: $shadow-md;
+}
+
+
+// ============================================================
+// HOVER EFFECTS
+// ============================================================
+
+// LIFT - rises with a stronger shadow
+.muk-card-hover-lift:hover {
+    transform: translateY(-3px);
+    box-shadow: $shadow-lg;
+}
+
+// GLOW - colored shadow halo
+.muk-card-hover-glow:hover {
+    box-shadow: 0 0 0 3px $primary-shadow, $shadow-md;
+    border-color: $primary;
+}
+
+// ZOOM - subtle scale
+.muk-card-hover-zoom:hover {
+    transform: scale(1.015);
+    box-shadow: $shadow-lg;
+}
+
+// BORDER - just changes border color
+.muk-card-hover-border:hover {
+    border-color: $primary;
+}
+
+
+// ============================================================
+// SLOTS
+// ============================================================
+
+.muk-card-main {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.muk-card-media {
+    display: flex;
+    overflow: hidden;
+    background: $surface-muted;
+
+    &.is-hidden {
+        display: none;
+    }
+
+    // Stretch any image/video naturally
+    ::ng-deep>img,
+    ::ng-deep>video,
+    ::ng-deep>picture {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+    }
+}
+
+.muk-card-header {
+    padding: var(--muk-card-py) var(--muk-card-px) 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+
+    &.is-hidden {
+        display: none;
+    }
+}
+
+.muk-card-title {
+    font-size: var(--muk-card-title-fs);
+    font-weight: 600;
+    line-height: 1.35;
+    color: $text;
+}
+
+.muk-card-subtitle {
+    font-size: var(--muk-card-subtitle-fs);
+    color: $text-muted;
+    line-height: 1.4;
+}
+
+.muk-card-body {
+    padding: var(--muk-card-py) var(--muk-card-px);
+    flex: 1 1 auto;
+    font-size: 0.9375rem;
+    line-height: 1.55;
+    color: $text;
+
+    // Tighten spacing when adjacent to header/footer
+    .muk-card-header:not(.is-hidden)+& {
+        padding-top: var(--muk-card-gap);
+    }
+
+    &:has(+ .muk-card-footer:not(.is-hidden)) {
+        padding-bottom: var(--muk-card-gap);
+    }
+}
+
+.muk-card-footer {
+    padding: 0 var(--muk-card-px) var(--muk-card-py);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+
+    &.is-hidden {
+        display: none;
+    }
+}
+
+
+// ============================================================
+// LOADING OVERLAY
+// ============================================================
+.muk-card-loading {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--muk-overlay-light);
+    z-index: 1;
+    backdrop-filter: blur(2px);
+}
+
+.muk-card-spinner {
+    width: 28px;
+    height: 28px;
+    border: 3px solid $border;
+    border-top-color: $primary;
+    border-radius: 50%;
+    animation: mukCardSpin 0.8s linear infinite;
+}
+
+@keyframes mukCardSpin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+
+// ── REDUCED MOTION ──
+@media (prefers-reduced-motion: reduce) {
+
+    .muk-card,
+    .muk-card-hover-lift:hover,
+    .muk-card-hover-zoom:hover {
+        transition: none;
+        transform: none;
+    }
+
+    .muk-card-spinner {
+        animation-duration: 2s;
+    }
+}
+
+
+// ── RESPONSIVE - horizontal cards collapse to vertical on mobile ──
+@media (max-width: 640px) {
+    .muk-card-orient-horizontal {
+        flex-direction: column;
+
+        .muk-card-media {
+            width: 100%;
+            max-width: 100%;
+            max-height: 200px;
+        }
+    }
+}

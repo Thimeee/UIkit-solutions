@@ -1,0 +1,461 @@
+// ============================================================
+// MUK Tabs - SCSS (theme-aware, multi-variant)
+// ============================================================
+@use "../../styles/global-styles.scss" as *;
+
+.muk-tabs {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    font-size: var(--muk-tabs-fs);
+}
+
+// ── SIZES ──
+.muk-tabs-size-sm {
+    --muk-tabs-fs: 0.8125rem;
+    --muk-tabs-tab-py: 0.5rem;
+    --muk-tabs-tab-px: 0.875rem;
+    --muk-tabs-gap: 0.25rem;
+    --muk-tabs-icon-size: 14px;
+    --muk-tabs-body-pt: 0.875rem;
+}
+
+.muk-tabs-size-md {
+    --muk-tabs-fs: 0.9375rem;
+    --muk-tabs-tab-py: 0.625rem;
+    --muk-tabs-tab-px: 1rem;
+    --muk-tabs-gap: 0.375rem;
+    --muk-tabs-icon-size: 16px;
+    --muk-tabs-body-pt: 1.125rem;
+}
+
+.muk-tabs-size-lg {
+    --muk-tabs-fs: 1rem;
+    --muk-tabs-tab-py: 0.75rem;
+    --muk-tabs-tab-px: 1.25rem;
+    --muk-tabs-gap: 0.5rem;
+    --muk-tabs-icon-size: 18px;
+    --muk-tabs-body-pt: 1.25rem;
+}
+
+
+// ── HEADER (tablist) ──
+.muk-tabs-header {
+    display: flex;
+    position: relative;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scrollbar-width: thin;
+
+    // hide scrollbar on most browsers but allow horizontal scroll
+    &::-webkit-scrollbar {
+        height: 4px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background: $border-strong;
+        border-radius: 2px;
+    }
+}
+
+// ── TAB BUTTON ──
+.muk-tabs-tab {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: var(--muk-tabs-tab-py) var(--muk-tabs-tab-px);
+    background: transparent;
+    border: 0;
+    font-size: inherit;
+    font-weight: 500;
+    color: $text-muted;
+    cursor: pointer;
+    white-space: nowrap;
+    transition:
+        color 0.18s ease,
+        background-color 0.18s ease,
+        border-color 0.18s ease;
+    position: relative;
+
+    &:hover:not(:disabled) {
+        color: $text;
+    }
+
+    &.is-active {
+        color: $primary;
+    }
+
+    &:focus-visible {
+        outline: 2px solid $primary;
+        outline-offset: -2px;
+        border-radius: 6px;
+    }
+
+    &.is-disabled,
+    &:disabled {
+        color: $text-disabled;
+        cursor: not-allowed;
+        opacity: 0.7;
+    }
+}
+
+// ── ICON inside tab ──
+.muk-tabs-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--muk-tabs-icon-size);
+    height: var(--muk-tabs-icon-size);
+    font-size: var(--muk-tabs-icon-size);
+    line-height: 1;
+    flex-shrink: 0;
+
+    &::before,
+    &>* {
+        font-size: inherit;
+        line-height: 1;
+    }
+}
+
+// ── BADGE inside tab ──
+.muk-tabs-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 6px;
+    margin-left: 0.25rem;
+    background: $surface-muted;
+    color: $text-muted;
+    border-radius: 999px;
+    font-size: 0.6875rem;
+    font-weight: 700;
+    line-height: 1;
+}
+
+.muk-tabs-tab.is-active .muk-tabs-badge {
+    background: $primary;
+    color: $primary-contrast;
+}
+
+
+// ── ALIGNMENT ──
+.muk-tabs-align-start .muk-tabs-header {
+    justify-content: flex-start;
+}
+
+.muk-tabs-align-center .muk-tabs-header {
+    justify-content: center;
+}
+
+.muk-tabs-align-end .muk-tabs-header {
+    justify-content: flex-end;
+}
+
+.muk-tabs-align-stretch .muk-tabs-header,
+.is-full-width .muk-tabs-header {
+    .muk-tabs-tab {
+        flex: 1 1 0;
+    }
+}
+
+
+// ============================================================
+// VARIANT: LINE (default)
+// ============================================================
+.muk-tabs-variant-line {
+    .muk-tabs-header {
+        border-bottom: 1px solid $border;
+        gap: 0;
+    }
+
+    .muk-tabs-tab {
+        border-bottom: 2px solid transparent;
+        margin-bottom: -1px;
+
+        &.is-active {
+            border-bottom-color: $primary;
+        }
+    }
+}
+
+// ============================================================
+// VARIANT: PILLS - rounded buttons
+// ============================================================
+.muk-tabs-variant-pills {
+    .muk-tabs-header {
+        gap: var(--muk-tabs-gap);
+    }
+
+    .muk-tabs-tab {
+        border-radius: 999px;
+
+        &:hover:not(:disabled):not(.is-active) {
+            background: $surface-hover;
+        }
+
+        &.is-active {
+            background: $primary;
+            color: $primary-contrast;
+        }
+
+        &.is-active .muk-tabs-badge {
+            background: rgba(255, 255, 255, 0.25);
+            color: $primary-contrast;
+        }
+    }
+}
+
+// ============================================================
+// VARIANT: SEGMENTED - grouped buttons
+// ============================================================
+.muk-tabs-variant-segmented {
+    .muk-tabs-header {
+        display: inline-flex;
+        padding: 4px;
+        background: $surface-muted;
+        border-radius: 0.625rem;
+        gap: 2px;
+    }
+
+    &.is-full-width .muk-tabs-header,
+    &.muk-tabs-align-stretch .muk-tabs-header {
+        display: flex;
+        width: 100%;
+    }
+
+    .muk-tabs-tab {
+        border-radius: 0.4375rem;
+        padding: calc(var(--muk-tabs-tab-py) - 2px) var(--muk-tabs-tab-px);
+
+        &.is-active {
+            background: $surface;
+            color: $text;
+            box-shadow: $shadow-sm;
+        }
+
+        &.is-active .muk-tabs-badge {
+            background: $primary;
+            color: $primary-contrast;
+        }
+    }
+}
+
+// ============================================================
+// VARIANT: ENCLOSED - bordered "envelope"
+// ============================================================
+.muk-tabs-variant-enclosed {
+    .muk-tabs-header {
+        border-bottom: 1px solid $border;
+        gap: 2px;
+    }
+
+    .muk-tabs-tab {
+        border: 1px solid transparent;
+        border-bottom: 0;
+        border-radius: 0.5rem 0.5rem 0 0;
+        margin-bottom: -1px;
+
+        &.is-active {
+            background: $surface;
+            border-color: $border;
+            color: $text;
+
+            // Hide bottom border to merge with content
+            &::after {
+                content: '';
+                position: absolute;
+                bottom: -1px;
+                left: 0;
+                right: 0;
+                height: 1px;
+                background: $surface;
+            }
+        }
+    }
+}
+
+// ============================================================
+// VARIANT: SOFT - tinted active background
+// ============================================================
+.muk-tabs-variant-soft {
+    .muk-tabs-header {
+        gap: var(--muk-tabs-gap);
+    }
+
+    .muk-tabs-tab {
+        border-radius: 0.5rem;
+
+        &:hover:not(:disabled):not(.is-active) {
+            background: $surface-hover;
+        }
+
+        &.is-active {
+            background: $primary-lighter;
+            color: $primary-soft-text;
+        }
+
+        &.is-active .muk-tabs-badge {
+            background: $primary;
+            color: $primary-contrast;
+        }
+    }
+}
+
+
+// ============================================================
+// VERTICAL ORIENTATION
+// ============================================================
+.muk-tabs-orient-vertical {
+    flex-direction: row;
+    gap: 1rem;
+
+    .muk-tabs-header {
+        flex-direction: column;
+        flex-wrap: nowrap;
+        overflow-x: visible;
+        overflow-y: auto;
+        flex-shrink: 0;
+        min-width: 160px;
+
+        &::-webkit-scrollbar {
+            width: 4px;
+            height: auto;
+        }
+    }
+
+    .muk-tabs-tab {
+        justify-content: flex-start;
+        white-space: normal;
+        text-align: left;
+    }
+
+    .muk-tabs-body {
+        flex: 1 1 auto;
+        padding-top: 0;
+    }
+
+    // Adjust LINE variant for vertical
+    &.muk-tabs-variant-line {
+        .muk-tabs-header {
+            border-bottom: 0;
+            border-right: 1px solid $border;
+        }
+
+        .muk-tabs-tab {
+            border-bottom: 0;
+            border-right: 2px solid transparent;
+            margin-bottom: 0;
+            margin-right: -1px;
+
+            &.is-active {
+                border-right-color: $primary;
+            }
+        }
+    }
+
+    // Adjust ENCLOSED for vertical
+    &.muk-tabs-variant-enclosed {
+        .muk-tabs-header {
+            border-bottom: 0;
+            border-right: 1px solid $border;
+        }
+
+        .muk-tabs-tab {
+            border-radius: 0.5rem 0 0 0.5rem;
+            border-bottom: 1px solid transparent;
+            border-right: 0;
+            margin-right: -1px;
+            margin-bottom: 0;
+
+            &.is-active::after {
+                bottom: 0;
+                top: 0;
+                left: auto;
+                right: -1px;
+                height: auto;
+                width: 1px;
+            }
+        }
+    }
+}
+
+
+// ============================================================
+// BODY (panels)
+// ============================================================
+.muk-tabs-body {
+    position: relative;
+    padding-top: var(--muk-tabs-body-pt);
+}
+
+.muk-tabs-panel {
+    outline: none;
+
+    &[hidden] {
+        display: none;
+    }
+}
+
+// ── ANIMATIONS ──
+.anim-fade .muk-tabs-panel.is-active {
+    animation: mukTabFadeIn 0.25s ease;
+}
+
+.anim-slide .muk-tabs-panel.is-active {
+    animation: mukTabSlideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.anim-scale .muk-tabs-panel.is-active {
+    animation: mukTabScaleIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes mukTabFadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes mukTabSlideIn {
+    from {
+        opacity: 0;
+        transform: translateX(12px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes mukTabScaleIn {
+    from {
+        opacity: 0;
+        transform: scale(0.96);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+
+// ── REDUCED MOTION ──
+@media (prefers-reduced-motion: reduce) {
+    .muk-tabs-tab {
+        transition: none;
+    }
+
+    .anim-fade .muk-tabs-panel.is-active,
+    .anim-slide .muk-tabs-panel.is-active,
+    .anim-scale .muk-tabs-panel.is-active {
+        animation: none;
+    }
+}
